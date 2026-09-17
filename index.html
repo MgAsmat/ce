@@ -218,10 +218,11 @@
     position:relative; display:flex; align-items:center;
   }
   .ctrl .icon{ position:absolute; left:11px; color:var(--text-faint); pointer-events:none; }
-  input[type=text], input[type=search], input[type=tel], input[type=email], select, textarea{
+  input[type=text], input[type=search], input[type=tel], input[type=email], input[type=password], input[type=number], select, textarea{
     width:100%; font-size:13.5px; color:var(--text); background:var(--surface); border:1px solid var(--border-strong);
     border-radius:var(--r-sm); padding:9px 12px; font-family:inherit; transition:border-color .15s ease, box-shadow .15s ease;
   }
+  .qty-input{ width:100px !important; text-align:center; font-weight:700; font-variant-numeric:tabular-nums; }
   .ctrl.has-icon input, .ctrl.has-icon select{ padding-left:34px; }
   input::placeholder{ color:var(--text-faint); }
   input:focus, select:focus, textarea:focus{ border-color:var(--teal); box-shadow:0 0 0 3px var(--teal-soft); outline:none; }
@@ -937,7 +938,7 @@
               </div>
 
               <div class="step-panel" data-panel="5">
-                <p style="margin:0 0 14px;font-size:12.5px;color:var(--text-muted)">Agrega de 1 a 5 estudiantes participantes del equipo.</p>
+                <p style="margin:0 0 14px;font-size:12.5px;color:var(--text-muted)" id="participantesHint">Agrega de 1 a 5 estudiantes participantes del equipo.</p>
                 <div id="participantesList"></div>
                 <button type="button" class="btn btn-ghost btn-sm" id="btnAddParticipante" style="margin-top:6px"><svg class="icon" width="13" height="13"><use href="#i-plus"/></svg> Agregar participante</button>
               </div>
@@ -1040,6 +1041,23 @@
             </div>
             <div class="topbar-spacer"></div>
             <button class="btn btn-primary" id="btnNuevoCampo"><svg class="icon" width="14" height="14"><use href="#i-plus"/></svg> Nuevo campo</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-users"/></svg></span>
+            <h2>Reglas del equipo participante</h2>
+            <span class="hint">Se aplica en el paso "Participantes" de la ficha</span>
+          </div>
+          <div class="card-body" style="display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap">
+            <div class="field" style="max-width:200px">
+              <label>Mínimo de participantes <span class="req">*</span></label>
+              <input id="cf-min-participantes" class="qty-input" type="number" min="1" max="5" step="1" value="1">
+            </div>
+            <div style="font-size:12px;color:var(--text-muted);max-width:440px;padding-bottom:9px" id="minParticipantesNote">
+              El paso "Participantes" exigirá al menos 1 estudiante completo antes de continuar. El máximo permitido es 5.
+            </div>
           </div>
         </div>
 
@@ -1569,7 +1587,7 @@
     document.querySelectorAll(".field.invalid").forEach(function(f){ f.classList.remove("invalid"); });
     document.getElementById("ie-provincia").innerHTML='<option value="">Selecciona región primero</option>'; document.getElementById("ie-provincia").disabled=true;
     document.getElementById("ie-distrito").innerHTML='<option value="">Selecciona provincia primero</option>'; document.getElementById("ie-distrito").disabled=true;
-    participantIds = [1]; nextParticipantId = 2;
+    participantIds = []; nextParticipantId = 1;
     renderParticipantes();
     document.getElementById("successCard").hidden = true;
     document.getElementById("wizardWrap").hidden = false;
@@ -1578,6 +1596,7 @@
   document.getElementById("btnToList").addEventListener("click", function(){ showView("lista"); location.hash="lista"; });
 
   /* ---------- participantes y campos dependientes de FIELDS ---------- */
+  var FORM_SETTINGS = { minParticipantes: 1 };
   var participantIds = [1];
   var nextParticipantId = 2;
 
@@ -1589,8 +1608,22 @@
     selectEl.innerHTML = '<option value="">'+placeholder+'</option>' + (field ? field.opciones.map(function(o){ return '<option>'+o.label+'</option>'; }).join("") : "");
   }
 
+  function updateParticipantesHint(){
+    var min = FORM_SETTINGS.minParticipantes;
+    var hint = document.getElementById("participantesHint");
+    if(hint) hint.textContent = min>=5
+      ? "Agrega los 5 estudiantes participantes del equipo."
+      : "Agrega entre "+min+" y 5 estudiantes participantes del equipo.";
+    var note = document.getElementById("minParticipantesNote");
+    if(note) note.textContent = 'El paso "Participantes" exigirá al menos '+min+(min===1?" estudiante completo":" estudiantes completos")+' antes de continuar. El máximo permitido es 5.';
+  }
+
+  function ensureMinParticipantes(){
+    while(participantIds.length < FORM_SETTINGS.minParticipantes){ participantIds.push(nextParticipantId++); }
+  }
+
   function participantCardHTML(id, num){
-    var removeBtn = participantIds.length>1
+    var removeBtn = participantIds.length>FORM_SETTINGS.minParticipantes
       ? '<button type="button" class="icon-btn participant-remove" data-remove-participante="'+id+'" title="Eliminar participante"><svg class="icon" width="14" height="14"><use href="#i-x"/></svg></button>'
       : '';
     return '<div class="participant-card">' +
@@ -1608,6 +1641,8 @@
   }
 
   function renderParticipantes(){
+    ensureMinParticipantes();
+    updateParticipantesHint();
     var wrap = document.getElementById("participantesList");
     wrap.innerHTML = participantIds.map(function(id, idx){ return participantCardHTML(id, idx+1); }).join("");
     var gradoField = fieldByCategoria("grado", "select");
@@ -1627,6 +1662,14 @@
     renderParticipantes();
   });
 
+  document.getElementById("cf-min-participantes").addEventListener("change", function(e){
+    var v = Math.max(1, Math.min(5, parseInt(e.target.value,10) || 1));
+    e.target.value = v;
+    FORM_SETTINGS.minParticipantes = v;
+    renderParticipantes();
+    showToast("Mínimo de participantes actualizado a "+v+".");
+  });
+
   function renderEnteraron(){
     var f = fieldByCategoria("metodo", "checkbox-detalle");
     var wrap = document.getElementById("enteraronList");
@@ -1638,6 +1681,7 @@
   }
 
   function initWizardDynamicFields(){
+    document.getElementById("cf-min-participantes").value = FORM_SETTINGS.minParticipantes;
     populateSelectOptions(document.getElementById("w-tema"), fieldByCategoria("trabajo","select"), "Selecciona un tema…");
     renderParticipantes();
     renderEnteraron();
