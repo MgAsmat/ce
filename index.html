@@ -1528,26 +1528,6 @@
     document.querySelectorAll("[data-jump]").forEach(function(b){ b.addEventListener("click", function(){ goTo(parseInt(b.dataset.jump,10)); }); });
   }
 
-  function validateStep(i){
-    var panel = document.querySelector('.step-panel[data-panel="'+i+'"]');
-    if(!panel) return true;
-    var ok = true;
-    panel.querySelectorAll("[required]").forEach(function(el){
-      var field = el.closest(".field");
-      var valid = el.value.trim() !== "";
-      field.classList.toggle("invalid", !valid);
-      if(!valid) ok = false;
-    });
-    if(i===3){
-      var clave = document.getElementById("ac-clave").value;
-      var clave2 = document.getElementById("ac-clave2").value;
-      var mismatch = clave!=="" && clave2!=="" && clave!==clave2;
-      document.getElementById("ac-clave2").closest(".field").classList.toggle("invalid", mismatch);
-      if(mismatch) ok = false;
-    }
-    return ok;
-  }
-
   function goTo(i){
     current = Math.max(0, Math.min(steps-1, i));
     panels.forEach(function(p,idx){ p.classList.toggle("active", idx===current); });
@@ -1564,18 +1544,14 @@
 
   stepItems.forEach(function(s){
     s.addEventListener("click", function(){
-      var target = parseInt(s.dataset.step,10);
-      if(target <= current){ goTo(target); return; }
-      for(var i=current;i<target;i++){ if(!validateStep(i)){ goTo(i); return; } }
-      goTo(target);
+      goTo(parseInt(s.dataset.step,10));
     });
   });
-  btnNext.addEventListener("click", function(){ if(validateStep(current)) goTo(current+1); });
+  btnNext.addEventListener("click", function(){ goTo(current+1); });
   btnPrev.addEventListener("click", function(){ goTo(current-1); });
 
   document.getElementById("ficha-form").addEventListener("submit", function(e){
     e.preventDefault();
-    if(!validateStep(current)) return;
     var code = "CE-2026-"+Math.floor(1000+Math.random()*8999)+"-"+Math.floor(100000+Math.random()*899999);
     document.getElementById("successCode").textContent = code;
     document.getElementById("wizardWrap").hidden = true;
