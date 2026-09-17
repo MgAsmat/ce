@@ -25,6 +25,10 @@
     --red-soft:#FBE8E3;
     --excel:#1B7A43;
     --excel-soft:#DFF2E6;
+    --blue:#1D5FAE;
+    --blue-soft:#E3ECF9;
+    --purple:#7A3FA0;
+    --purple-soft:#F1E6F7;
     --focus:#0C6E77;
     --r-sm:8px;
     --r-md:12px;
@@ -58,6 +62,10 @@
       --red-soft:#3A1712;
       --excel:#5FCB93;
       --excel-soft:#123322;
+      --blue:#7EB2F0;
+      --blue-soft:#122538;
+      --purple:#C79CE0;
+      --purple-soft:#291B36;
       --focus:#57C8CD;
       --shadow-sm:0 1px 2px rgba(0,0,0,.35);
       --shadow-md:0 14px 36px -14px rgba(0,0,0,.6);
@@ -87,6 +95,10 @@
     --red-soft:#3A1712;
     --excel:#5FCB93;
     --excel-soft:#123322;
+    --blue:#7EB2F0;
+    --blue-soft:#122538;
+    --purple:#C79CE0;
+    --purple-soft:#291B36;
     --focus:#57C8CD;
     --shadow-sm:0 1px 2px rgba(0,0,0,.35);
     --shadow-md:0 14px 36px -14px rgba(0,0,0,.6);
@@ -292,6 +304,12 @@
   .badge{ display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:999px; font-size:11.5px; font-weight:600; white-space:nowrap; }
   .badge-green{ background:var(--green-soft); color:var(--green); }
   .badge-amber{ background:var(--amber-soft); color:var(--amber); }
+  .badge-teal{ background:var(--teal-soft); color:var(--teal); }
+  .badge-blue{ background:var(--blue-soft); color:var(--blue); }
+  .badge-purple{ background:var(--purple-soft); color:var(--purple); }
+  .badge-neutral{ background:var(--surface-2); color:var(--text-muted); border:1px solid var(--border); }
+
+  .type-pill{ display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:999px; border:1px solid var(--border-strong); font-size:11.5px; color:var(--text-muted); white-space:nowrap; }
 
   .rowacts{ display:flex; gap:6px; }
   .icon-btn{
@@ -314,6 +332,79 @@
   .page-btn.active{ background:var(--teal); border-color:var(--teal); color:#fff; }
   .page-btn:disabled{ opacity:.4; cursor:not-allowed; }
   .page-dots{ color:var(--text-faint); padding:0 2px; font-size:12.5px; }
+
+  /* ===== Campos de ficha ===== */
+  .chipbar{ display:flex; gap:8px; flex-wrap:wrap; }
+  .chip{
+    display:inline-flex; align-items:center; gap:7px; padding:7px 13px; border-radius:999px; border:1px solid var(--border-strong);
+    background:var(--surface); color:var(--text-muted); font-size:12.5px; font-weight:600; cursor:pointer;
+  }
+  .chip:hover{ background:var(--surface-2); }
+  .chip .count{ background:var(--surface-2); color:var(--text-faint); border-radius:999px; padding:1px 7px; font-size:11px; }
+  .chip.active{ background:var(--teal); border-color:var(--teal); color:#fff; }
+  .chip.active .count{ background:rgba(255,255,255,.22); color:#fff; }
+
+  .switch{ position:relative; display:inline-block; width:38px; height:22px; flex:0 0 auto; }
+  .switch input{ opacity:0; width:0; height:0; position:absolute; }
+  .switch .track{ position:absolute; inset:0; background:var(--border-strong); border-radius:999px; transition:background .15s ease; cursor:pointer; }
+  .switch .track::before{ content:""; position:absolute; width:16px; height:16px; left:3px; top:3px; background:#fff; border-radius:50%; transition:transform .15s ease; box-shadow:0 1px 2px rgba(0,0,0,.25); }
+  .switch input:checked + .track{ background:var(--teal); }
+  .switch input:checked + .track::before{ transform:translateX(16px); }
+  .switch input:focus-visible + .track{ outline:2px solid var(--focus); outline-offset:2px; }
+
+  .field-name{ font-weight:600; }
+  .field-key{ color:var(--text-faint); font-size:11.5px; }
+
+  /* modal */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(8,14,24,.55); z-index:60; display:flex; align-items:flex-start; justify-content:center;
+    padding:5vh 16px; overflow-y:auto; opacity:0; pointer-events:none; transition:opacity .15s ease;
+  }
+  .modal-overlay.show{ opacity:1; pointer-events:auto; }
+  .modal{
+    background:var(--surface); border-radius:var(--r-lg); width:100%; max-width:880px; box-shadow:var(--shadow-md); border:1px solid var(--border);
+    transform:translateY(8px); transition:transform .15s ease;
+  }
+  .modal-overlay.show .modal{ transform:translateY(0); }
+  .modal-head{ display:flex; align-items:center; gap:12px; padding:16px 22px; border-bottom:1px solid var(--border); }
+  .modal-head h2{ font-size:15.5px; }
+  .modal-head p{ margin:2px 0 0; font-size:12px; color:var(--text-faint); }
+  .modal-close{ margin-left:auto; width:32px; height:32px; border-radius:var(--r-sm); border:1px solid var(--border); background:var(--surface); color:var(--text-muted); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .modal-close:hover{ background:var(--surface-2); }
+  .modal-body{ padding:22px; max-height:66vh; overflow-y:auto; display:grid; grid-template-columns:1.3fr 1fr; gap:24px; }
+  @media (max-width:760px){ .modal-body{ grid-template-columns:1fr; } }
+  .modal-foot{ display:flex; align-items:center; gap:10px; padding:16px 22px; border-top:1px solid var(--border); }
+
+  .section-label{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--text-faint); margin:18px 0 10px; }
+  .section-label:first-child{ margin-top:0; }
+
+  .options-editor{ display:flex; flex-direction:column; gap:8px; }
+  .option-row{ display:flex; align-items:center; gap:8px; }
+  .option-row input{ flex:1; }
+  .option-remove{ width:32px; height:32px; flex:0 0 auto; border-radius:var(--r-sm); border:1px solid var(--border); background:var(--surface); color:var(--text-faint); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .option-remove:hover{ background:var(--red-soft); color:var(--red); border-color:transparent; }
+  .add-option{ align-self:flex-start; margin-top:2px; }
+
+  .radio-cards{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  @media (max-width:480px){ .radio-cards{ grid-template-columns:1fr; } }
+  .radio-card{ display:flex; align-items:flex-start; gap:9px; padding:10px 12px; border:1px solid var(--border-strong); border-radius:var(--r-sm); cursor:pointer; }
+  .radio-card:hover{ background:var(--surface-2); }
+  .radio-card input{ margin-top:2px; accent-color:var(--teal); }
+  .radio-card .t{ font-size:12.5px; font-weight:600; }
+  .radio-card .d{ font-size:11px; color:var(--text-faint); }
+  .radio-card.checked{ border-color:var(--teal); background:var(--teal-soft); }
+
+  .preview-box{ background:var(--surface-2); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; position:sticky; top:0; }
+  .preview-box .eyebrow{ font-size:11px; text-transform:uppercase; letter-spacing:.4px; color:var(--text-faint); font-weight:700; margin-bottom:10px; }
+  .preview-render{ background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:14px; }
+  .preview-note{ margin-top:10px; font-size:11.5px; color:var(--text-faint); }
+
+  .toast{
+    position:fixed; left:50%; bottom:24px; transform:translate(-50%,12px); background:var(--navy); color:#fff; padding:12px 16px; border-radius:var(--r-md);
+    display:flex; align-items:center; gap:14px; box-shadow:var(--shadow-md); z-index:80; font-size:13px; opacity:0; pointer-events:none; transition:opacity .18s ease, transform .18s ease;
+  }
+  .toast.show{ opacity:1; pointer-events:auto; transform:translate(-50%,0); }
+  .toast button{ background:transparent; border:0; color:var(--teal-2); font-weight:700; cursor:pointer; font-size:12.5px; }
 
   /* ===== Wizard (Crear Ficha) ===== */
   .wizard{ display:grid; grid-template-columns:220px 1fr; gap:20px; align-items:start; }
@@ -446,25 +537,13 @@
         <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-award"/></svg> Concursos <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
         <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Concursos activos</a></li><li><a href="#" onclick="return false"><span class="dot"></span>Historial</a></li></ul>
       </div>
-      <div class="nav-group" data-group="temas">
-        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-tag"/></svg> Temas <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
-        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Catálogo de temas</a></li></ul>
-      </div>
-      <div class="nav-group" data-group="metodos">
-        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-layers"/></svg> Métodos <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
-        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Métodos de evaluación</a></li></ul>
-      </div>
-      <div class="nav-group" data-group="compromisos">
-        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-shield"/></svg> Compromisos <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
-        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Declaraciones</a></li></ul>
+      <div class="nav-group" data-group="campos">
+        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-layers"/></svg> Campos de ficha <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
+        <ul class="nav-sub"><li><a href="#campos" data-view-link="campos"><span class="dot"></span>Configurar campos</a></li></ul>
       </div>
       <div class="nav-group" data-group="archivos">
         <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-folder"/></svg> Archivos <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
         <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Repositorio</a></li></ul>
-      </div>
-      <div class="nav-group" data-group="grados">
-        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-grad-cap"/></svg> Grados <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
-        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Niveles y grados</a></li></ul>
       </div>
       <div class="nav-group" data-group="reportes">
         <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-bar-chart"/></svg> Reportes <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
@@ -858,8 +937,182 @@
         </div>
       </section>
 
+      <!-- ================= VIEW: CAMPOS DE FICHA ================= -->
+      <section class="view" id="view-campos">
+        <div class="page-head">
+          <h1>Campos de la ficha</h1>
+          <p>Antes estaba repartido en cuatro pestañas — Temas, Métodos, Compromisos y Grados —, ahora se configura aquí como un solo listado de campos. Cada campo define su tipo de respuesta y, cuando aplica, el tipo de caracteres permitidos y la longitud mínima/máxima.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-body" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+            <div class="field" style="min-width:240px">
+              <label>Concurso</label>
+              <div class="ctrl select">
+                <select id="cf-concurso">
+                  <option selected>Concurso Escolar de Videos BCRP 2026</option>
+                  <option>Concurso Escolar de Videos BCRP 2025</option>
+                </select>
+              </div>
+            </div>
+            <div class="topbar-spacer"></div>
+            <button class="btn btn-primary" id="btnNuevoCampo"><svg class="icon" width="14" height="14"><use href="#i-plus"/></svg> Nuevo campo</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar" style="flex-direction:column;align-items:stretch;gap:12px">
+            <div class="chipbar" id="chipbar"></div>
+            <div class="ctrl has-icon" style="max-width:320px">
+              <svg class="icon" width="14" height="14"><use href="#i-search"/></svg>
+              <input id="cf-search" type="text" placeholder="Buscar campo por nombre…">
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Campo</th>
+                  <th>Categoría</th>
+                  <th>Tipo de respuesta</th>
+                  <th>Parámetros</th>
+                  <th>Obligatorio</th>
+                  <th>Activo</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="camposBody"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="camposEmpty" hidden>
+            <svg class="icon" width="34" height="34"><use href="#i-inbox"/></svg>
+            <div>No se encontraron campos con ese filtro.</div>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <div>
+        <h2 id="modalTitle">Nuevo campo</h2>
+        <p>Define cómo se pedirá y validará este dato en la ficha de inscripción.</p>
+      </div>
+      <button type="button" class="modal-close" id="modalClose"><svg class="icon" width="16" height="16"><use href="#i-x"/></svg></button>
+    </div>
+    <form id="campoForm">
+      <div class="modal-body">
+        <div>
+          <div class="section-label">Datos del campo</div>
+          <div class="grid cols-2">
+            <div class="field" style="grid-column:1/-1">
+              <label>Nombre del campo <span class="req">*</span></label>
+              <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-file-text"/></svg><input required id="mf-nombre" type="text" placeholder="Ej. Tema del video"></div>
+              <span class="field-error">Escribe el nombre que verá el usuario.</span>
+            </div>
+            <div class="field">
+              <label>Categoría <span class="req">*</span></label>
+              <div class="ctrl select">
+                <select required id="mf-categoria">
+                  <option value="tema">Tema</option>
+                  <option value="metodo">Método (cómo se enteraron)</option>
+                  <option value="compromiso">Compromiso</option>
+                  <option value="grado">Grado</option>
+                  <option value="personalizado">Personalizado</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label>Obligatorio</label>
+              <div class="ctrl" style="padding-top:6px">
+                <label class="switch"><input type="checkbox" id="mf-obligatorio" checked><span class="track"></span></label>
+                <span style="margin-left:10px;font-size:12.5px;color:var(--text-muted)">Debe completarse para enviar la ficha</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-label">Tipo de respuesta</div>
+          <div class="radio-cards" id="mf-tipo-cards">
+            <label class="radio-card"><input type="radio" name="mf-tipo" value="select"><span><span class="t">Lista desplegable</span><br><span class="d">Elige una opción de una lista</span></span></label>
+            <label class="radio-card"><input type="radio" name="mf-tipo" value="radio"><span><span class="t">Selección única</span><br><span class="d">Botones de opción (radio)</span></span></label>
+            <label class="radio-card"><input type="radio" name="mf-tipo" value="checkbox-multi"><span><span class="t">Selección múltiple</span><br><span class="d">Puede marcar varias opciones</span></span></label>
+            <label class="radio-card"><input type="radio" name="mf-tipo" value="checkbox-single"><span><span class="t">Casilla de aceptación</span><br><span class="d">Ej. "Acepto la declaración"</span></span></label>
+            <label class="radio-card"><input type="radio" name="mf-tipo" value="texto-corto"><span><span class="t">Texto corto</span><br><span class="d">Una línea de texto libre</span></span></label>
+            <label class="radio-card"><input type="radio" name="mf-tipo" value="parrafo"><span><span class="t">Párrafo</span><br><span class="d">Texto libre de varias líneas</span></span></label>
+            <label class="radio-card"><input type="radio" name="mf-tipo" value="numerico"><span><span class="t">Numérico</span><br><span class="d">Solo admite dígitos</span></span></label>
+          </div>
+          <span class="field-error" id="tipo-error" style="display:none">Elige un tipo de respuesta.</span>
+
+          <div id="bloque-opciones" hidden>
+            <div class="section-label">Opciones de respuesta</div>
+            <div class="options-editor" id="opcionesEditor"></div>
+            <button type="button" class="btn btn-ghost btn-sm add-option" id="btnAddOpcion"><svg class="icon" width="13" height="13"><use href="#i-plus"/></svg> Agregar opción</button>
+          </div>
+
+          <div id="bloque-compromiso" hidden>
+            <div class="section-label">Texto del compromiso</div>
+            <div class="field">
+              <label>Declaración que verá el usuario <span class="req">*</span></label>
+              <textarea id="mf-compromiso-texto" rows="3" placeholder="Ej. Declaro que el video es de autoría original del equipo y autorizo al BCRP a difundirlo."></textarea>
+            </div>
+          </div>
+
+          <div id="bloque-validacion" hidden>
+            <div class="section-label">Parámetros de la respuesta</div>
+            <div class="field">
+              <label>Caracteres permitidos <span class="req">*</span></label>
+              <div class="ctrl select">
+                <select id="mf-caracteres">
+                  <option value="alfabetico">Alfabético (solo letras)</option>
+                  <option value="numerico">Numérico (solo números)</option>
+                  <option value="alfanumerico">Alfanumérico (letras y números)</option>
+                  <option value="alfanumerico-simbolos">Alfanumérico con símbolos</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid cols-2" style="margin-top:14px">
+              <div class="field">
+                <label>Longitud mínima <span class="req">*</span></label>
+                <input id="mf-min" type="text" inputmode="numeric" placeholder="Ej. 3">
+                <span class="field-error">Ingresa la longitud mínima.</span>
+              </div>
+              <div class="field">
+                <label>Longitud máxima <span class="req">*</span></label>
+                <input id="mf-max" type="text" inputmode="numeric" placeholder="Ej. 60">
+                <span class="field-error">Debe ser mayor o igual a la mínima.</span>
+              </div>
+            </div>
+            <div class="field" style="margin-top:14px">
+              <label>Texto de ayuda <span class="opt">(opcional)</span></label>
+              <input id="mf-placeholder" type="text" placeholder="Ej. Escribe el título tal como aparece en el video">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="preview-box">
+            <div class="eyebrow">Vista previa en la ficha</div>
+            <div class="preview-render" id="previewRender"></div>
+            <div class="preview-note">Así se verá el campo para quien completa la ficha de inscripción.</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" id="btnCancelarCampo">Cancelar</button>
+        <div class="topbar-spacer"></div>
+        <button type="submit" class="btn btn-primary" id="btnGuardarCampo"><svg class="icon" width="14" height="14"><use href="#i-check"/></svg> Guardar campo</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <span id="toastMsg"></span>
+  <button type="button" id="toastUndo" hidden>Deshacer</button>
 </div>
 
 <script>
@@ -925,11 +1178,16 @@
   document.getElementById("sidebarClose").addEventListener("click", closeSidebar);
   overlay.addEventListener("click", closeSidebar);
 
-  var titles = { lista:"Lista de fichas", crear:"Crear ficha" };
+  var titles = { lista:"Lista de fichas", crear:"Crear ficha", campos:"Campos de la ficha" };
   function showView(name){
     document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("active"); });
     document.getElementById("view-"+name).classList.add("active");
-    document.querySelectorAll("[data-view-link]").forEach(function(a){ a.classList.toggle("active", a.dataset.viewLink===name); });
+    document.querySelectorAll("[data-view-link]").forEach(function(a){
+      var isActive = a.dataset.viewLink===name;
+      a.classList.toggle("active", isActive);
+      if(isActive) a.closest(".nav-group").classList.add("open");
+    });
+    document.querySelectorAll(".nav-group").forEach(function(g){ g.classList.toggle("active", g.querySelector("[data-view-link].active")!==null); });
     document.getElementById("topbarTitle").textContent = titles[name];
     document.getElementById("crumbCurrent").textContent = titles[name];
     closeSidebar();
@@ -938,7 +1196,10 @@
   document.querySelectorAll("[data-view-link]").forEach(function(a){
     a.addEventListener("click", function(e){ e.preventDefault(); showView(a.dataset.viewLink); location.hash = a.dataset.viewLink; });
   });
-  showView(location.hash.replace("#","")==="crear" ? "crear" : "lista");
+  (function initView(){
+    var h = location.hash.replace("#","");
+    showView(titles[h] ? h : "lista");
+  })();
 
   /* ---------- table mock data ---------- */
   var ROWS = [
@@ -1187,6 +1448,288 @@
     goTo(0);
   });
   document.getElementById("btnToList").addEventListener("click", function(){ showView("lista"); location.hash="lista"; });
+
+  /* ---------- campos de ficha ---------- */
+  var CATS = {
+    tema:          { label:"Tema",                     badge:"badge-teal"    },
+    metodo:        { label:"Método (cómo se enteraron)",badge:"badge-blue"    },
+    compromiso:    { label:"Compromiso",                badge:"badge-purple"  },
+    grado:         { label:"Grado",                     badge:"badge-green"   },
+    personalizado: { label:"Personalizado",              badge:"badge-neutral" }
+  };
+  var TIPOS = {
+    "select":          { label:"Lista desplegable",  needsOptions:true  },
+    "radio":           { label:"Selección única",    needsOptions:true  },
+    "checkbox-multi":  { label:"Selección múltiple",  needsOptions:true  },
+    "checkbox-single": { label:"Casilla de aceptación", needsOptions:false, isCompromiso:true },
+    "texto-corto":     { label:"Texto corto",         needsValidation:true },
+    "parrafo":         { label:"Párrafo",             needsValidation:true },
+    "numerico":        { label:"Numérico",            needsValidation:true }
+  };
+  var CARACTERES_LABEL = { alfabetico:"Alfabético", numerico:"Numérico", alfanumerico:"Alfanumérico", "alfanumerico-simbolos":"Alfanumérico + símbolos" };
+
+  var FIELDS = [
+    { id:1, categoria:"tema", nombre:"Tema del video", tipo:"select", obligatorio:true, activo:true,
+      opciones:["Metas de inflación","Pagos digitales","Reservas internacionales","Dolarización","Billetes y monedas"] },
+    { id:2, categoria:"metodo", nombre:"¿Cómo se enteraron del concurso?", tipo:"checkbox-multi", obligatorio:true, activo:true,
+      opciones:["Redes sociales del BCRP","Profesor o colegio","Página web del BCRP","Familiares o amigos","Boletín BCRP","Otro medio"] },
+    { id:3, categoria:"grado", nombre:"Grado del equipo participante", tipo:"select", obligatorio:true, activo:true,
+      opciones:["1.° de secundaria","2.° de secundaria","3.° de secundaria","4.° de secundaria","5.° de secundaria"] },
+    { id:4, categoria:"compromiso", nombre:"Declaración de autoría original", tipo:"checkbox-single", obligatorio:true, activo:true,
+      compromisoTexto:"Declaro que el video es de autoría original del equipo participante y no infringe derechos de terceros." },
+    { id:5, categoria:"compromiso", nombre:"Autorización de uso de imagen", tipo:"checkbox-single", obligatorio:true, activo:true,
+      compromisoTexto:"Autorizo al BCRP a difundir el video y las imágenes de los participantes con fines educativos y de comunicación." },
+    { id:6, categoria:"personalizado", nombre:"Código modular (Minedu)", tipo:"texto-corto", obligatorio:true, activo:true,
+      caracteres:"numerico", min:6, max:8, placeholder:"Ej. 1234567" },
+    { id:7, categoria:"personalizado", nombre:"Seudónimo del equipo", tipo:"texto-corto", obligatorio:true, activo:true,
+      caracteres:"alfanumerico", min:3, max:40, placeholder:"Nombre con el que se identificará el equipo" },
+    { id:8, categoria:"personalizado", nombre:"Título del video", tipo:"texto-corto", obligatorio:true, activo:true,
+      caracteres:"alfanumerico-simbolos", min:5, max:120, placeholder:"Título tal como aparece en el video" }
+  ];
+  var nextFieldId = 9;
+  var cfState = { categoria:"todos", q:"" };
+  var editingId = null;
+
+  function fieldSummary(f){
+    var t = TIPOS[f.tipo];
+    if(t.needsOptions) return (f.opciones||[]).length + " opciones";
+    if(t.isCompromiso) return "Texto de aceptación";
+    return CARACTERES_LABEL[f.caracteres] + " · " + f.min + "–" + f.max + " caracteres";
+  }
+
+  function renderChips(){
+    var counts = { todos: FIELDS.length };
+    Object.keys(CATS).forEach(function(k){ counts[k] = FIELDS.filter(function(f){ return f.categoria===k; }).length; });
+    var chips = [{ key:"todos", label:"Todos" }].concat(Object.keys(CATS).map(function(k){ return { key:k, label:CATS[k].label }; }));
+    document.getElementById("chipbar").innerHTML = chips.map(function(c){
+      return '<button type="button" class="chip'+(cfState.categoria===c.key?" active":"")+'" data-cat="'+c.key+'">'+c.label+' <span class="count">'+counts[c.key]+'</span></button>';
+    }).join("");
+    document.querySelectorAll(".chip").forEach(function(b){
+      b.addEventListener("click", function(){ cfState.categoria = b.dataset.cat; renderCampos(); });
+    });
+  }
+
+  function renderCampos(){
+    renderChips();
+    var q = cfState.q.toLowerCase();
+    var rows = FIELDS.filter(function(f){
+      if(cfState.categoria!=="todos" && f.categoria!==cfState.categoria) return false;
+      if(q && f.nombre.toLowerCase().indexOf(q)===-1) return false;
+      return true;
+    });
+    var body = document.getElementById("camposBody");
+    document.getElementById("camposEmpty").hidden = rows.length!==0;
+    body.innerHTML = rows.map(function(f){
+      var cat = CATS[f.categoria];
+      return '<tr>'+
+        '<td><div class="field-name">'+f.nombre+'</div><div class="field-key">'+TIPOS[f.tipo].label+'</div></td>'+
+        '<td><span class="badge '+cat.badge+'">'+cat.label+'</span></td>'+
+        '<td><span class="type-pill">'+TIPOS[f.tipo].label+'</span></td>'+
+        '<td class="cell-sub">'+fieldSummary(f)+'</td>'+
+        '<td>'+(f.obligatorio ? '<span class="badge badge-green"><svg class="icon" width="11" height="11"><use href="#i-check"/></svg>Sí</span>' : '<span class="badge badge-neutral">No</span>')+'</td>'+
+        '<td><label class="switch"><input type="checkbox" data-toggle="'+f.id+'" '+(f.activo?"checked":"")+'><span class="track"></span></label></td>'+
+        '<td><div class="rowacts">'+
+          '<button class="icon-btn" title="Editar" data-edit="'+f.id+'"><svg class="icon" width="14" height="14"><use href="#i-edit"/></svg></button>'+
+          '<button class="icon-btn" title="Eliminar" data-del="'+f.id+'"><svg class="icon" width="14" height="14"><use href="#i-x"/></svg></button>'+
+        '</div></td>'+
+      '</tr>';
+    }).join("");
+    body.querySelectorAll("[data-toggle]").forEach(function(cb){
+      cb.addEventListener("change", function(){
+        var f = FIELDS.find(function(x){ return x.id===parseInt(cb.dataset.toggle,10); });
+        f.activo = cb.checked;
+        showToast((f.activo?'"'+f.nombre+'" activado.':'"'+f.nombre+'" desactivado.'));
+      });
+    });
+    body.querySelectorAll("[data-edit]").forEach(function(b){ b.addEventListener("click", function(){ openCampoModal(parseInt(b.dataset.edit,10)); }); });
+    body.querySelectorAll("[data-del]").forEach(function(b){ b.addEventListener("click", function(){ deleteCampo(parseInt(b.dataset.del,10)); }); });
+  }
+  document.getElementById("cf-search").addEventListener("input", function(e){ cfState.q = e.target.value; renderCampos(); });
+
+  var lastDeleted = null, lastDeletedIndex = null;
+  function deleteCampo(id){
+    var idx = FIELDS.findIndex(function(f){ return f.id===id; });
+    if(idx===-1) return;
+    lastDeleted = FIELDS[idx]; lastDeletedIndex = idx;
+    FIELDS.splice(idx,1);
+    renderCampos();
+    showToast('Campo "'+lastDeleted.nombre+'" eliminado.', true);
+  }
+  document.getElementById("toastUndo").addEventListener("click", function(){
+    if(lastDeleted){ FIELDS.splice(lastDeletedIndex,0,lastDeleted); lastDeleted=null; renderCampos(); }
+    hideToast();
+  });
+  var toastTimer;
+  function showToast(msg, withUndo){
+    clearTimeout(toastTimer);
+    document.getElementById("toastMsg").textContent = msg;
+    document.getElementById("toastUndo").hidden = !withUndo;
+    document.getElementById("toast").classList.add("show");
+    toastTimer = setTimeout(hideToast, 5000);
+  }
+  function hideToast(){ document.getElementById("toast").classList.remove("show"); }
+
+  /* modal */
+  var overlay2 = document.getElementById("modalOverlay");
+  var opcionesEditor = document.getElementById("opcionesEditor");
+
+  function addOpcionRow(value){
+    var row = document.createElement("div");
+    row.className = "option-row";
+    row.innerHTML = '<input type="text" value="'+(value||"").replace(/"/g,"&quot;")+'" placeholder="Texto de la opción">'+
+      '<button type="button" class="option-remove"><svg class="icon" width="14" height="14"><use href="#i-x"/></svg></button>';
+    row.querySelector(".option-remove").addEventListener("click", function(){ row.remove(); updatePreview(); });
+    row.querySelector("input").addEventListener("input", updatePreview);
+    opcionesEditor.appendChild(row);
+  }
+  document.getElementById("btnAddOpcion").addEventListener("click", function(){ addOpcionRow(""); updatePreview(); });
+
+  function currentTipo(){ var r = document.querySelector('input[name="mf-tipo"]:checked'); return r ? r.value : null; }
+
+  function syncBlocks(){
+    var tipo = currentTipo();
+    var t = tipo ? TIPOS[tipo] : null;
+    document.getElementById("bloque-opciones").hidden = !(t && t.needsOptions);
+    document.getElementById("bloque-compromiso").hidden = !(t && t.isCompromiso);
+    document.getElementById("bloque-validacion").hidden = !(t && t.needsValidation);
+    document.querySelectorAll(".radio-card").forEach(function(card){
+      card.classList.toggle("checked", card.querySelector("input").checked);
+    });
+    if(tipo==="numerico") document.getElementById("mf-caracteres").value = "numerico";
+    updatePreview();
+  }
+  document.querySelectorAll('input[name="mf-tipo"]').forEach(function(r){ r.addEventListener("change", syncBlocks); });
+  ["mf-nombre","mf-categoria","mf-obligatorio","mf-caracteres","mf-min","mf-max","mf-placeholder","mf-compromiso-texto"].forEach(function(id){
+    document.getElementById(id).addEventListener("input", updatePreview);
+    document.getElementById(id).addEventListener("change", updatePreview);
+  });
+
+  function updatePreview(){
+    var tipo = currentTipo();
+    var nombre = document.getElementById("mf-nombre").value.trim() || "Nombre del campo";
+    var req = document.getElementById("mf-obligatorio").checked;
+    var reqMark = req ? ' <span class="req">*</span>' : ' <span class="opt">(opcional)</span>';
+    var html = '<div class="field"><label>'+nombre+reqMark+'</label>';
+    if(!tipo){
+      html += '<div style="font-size:12px;color:var(--text-faint)">Elige un tipo de respuesta para ver la vista previa.</div>';
+    } else if(TIPOS[tipo].needsOptions){
+      var opts = Array.prototype.map.call(opcionesEditor.querySelectorAll("input"), function(i){ return i.value.trim(); }).filter(Boolean);
+      if(opts.length===0) opts = ["Opción 1","Opción 2"];
+      if(tipo==="select"){
+        html += '<div class="ctrl select"><select disabled>'+opts.map(function(o){ return '<option>'+o+'</option>'; }).join("")+'</select></div>';
+      } else {
+        var inType = tipo==="radio" ? "radio" : "checkbox";
+        html += '<div style="display:flex;flex-direction:column;gap:6px;margin-top:2px">'+opts.map(function(o){
+          return '<label style="display:flex;align-items:center;gap:8px;font-size:13px"><input type="'+inType+'" disabled> '+o+'</label>';
+        }).join("")+'</div>';
+      }
+    } else if(TIPOS[tipo].isCompromiso){
+      var txt = document.getElementById("mf-compromiso-texto").value.trim() || "Texto de la declaración…";
+      html += '<label style="display:flex;align-items:flex-start;gap:9px;font-size:12.5px;padding:10px;border:1px solid var(--border-strong);border-radius:8px"><input type="checkbox" disabled style="margin-top:2px"> '+txt+'</label>';
+    } else {
+      var car = document.getElementById("mf-caracteres").value;
+      var min = document.getElementById("mf-min").value || "0";
+      var max = document.getElementById("mf-max").value || "—";
+      var ph = document.getElementById("mf-placeholder").value.trim();
+      if(tipo==="parrafo"){
+        html += '<textarea disabled rows="3" placeholder="'+(ph||"Respuesta de la persona")+'"></textarea>';
+      } else {
+        html += '<div class="ctrl"><input disabled type="text" placeholder="'+(ph||"Respuesta de la persona")+'"></div>';
+      }
+      html += '<div class="preview-note">'+CARACTERES_LABEL[car]+' · entre '+min+' y '+max+' caracteres</div>';
+    }
+    html += '</div>';
+    document.getElementById("previewRender").innerHTML = html;
+  }
+
+  function resetModalForm(){
+    document.getElementById("campoForm").reset();
+    document.querySelectorAll(".field.invalid").forEach(function(f){ f.classList.remove("invalid"); });
+    opcionesEditor.innerHTML = "";
+    document.getElementById("mf-obligatorio").checked = true;
+  }
+
+  function openCampoModal(id){
+    resetModalForm();
+    editingId = id || null;
+    var f = id ? FIELDS.find(function(x){ return x.id===id; }) : null;
+    document.getElementById("modalTitle").textContent = f ? "Editar campo" : "Nuevo campo";
+    if(f){
+      document.getElementById("mf-nombre").value = f.nombre;
+      document.getElementById("mf-categoria").value = f.categoria;
+      document.getElementById("mf-obligatorio").checked = f.obligatorio;
+      var radio = document.querySelector('input[name="mf-tipo"][value="'+f.tipo+'"]'); if(radio) radio.checked = true;
+      if(f.opciones) f.opciones.forEach(function(o){ addOpcionRow(o); });
+      if(f.compromisoTexto) document.getElementById("mf-compromiso-texto").value = f.compromisoTexto;
+      if(f.caracteres){
+        document.getElementById("mf-caracteres").value = f.caracteres;
+        document.getElementById("mf-min").value = f.min;
+        document.getElementById("mf-max").value = f.max;
+        document.getElementById("mf-placeholder").value = f.placeholder || "";
+      }
+    } else {
+      addOpcionRow(""); addOpcionRow("");
+    }
+    syncBlocks();
+    overlay2.classList.add("show");
+  }
+  function closeCampoModal(){ overlay2.classList.remove("show"); editingId = null; }
+  document.getElementById("btnNuevoCampo").addEventListener("click", function(){ openCampoModal(null); });
+  document.getElementById("modalClose").addEventListener("click", closeCampoModal);
+  document.getElementById("btnCancelarCampo").addEventListener("click", closeCampoModal);
+  overlay2.addEventListener("click", function(e){ if(e.target===overlay2) closeCampoModal(); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape" && overlay2.classList.contains("show")) closeCampoModal(); });
+
+  document.getElementById("campoForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var tipo = currentTipo();
+    var ok = true;
+    function markInvalid(id, invalid){ document.getElementById(id).closest(".field").classList.toggle("invalid", invalid); if(invalid) ok=false; }
+
+    markInvalid("mf-nombre", document.getElementById("mf-nombre").value.trim()==="");
+    document.getElementById("tipo-error").style.display = tipo ? "none" : "block";
+    if(!tipo) ok = false;
+
+    var opciones = [], compromisoTexto = "", caracteres, min, max, placeholder;
+    if(tipo && TIPOS[tipo].needsOptions){
+      opciones = Array.prototype.map.call(opcionesEditor.querySelectorAll("input"), function(i){ return i.value.trim(); }).filter(Boolean);
+      if(opciones.length < 2) ok = false;
+    } else if(tipo && TIPOS[tipo].isCompromiso){
+      compromisoTexto = document.getElementById("mf-compromiso-texto").value.trim();
+      if(!compromisoTexto) ok = false;
+    } else if(tipo && TIPOS[tipo].needsValidation){
+      caracteres = document.getElementById("mf-caracteres").value;
+      min = parseInt(document.getElementById("mf-min").value,10);
+      max = parseInt(document.getElementById("mf-max").value,10);
+      placeholder = document.getElementById("mf-placeholder").value.trim();
+      var minInvalid = isNaN(min) || min < 0;
+      var maxInvalid = isNaN(max) || max < min;
+      markInvalid("mf-min", minInvalid);
+      markInvalid("mf-max", maxInvalid);
+    }
+    if(!ok) return;
+
+    var data = {
+      categoria: document.getElementById("mf-categoria").value,
+      nombre: document.getElementById("mf-nombre").value.trim(),
+      tipo: tipo, obligatorio: document.getElementById("mf-obligatorio").checked,
+      opciones: opciones, compromisoTexto: compromisoTexto,
+      caracteres: caracteres, min: min, max: max, placeholder: placeholder
+    };
+
+    if(editingId){
+      var idx = FIELDS.findIndex(function(f){ return f.id===editingId; });
+      FIELDS[idx] = Object.assign({ id:editingId, activo:FIELDS[idx].activo }, data);
+      showToast('Campo "'+data.nombre+'" actualizado.');
+    } else {
+      FIELDS.push(Object.assign({ id:nextFieldId++, activo:true }, data));
+      showToast('Campo "'+data.nombre+'" creado.');
+    }
+    closeCampoModal();
+    renderCampos();
+  });
+
+  renderCampos();
 
 })();
 </script>
