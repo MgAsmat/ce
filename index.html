@@ -1,0 +1,1192 @@
+<title>Fichas BCRP</title>
+<style>
+  /* ===== Tokens ===== */
+  :root{
+    --bg:#EEF1F5;
+    --surface:#FFFFFF;
+    --surface-2:#F6F8FA;
+    --border:#DDE3E9;
+    --border-strong:#C3CDD6;
+    --text:#182333;
+    --text-muted:#5C6B7A;
+    --text-faint:#8A97A3;
+    --navy:#0F1E33;
+    --navy-2:#16283F;
+    --navy-ink:#EAF0F6;
+    --teal:#0C6E77;
+    --teal-2:#0F8890;
+    --teal-soft:#E2F1F1;
+    --teal-soft-strong:#C9E7E7;
+    --amber:#9A6300;
+    --amber-soft:#FBEFD9;
+    --green:#186B45;
+    --green-soft:#DEF2E7;
+    --red:#B23A26;
+    --red-soft:#FBE8E3;
+    --excel:#1B7A43;
+    --excel-soft:#DFF2E6;
+    --focus:#0C6E77;
+    --r-sm:8px;
+    --r-md:12px;
+    --r-lg:18px;
+    --shadow-sm:0 1px 2px rgba(15,30,51,.07);
+    --shadow-md:0 10px 30px -12px rgba(15,30,51,.22);
+    --sidebar-w:268px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0B1420;
+      --surface:#121E2E;
+      --surface-2:#182636;
+      --border:#26374B;
+      --border-strong:#324A63;
+      --text:#E7EDF4;
+      --text-muted:#96A6B8;
+      --text-faint:#6E8094;
+      --navy:#080E18;
+      --navy-2:#0D1826;
+      --navy-ink:#EAF0F6;
+      --teal:#3FB6BC;
+      --teal-2:#57C8CD;
+      --teal-soft:#123236;
+      --teal-soft-strong:#164047;
+      --amber:#E3B24D;
+      --amber-soft:#3A2E10;
+      --green:#5FCB93;
+      --green-soft:#123322;
+      --red:#F0806A;
+      --red-soft:#3A1712;
+      --excel:#5FCB93;
+      --excel-soft:#123322;
+      --focus:#57C8CD;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.35);
+      --shadow-md:0 14px 36px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0B1420;
+    --surface:#121E2E;
+    --surface-2:#182636;
+    --border:#26374B;
+    --border-strong:#324A63;
+    --text:#E7EDF4;
+    --text-muted:#96A6B8;
+    --text-faint:#6E8094;
+    --navy:#080E18;
+    --navy-2:#0D1826;
+    --navy-ink:#EAF0F6;
+    --teal:#3FB6BC;
+    --teal-2:#57C8CD;
+    --teal-soft:#123236;
+    --teal-soft-strong:#164047;
+    --amber:#E3B24D;
+    --amber-soft:#3A2E10;
+    --green:#5FCB93;
+    --green-soft:#123322;
+    --red:#F0806A;
+    --red-soft:#3A1712;
+    --excel:#5FCB93;
+    --excel-soft:#123322;
+    --focus:#57C8CD;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.35);
+    --shadow-md:0 14px 36px -14px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{ text-wrap:balance; font-family:"IBM Plex Sans",system-ui,sans-serif; margin:0; }
+  .mono{ font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums; }
+  a{ color:var(--teal); }
+  button{ font-family:inherit; }
+  :focus-visible{ outline:2px solid var(--focus); outline-offset:2px; border-radius:4px; }
+
+  .icon{ width:1em; height:1em; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; display:inline-block; vertical-align:-0.15em; flex-shrink:0; }
+
+  /* ===== Shell ===== */
+  .shell{ display:flex; min-height:100vh; min-height:100svh; }
+
+  .overlay{
+    position:fixed; inset:0; background:rgba(8,14,24,.5); z-index:30; opacity:0; pointer-events:none; transition:opacity .2s ease;
+  }
+  .overlay.show{ opacity:1; pointer-events:auto; }
+
+  /* ---- Sidebar ---- */
+  .sidebar{
+    width:var(--sidebar-w); flex:0 0 auto; background:var(--navy); color:var(--navy-ink);
+    display:flex; flex-direction:column; position:sticky; top:0; align-self:flex-start;
+    height:100vh; height:100svh; z-index:40;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px; padding:20px 20px 16px; font-weight:700; font-size:17px; letter-spacing:.2px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .brand .mark{
+    width:34px; height:34px; border-radius:9px; background:var(--teal-2); color:var(--navy);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px;
+  }
+  .brand small{ display:block; font-weight:400; font-size:11px; color:#9DB0C4; letter-spacing:.4px; }
+
+  .nav{ flex:1; overflow-y:auto; padding:14px 10px 18px; }
+  .nav-group{ margin-bottom:2px; }
+  .nav-head{
+    width:100%; display:flex; align-items:center; gap:10px; padding:10px 12px; border:0; background:transparent;
+    color:#C4D3E2; font-size:13.5px; font-weight:600; border-radius:var(--r-sm); cursor:pointer; text-align:left;
+  }
+  .nav-head:hover{ background:rgba(255,255,255,.06); color:#fff; }
+  .nav-head .icon{ color:#7C93AA; }
+  .nav-head .chev{ margin-left:auto; transition:transform .18s ease; color:#7C93AA; }
+  .nav-group.open .nav-head .chev{ transform:rotate(180deg); }
+  .nav-group.active > .nav-head{ color:#fff; }
+  .nav-group.active > .nav-head .icon{ color:var(--teal-2); }
+
+  .nav-sub{ list-style:none; margin:0; padding:2px 0 8px 20px; display:grid; gap:1px; overflow:hidden; max-height:0; transition:max-height .2s ease; }
+  .nav-group.open .nav-sub{ max-height:220px; }
+  .nav-sub a{
+    display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:var(--r-sm); color:#9FB1C4;
+    font-size:13.5px; text-decoration:none; border-left:2px solid transparent;
+  }
+  .nav-sub a:hover{ color:#fff; background:rgba(255,255,255,.05); }
+  .nav-sub a.active{ color:#fff; background:rgba(63,182,188,.14); border-left-color:var(--teal-2); font-weight:600; }
+  .nav-sub a .dot{ width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.55; flex:0 0 auto; }
+
+  .sidebar-foot{ padding:14px 18px; border-top:1px solid rgba(255,255,255,.08); font-size:11.5px; color:#6E8094; }
+
+  .sidebar-close{ display:none; }
+
+  /* ---- Main column ---- */
+  .main{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; }
+
+  .topbar{
+    position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:14px; padding:12px 22px; padding-top:calc(12px + env(safe-area-inset-top,0px));
+  }
+  .burger{
+    display:none; width:36px; height:36px; border-radius:var(--r-sm); border:1px solid var(--border); background:var(--surface);
+    align-items:center; justify-content:center; cursor:pointer; color:var(--text);
+  }
+  .crumb{ font-size:12.5px; color:var(--text-faint); display:flex; align-items:center; gap:6px; }
+  .crumb b{ color:var(--text-muted); font-weight:600; }
+  .topbar-title{ font-size:15.5px; font-weight:700; }
+  .topbar-spacer{ flex:1; }
+  .user-chip{ display:flex; align-items:center; gap:10px; padding:6px 8px 6px 6px; border-radius:999px; border:1px solid var(--border); background:var(--surface-2); }
+  .avatar{ width:28px; height:28px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; }
+  .user-chip .name{ font-size:13px; font-weight:600; line-height:1.1; }
+  .user-chip .role{ font-size:11px; color:var(--text-faint); line-height:1.1; }
+  .logout-btn{
+    display:flex; align-items:center; gap:6px; padding:8px 14px; border-radius:999px; border:1px solid var(--red);
+    background:var(--red-soft); color:var(--red); font-weight:600; font-size:12.5px; cursor:pointer; white-space:nowrap;
+  }
+  .logout-btn:hover{ background:var(--red); color:#fff; }
+
+  .content{ padding:22px; flex:1; max-width:1320px; width:100%; margin:0 auto; }
+
+  .page-head{ margin-bottom:18px; }
+  .page-head h1{ font-size:21px; font-weight:700; }
+  .page-head p{ margin:4px 0 0; color:var(--text-muted); font-size:13.5px; max-width:62ch; }
+
+  /* ===== Cards ===== */
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); box-shadow:var(--shadow-sm); margin-bottom:16px; overflow:hidden; }
+  .card-head{ display:flex; align-items:center; gap:10px; padding:14px 20px; border-bottom:1px solid var(--border); background:var(--surface-2); }
+  .card-head .icon-badge{ width:26px; height:26px; border-radius:8px; background:var(--teal-soft); color:var(--teal); display:flex; align-items:center; justify-content:center; }
+  .card-head h2{ font-size:13.5px; font-weight:700; letter-spacing:.2px; }
+  .card-head .hint{ margin-left:auto; font-size:12px; color:var(--text-faint); }
+  .card-body{ padding:20px; }
+
+  /* ===== Form controls ===== */
+  .field{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+  .field label{ font-size:12.5px; font-weight:600; color:var(--text-muted); display:flex; align-items:center; gap:5px; }
+  .field label .req{ color:var(--red); }
+  .field label .opt{ font-weight:400; color:var(--text-faint); font-size:11px; }
+  .ctrl{
+    position:relative; display:flex; align-items:center;
+  }
+  .ctrl .icon{ position:absolute; left:11px; color:var(--text-faint); pointer-events:none; }
+  input[type=text], input[type=search], input[type=tel], input[type=email], select, textarea{
+    width:100%; font-size:13.5px; color:var(--text); background:var(--surface); border:1px solid var(--border-strong);
+    border-radius:var(--r-sm); padding:9px 12px; font-family:inherit; transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .ctrl.has-icon input, .ctrl.has-icon select{ padding-left:34px; }
+  input::placeholder{ color:var(--text-faint); }
+  input:focus, select:focus, textarea:focus{ border-color:var(--teal); box-shadow:0 0 0 3px var(--teal-soft); outline:none; }
+  select{ appearance:none; -webkit-appearance:none; background-image:none; padding-right:32px; cursor:pointer; }
+  .ctrl.select::after{
+    content:""; position:absolute; right:12px; width:9px; height:9px; border-right:1.6px solid var(--text-faint); border-bottom:1.6px solid var(--text-faint);
+    transform:rotate(45deg); pointer-events:none; margin-top:-4px; top:50%;
+  }
+  select:disabled, input:disabled{ background:var(--surface-2); color:var(--text-faint); cursor:not-allowed; }
+  .field.invalid input, .field.invalid select{ border-color:var(--red); box-shadow:0 0 0 3px var(--red-soft); }
+  .field-error{ font-size:11.5px; color:var(--red); display:none; }
+  .field.invalid .field-error{ display:block; }
+
+  .grid{ display:grid; gap:16px; }
+  .grid.cols-4{ grid-template-columns:repeat(4,1fr); }
+  .grid.cols-3{ grid-template-columns:repeat(3,1fr); }
+  .grid.cols-2{ grid-template-columns:repeat(2,1fr); }
+  @media (max-width:980px){ .grid.cols-4{ grid-template-columns:repeat(2,1fr);} .grid.cols-3{ grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:640px){ .grid.cols-4, .grid.cols-3, .grid.cols-2{ grid-template-columns:1fr; } }
+
+  /* ===== Buttons ===== */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:7px; font-size:13px; font-weight:600;
+    padding:9px 16px; border-radius:var(--r-sm); border:1px solid transparent; cursor:pointer; white-space:nowrap;
+    transition:filter .12s ease, background .12s ease, transform .05s ease;
+  }
+  .btn:active{ transform:translateY(1px); }
+  .btn-primary{ background:var(--teal); color:#fff; }
+  .btn-primary:hover{ filter:brightness(1.08); }
+  .btn-ghost{ background:var(--surface); color:var(--text); border-color:var(--border-strong); }
+  .btn-ghost:hover{ background:var(--surface-2); }
+  .btn-excel{ background:var(--excel-soft); color:var(--excel); border-color:transparent; }
+  .btn-excel:hover{ background:var(--excel); color:#fff; }
+  .btn-pdf{ background:var(--red-soft); color:var(--red); border-color:transparent; }
+  .btn-pdf:hover{ background:var(--red); color:#fff; }
+  .btn-block{ width:100%; }
+  .btn-sm{ padding:7px 12px; font-size:12.5px; }
+  .btn[disabled]{ opacity:.45; cursor:not-allowed; pointer-events:none; }
+
+  .actions-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:4px; }
+
+  /* ===== Advanced search (details) ===== */
+  details.adv{ border:0; }
+  details.adv > summary{
+    list-style:none; cursor:pointer; display:flex; align-items:center; gap:10px; padding:14px 20px; background:var(--surface-2);
+    border-bottom:1px solid var(--border);
+  }
+  details.adv > summary::-webkit-details-marker{ display:none; }
+  details.adv summary .icon-badge{ width:26px; height:26px; border-radius:8px; background:var(--teal-soft); color:var(--teal); display:flex; align-items:center; justify-content:center; }
+  details.adv summary h2{ font-size:13.5px; font-weight:700; }
+  details.adv summary .chev{ margin-left:auto; color:var(--text-faint); transition:transform .18s ease; }
+  details.adv[open] summary .chev{ transform:rotate(180deg); }
+
+  /* ===== Table ===== */
+  .table-toolbar{ display:flex; align-items:center; gap:12px; padding:14px 20px; flex-wrap:wrap; border-bottom:1px solid var(--border); }
+  .result-count{ font-size:13px; }
+  .result-count b{ color:var(--text); }
+  .table-toolbar .topbar-spacer{ flex:1; }
+  .pagesize{ display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text-muted); }
+  .pagesize select{ width:auto; padding:6px 28px 6px 10px; font-size:12.5px; }
+
+  .table-scroll{ overflow-x:auto; }
+  table{ width:100%; border-collapse:collapse; min-width:920px; }
+  thead th{
+    position:sticky; top:0; background:var(--surface-2); text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:.4px;
+    color:var(--text-muted); padding:10px 14px; border-bottom:1px solid var(--border); white-space:nowrap;
+  }
+  th.sortable{ cursor:pointer; user-select:none; }
+  th.sortable .sort-icon{ margin-left:4px; color:var(--text-faint); }
+  th.sortable.sort-asc .sort-icon, th.sortable.sort-desc .sort-icon{ color:var(--teal); }
+  .col-filter{ padding:8px 10px; border-bottom:1px solid var(--border); background:var(--surface); }
+  .col-filter input, .col-filter select{ font-size:12px; padding:6px 8px; }
+  tbody td{ padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; vertical-align:top; }
+  tbody tr:hover td{ background:var(--surface-2); }
+  tbody tr:last-child td{ border-bottom:0; }
+  .cell-title{ font-weight:600; }
+  .cell-sub{ color:var(--text-muted); font-size:12px; margin-top:2px; }
+  .cell-place{ color:var(--text-muted); }
+
+  .badge{ display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:999px; font-size:11.5px; font-weight:600; white-space:nowrap; }
+  .badge-green{ background:var(--green-soft); color:var(--green); }
+  .badge-amber{ background:var(--amber-soft); color:var(--amber); }
+
+  .rowacts{ display:flex; gap:6px; }
+  .icon-btn{
+    width:30px; height:30px; border-radius:var(--r-sm); border:1px solid var(--border); background:var(--surface);
+    display:flex; align-items:center; justify-content:center; color:var(--text-muted); cursor:pointer; position:relative;
+  }
+  .icon-btn:hover{ background:var(--teal-soft); color:var(--teal); border-color:var(--teal-soft-strong); }
+
+  .empty-state{ padding:60px 20px; text-align:center; color:var(--text-muted); }
+  .empty-state .icon{ width:34px; height:34px; color:var(--text-faint); margin-bottom:10px; }
+
+  .pagination{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 20px; flex-wrap:wrap; }
+  .pagination .summary{ font-size:12.5px; color:var(--text-muted); }
+  .pages{ display:flex; align-items:center; gap:4px; }
+  .page-btn{
+    min-width:32px; height:32px; padding:0 8px; border-radius:999px; border:1px solid var(--border); background:var(--surface);
+    color:var(--text-muted); font-size:12.5px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .page-btn:hover{ background:var(--surface-2); }
+  .page-btn.active{ background:var(--teal); border-color:var(--teal); color:#fff; }
+  .page-btn:disabled{ opacity:.4; cursor:not-allowed; }
+  .page-dots{ color:var(--text-faint); padding:0 2px; font-size:12.5px; }
+
+  /* ===== Wizard (Crear Ficha) ===== */
+  .wizard{ display:grid; grid-template-columns:220px 1fr; gap:20px; align-items:start; }
+  @media (max-width:860px){ .wizard{ grid-template-columns:1fr; } }
+
+  .steps{ position:sticky; top:76px; display:flex; flex-direction:column; gap:2px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:10px; box-shadow:var(--shadow-sm); }
+  @media (max-width:860px){ .steps{ position:static; flex-direction:row; overflow-x:auto; } }
+  .step-item{ display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--r-sm); cursor:pointer; border:0; background:transparent; text-align:left; width:100%; color:var(--text-muted); }
+  @media (max-width:860px){ .step-item{ width:auto; white-space:nowrap; } }
+  .step-item:hover{ background:var(--surface-2); }
+  .step-num{ width:24px; height:24px; border-radius:50%; background:var(--surface-2); border:1px solid var(--border-strong); color:var(--text-faint); font-size:11.5px; font-weight:700; display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+  .step-item.current{ background:var(--teal-soft); color:var(--teal); }
+  .step-item.current .step-num{ background:var(--teal); border-color:var(--teal); color:#fff; }
+  .step-item.done .step-num{ background:var(--green); border-color:var(--green); color:#fff; }
+  .step-item.done{ color:var(--text); }
+  .step-label{ font-size:13px; font-weight:600; line-height:1.2; }
+  .step-connector{ width:1px; height:10px; background:var(--border-strong); margin-left:22px; }
+
+  .step-panel{ display:none; }
+  .step-panel.active{ display:block; animation:fade .18s ease; }
+  @keyframes fade{ from{ opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+
+  .helper-link{ display:inline-flex; align-items:center; gap:5px; font-size:12px; color:var(--teal); text-decoration:none; font-weight:600; }
+  .helper-link:hover{ text-decoration:underline; }
+
+  .wizard-nav{ display:flex; align-items:center; gap:10px; padding-top:18px; margin-top:4px; border-top:1px solid var(--border); }
+  .wizard-nav .topbar-spacer{ flex:1; }
+
+  .req-legend{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-faint); }
+  .req-legend .req{ color:var(--red); }
+
+  /* review */
+  .review-group{ margin-bottom:14px; border:1px solid var(--border); border-radius:var(--r-md); overflow:hidden; }
+  .review-group-head{ display:flex; align-items:center; padding:10px 14px; background:var(--surface-2); font-size:12.5px; font-weight:700; color:var(--text-muted); }
+  .review-group-head button{ margin-left:auto; }
+  .review-list{ display:grid; grid-template-columns:1fr 1fr; }
+  @media (max-width:640px){ .review-list{ grid-template-columns:1fr; } }
+  .review-item{ padding:10px 14px; border-top:1px solid var(--border); }
+  .review-item dt{ font-size:11px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.3px; }
+  .review-item dd{ margin:2px 0 0; font-size:13.5px; font-weight:600; }
+  .review-item dd.empty{ color:var(--text-faint); font-weight:400; font-style:italic; }
+
+  .success-card{ text-align:center; padding:52px 20px; }
+  .success-icon{ width:64px; height:64px; border-radius:50%; background:var(--green-soft); color:var(--green); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
+  .success-icon .icon{ width:30px; height:30px; }
+  .success-code{ display:inline-block; margin-top:10px; padding:8px 16px; border-radius:999px; background:var(--teal-soft); color:var(--teal); font-weight:700; }
+
+  .view{ display:none; }
+  .view.active{ display:block; }
+
+  [hidden]{ display:none !important; }
+
+  @media (max-width:960px){
+    .sidebar{ position:fixed; left:0; top:0; transform:translateX(-100%); transition:transform .22s ease; box-shadow:var(--shadow-md); }
+    .sidebar.open{ transform:translateX(0); }
+    .burger{ display:flex; }
+    .sidebar-close{ display:flex; margin-left:auto; background:transparent; border:0; color:#9FB1C4; cursor:pointer; }
+    .content{ padding:16px; }
+    .topbar{ padding:10px 14px; }
+    .user-chip .name, .user-chip .role{ display:none; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<svg style="display:none">
+  <symbol id="i-menu" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+  <symbol id="i-log-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22 6 12 13 2 6"/></symbol>
+  <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></symbol>
+  <symbol id="i-bar-chart" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
+  <symbol id="i-file-text" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+  <symbol id="i-credit-card" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><line x1="9" y1="9" x2="9" y2="9.01"/><line x1="9" y1="13" x2="9" y2="13.01"/><line x1="14" y1="9" x2="14" y2="9.01"/><line x1="14" y1="13" x2="14" y2="13.01"/><path d="M10 21v-4h4v4"/></symbol>
+  <symbol id="i-grad-cap" viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+</svg>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="mark">BC</span>
+      <div>BCRP <small>Panel de concursos</small></div>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Cerrar menú"><svg class="icon" width="20" height="20"><use href="#i-x"/></svg></button>
+    </div>
+    <nav class="nav" id="nav">
+      <div class="nav-group open active" data-group="fichas">
+        <button class="nav-head" type="button">
+          <svg class="icon" width="18" height="18"><use href="#i-grid"/></svg> Fichas
+          <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg>
+        </button>
+        <ul class="nav-sub">
+          <li><a href="#lista" data-view-link="lista" class="active"><span class="dot"></span>Fichas</a></li>
+          <li><a href="#crear" data-view-link="crear"><span class="dot"></span>Crear ficha</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-group" data-group="concursos">
+        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-award"/></svg> Concursos <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
+        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Concursos activos</a></li><li><a href="#" onclick="return false"><span class="dot"></span>Historial</a></li></ul>
+      </div>
+      <div class="nav-group" data-group="temas">
+        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-tag"/></svg> Temas <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
+        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Catálogo de temas</a></li></ul>
+      </div>
+      <div class="nav-group" data-group="metodos">
+        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-layers"/></svg> Métodos <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
+        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Métodos de evaluación</a></li></ul>
+      </div>
+      <div class="nav-group" data-group="compromisos">
+        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-shield"/></svg> Compromisos <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
+        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Declaraciones</a></li></ul>
+      </div>
+      <div class="nav-group" data-group="archivos">
+        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-folder"/></svg> Archivos <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
+        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Repositorio</a></li></ul>
+      </div>
+      <div class="nav-group" data-group="grados">
+        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-grad-cap"/></svg> Grados <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
+        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Niveles y grados</a></li></ul>
+      </div>
+      <div class="nav-group" data-group="reportes">
+        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-bar-chart"/></svg> Reportes <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
+        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Reportes generales</a></li></ul>
+      </div>
+      <div class="nav-group" data-group="historico">
+        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-clock"/></svg> Histórico <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
+        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Ediciones anteriores</a></li></ul>
+      </div>
+      <div class="nav-group" data-group="usuarios">
+        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-users"/></svg> Usuarios <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
+        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Administradores</a></li></ul>
+      </div>
+    </nav>
+    <div class="sidebar-foot">Concurso Escolar de Videos BCRP · 2026</div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="burger" id="burger" aria-label="Abrir menú"><svg class="icon" width="18" height="18"><use href="#i-menu"/></svg></button>
+      <div>
+        <div class="crumb">Fichas / <b id="crumbCurrent">Lista de fichas</b></div>
+        <div class="topbar-title" id="topbarTitle">Lista de fichas</div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="user-chip">
+        <span class="avatar">MA</span>
+        <div><div class="name">Maria Gracia Asmat</div><div class="role">Administradora</div></div>
+      </div>
+      <button class="logout-btn"><svg class="icon" width="15" height="15"><use href="#i-log-out"/></svg> Salir</button>
+    </header>
+
+    <main class="content">
+
+      <!-- ================= VIEW: LISTA ================= -->
+      <section class="view active" id="view-lista">
+        <div class="page-head">
+          <h1>Lista de fichas</h1>
+          <p>1,904 fichas inscritas en el Concurso Escolar de Videos BCRP 2026. Usa los filtros o la búsqueda por campos para encontrar la que necesitas.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-filter"/></svg></span>
+            <h2>Búsqueda por filtros</h2>
+            <span class="hint">Los campos con <span style="color:var(--red)">*</span> son obligatorios</span>
+          </div>
+          <div class="card-body">
+            <div class="grid cols-4">
+              <div class="field">
+                <label>Concurso <span class="req">*</span></label>
+                <div class="ctrl select">
+                  <select id="f-concurso">
+                    <option selected>Concurso Escolar de Videos BCRP 2026</option>
+                    <option>Concurso Escolar de Videos BCRP 2025</option>
+                    <option>Concurso Escolar de Afiches BCRP 2025</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label>Región <span class="req">*</span></label>
+                <div class="ctrl select"><select id="f-region"><option value="">Todas las regiones</option></select></div>
+              </div>
+              <div class="field">
+                <label>Provincia</label>
+                <div class="ctrl select"><select id="f-provincia" disabled><option value="">Selecciona región</option></select></div>
+              </div>
+              <div class="field">
+                <label>Distrito</label>
+                <div class="ctrl select"><select id="f-distrito" disabled><option value="">Selecciona provincia</option></select></div>
+              </div>
+            </div>
+            <div class="grid cols-4" style="margin-top:16px">
+              <div class="field">
+                <label>Tema</label>
+                <div class="ctrl select">
+                  <select id="f-tema">
+                    <option value="">Todos los temas</option>
+                    <option>Metas de inflación</option>
+                    <option>Pagos digitales</option>
+                    <option>Reservas internacionales</option>
+                    <option>Dolarización</option>
+                    <option>Billetes y monedas</option>
+                  </select>
+                </div>
+              </div>
+              <div style="grid-column:span 3; display:flex; align-items:end;">
+                <div class="actions-row" style="margin-top:0">
+                  <button class="btn btn-primary" id="btnFiltrar"><svg class="icon" width="14" height="14"><use href="#i-search"/></svg> Filtrar</button>
+                  <button class="btn btn-excel"><svg class="icon" width="14" height="14"><use href="#i-download"/></svg> Excel</button>
+                  <button class="btn btn-pdf"><svg class="icon" width="14" height="14"><use href="#i-download"/></svg> PDF</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <details class="adv" open>
+            <summary>
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-search"/></svg></span>
+              <h2>Búsqueda por campos</h2>
+              <svg class="icon chev" width="16" height="16"><use href="#i-chevron-down"/></svg>
+            </summary>
+            <div class="card-body">
+              <div class="grid cols-4">
+                <div class="field">
+                  <label>Código de ficha <span class="req">*</span></label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-file-text"/></svg><input id="q-codigo" type="text" placeholder="CE-2026-0000-000000"></div>
+                </div>
+                <div class="field">
+                  <label>Apellido del director</label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-user"/></svg><input type="text" placeholder="Ej. Ramírez"></div>
+                </div>
+                <div class="field">
+                  <label>Apellido del profesor</label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-user"/></svg><input type="text" placeholder="Ej. Quispe"></div>
+                </div>
+                <div class="field">
+                  <label>Teléfono del director</label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-phone"/></svg><input type="tel" placeholder="987 654 321"></div>
+                </div>
+              </div>
+              <div class="grid cols-4" style="margin-top:16px">
+                <div class="field">
+                  <label>Teléfono del profesor</label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-phone"/></svg><input type="tel" placeholder="987 654 321"></div>
+                </div>
+                <div class="field">
+                  <label>Institución educativa</label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-building"/></svg><input id="q-institucion" type="text" placeholder="Nombre de la IE"></div>
+                </div>
+                <div class="field">
+                  <label>Título del video</label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-video"/></svg><input id="q-titulo" type="text" placeholder="Palabra clave del título"></div>
+                </div>
+                <div class="field">
+                  <label>Seudónimo</label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-tag"/></svg><input id="q-seudonimo" type="text" placeholder="Nombre del equipo"></div>
+                </div>
+              </div>
+              <div class="actions-row">
+                <button class="btn btn-primary" id="btnBuscar"><svg class="icon" width="14" height="14"><use href="#i-search"/></svg> Buscar</button>
+                <button class="btn btn-excel"><svg class="icon" width="14" height="14"><use href="#i-download"/></svg> Excel</button>
+                <button class="btn btn-pdf"><svg class="icon" width="14" height="14"><use href="#i-download"/></svg> PDF</button>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="result-count"><b id="resultCount">1,904</b> fichas registradas</div>
+            <div class="topbar-spacer"></div>
+            <div class="pagesize">
+              Mostrar
+              <div class="ctrl select"><select id="pageSize"><option>6</option><option selected>8</option><option>12</option></select></div>
+              por página
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th class="sortable" data-key="codigo">Cód. ficha <svg class="icon sort-icon" width="11" height="11"><use href="#i-chevron-down"/></svg></th>
+                  <th class="sortable" data-key="titulo">Título y tema <svg class="icon sort-icon" width="11" height="11"><use href="#i-chevron-down"/></svg></th>
+                  <th class="sortable" data-key="seudonimo">Seudónimo <svg class="icon sort-icon" width="11" height="11"><use href="#i-chevron-down"/></svg></th>
+                  <th class="sortable" data-key="institucion">Institución educativa <svg class="icon sort-icon" width="11" height="11"><use href="#i-chevron-down"/></svg></th>
+                  <th class="sortable" data-key="lugar">Lugar <svg class="icon sort-icon" width="11" height="11"><use href="#i-chevron-down"/></svg></th>
+                  <th class="sortable" data-key="fecha">Registro <svg class="icon sort-icon" width="11" height="11"><use href="#i-chevron-down"/></svg></th>
+                  <th>Video</th>
+                  <th>Acciones</th>
+                </tr>
+                <tr>
+                  <td class="col-filter"><input data-filter="codigo" type="text" placeholder="Buscar código"></td>
+                  <td class="col-filter"><input data-filter="titulo" type="text" placeholder="Buscar título"></td>
+                  <td class="col-filter"><input data-filter="seudonimo" type="text" placeholder="Buscar seudónimo"></td>
+                  <td class="col-filter"><input data-filter="institucion" type="text" placeholder="Buscar institución"></td>
+                  <td class="col-filter"><input data-filter="lugar" type="text" placeholder="Buscar lugar"></td>
+                  <td class="col-filter"></td>
+                  <td class="col-filter">
+                    <div class="ctrl select"><select data-filter="estado"><option value="">Todos</option><option value="Video confirmado">Confirmado</option><option value="Pendiente de envío">Pendiente</option></select></div>
+                  </td>
+                  <td class="col-filter"></td>
+                </tr>
+              </thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="emptyState" hidden>
+            <svg class="icon" width="34" height="34"><use href="#i-inbox"/></svg>
+            <div>No se encontraron fichas con esos filtros.</div>
+          </div>
+          <div class="pagination">
+            <div class="summary" id="pagSummary">Mostrando 1–8 de 1,904 registros</div>
+            <div class="pages" id="pages"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= VIEW: CREAR ================= -->
+      <section class="view" id="view-crear">
+        <div class="page-head">
+          <h1>Crear ficha</h1>
+          <p>Completa los datos en cinco pasos. Puedes avanzar y retroceder sin perder lo escrito; los campos con <span style="color:var(--red)">*</span> son obligatorios.</p>
+        </div>
+
+        <div id="wizardWrap">
+        <div class="wizard">
+          <nav class="steps" id="steps">
+            <button class="step-item current" data-step="0" type="button">
+              <span class="step-num">1</span><span class="step-label">Concurso</span>
+            </button>
+            <button class="step-item" data-step="1" type="button">
+              <span class="step-num">2</span><span class="step-label">Institución educativa</span>
+            </button>
+            <button class="step-item" data-step="2" type="button">
+              <span class="step-num">3</span><span class="step-label">Director</span>
+            </button>
+            <button class="step-item" data-step="3" type="button">
+              <span class="step-num">4</span><span class="step-label">Profesor asesor</span>
+            </button>
+            <button class="step-item" data-step="4" type="button">
+              <span class="step-num">5</span><span class="step-label">Revisar y enviar</span>
+            </button>
+          </nav>
+
+          <form class="card" id="ficha-form" novalidate>
+            <div class="card-body">
+
+              <div class="step-panel active" data-panel="0">
+                <div class="grid cols-2">
+                  <div class="field">
+                    <label>Concurso <span class="req">*</span></label>
+                    <div class="ctrl select">
+                      <select required id="c-concurso">
+                        <option value="">Selecciona un concurso…</option>
+                        <option>Concurso Escolar de Videos BCRP 2026</option>
+                        <option>Concurso Escolar de Videos BCRP 2025</option>
+                      </select>
+                    </div>
+                    <span class="field-error">Selecciona el concurso al que postulas.</span>
+                  </div>
+                  <div class="field">
+                    <label>Código modular (Minedu) <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-credit-card"/></svg><input required id="c-modular" type="text" placeholder="Ej. 1234567" maxlength="8"></div>
+                    <a class="helper-link" href="#" onclick="return false" style="margin-top:2px">
+                      <svg class="icon" width="12" height="12"><use href="#i-external"/></svg> Consigue este dato en ESCALE
+                    </a>
+                    <span class="field-error">Ingresa el código modular de la institución.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="step-panel" data-panel="1">
+                <div class="grid cols-2">
+                  <div class="field" style="grid-column:1/-1">
+                    <label>Nombre de la institución educativa <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-building"/></svg><input required id="ie-nombre" type="text" placeholder="Ej. I.E. Rosa Irene Infantes de Canales"></div>
+                    <span class="field-error">Escribe el nombre de la institución.</span>
+                  </div>
+                  <div class="field" style="grid-column:1/-1">
+                    <label>Dirección <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-map-pin"/></svg><input required id="ie-direccion" type="text" placeholder="Av., calle o jirón, número"></div>
+                    <span class="field-error">Escribe la dirección de la institución.</span>
+                  </div>
+                  <div class="field">
+                    <label>Región <span class="req">*</span></label>
+                    <div class="ctrl select"><select required id="ie-region"><option value="">Selecciona región</option></select></div>
+                    <span class="field-error">Selecciona la región.</span>
+                  </div>
+                  <div class="field">
+                    <label>Provincia <span class="req">*</span></label>
+                    <div class="ctrl select"><select required id="ie-provincia" disabled><option value="">Selecciona región primero</option></select></div>
+                    <span class="field-error">Selecciona la provincia.</span>
+                  </div>
+                  <div class="field">
+                    <label>Distrito <span class="req">*</span></label>
+                    <div class="ctrl select"><select required id="ie-distrito" disabled><option value="">Selecciona provincia primero</option></select></div>
+                    <span class="field-error">Selecciona el distrito.</span>
+                  </div>
+                  <div class="field">
+                    <label>Teléfono <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-phone"/></svg><input required id="ie-telefono" type="tel" placeholder="01 234 5678"></div>
+                    <span class="field-error">Ingresa un teléfono de contacto.</span>
+                  </div>
+                  <div class="field" style="grid-column:1/-1">
+                    <label>Correo <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-mail"/></svg><input required id="ie-correo" type="email" placeholder="contacto@institucion.edu.pe"></div>
+                    <span class="field-error">Ingresa un correo válido.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="step-panel" data-panel="2">
+                <p style="margin:0 0 14px;font-size:12.5px;color:var(--text-muted)">Datos de la persona que dirige la institución educativa.</p>
+                <div class="grid cols-3">
+                  <div class="field"><label>Apellido paterno <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-user"/></svg><input required id="d-appat" type="text"></div>
+                    <span class="field-error">Campo obligatorio.</span>
+                  </div>
+                  <div class="field"><label>Apellido materno <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-user"/></svg><input required id="d-apmat" type="text"></div>
+                    <span class="field-error">Campo obligatorio.</span>
+                  </div>
+                  <div class="field"><label>Nombres <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-user"/></svg><input required id="d-nombres" type="text"></div>
+                    <span class="field-error">Campo obligatorio.</span>
+                  </div>
+                  <div class="field"><label>Tipo de documento <span class="req">*</span></label>
+                    <div class="ctrl select"><select required id="d-tipodoc"><option value="">Seleccione</option><option>DNI</option><option>Carné de extranjería</option><option>Pasaporte</option></select></div>
+                    <span class="field-error">Selecciona un tipo.</span>
+                  </div>
+                  <div class="field"><label>Número de documento <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-credit-card"/></svg><input required id="d-numdoc" type="text"></div>
+                    <span class="field-error">Campo obligatorio.</span>
+                  </div>
+                  <div class="field"><label>Teléfono <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-phone"/></svg><input required id="d-telefono" type="tel"></div>
+                    <span class="field-error">Campo obligatorio.</span>
+                  </div>
+                  <div class="field" style="grid-column:1/-1"><label>Correo <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-mail"/></svg><input required id="d-correo" type="email"></div>
+                    <span class="field-error">Ingresa un correo válido.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="step-panel" data-panel="3">
+                <p style="margin:0 0 14px;font-size:12.5px;color:var(--text-muted)">Datos del profesor que asesora al equipo participante.</p>
+                <div class="grid cols-3">
+                  <div class="field"><label>Apellido paterno <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-user"/></svg><input required id="p-appat" type="text"></div>
+                    <span class="field-error">Campo obligatorio.</span>
+                  </div>
+                  <div class="field"><label>Apellido materno <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-user"/></svg><input required id="p-apmat" type="text"></div>
+                    <span class="field-error">Campo obligatorio.</span>
+                  </div>
+                  <div class="field"><label>Nombres <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-user"/></svg><input required id="p-nombres" type="text"></div>
+                    <span class="field-error">Campo obligatorio.</span>
+                  </div>
+                  <div class="field"><label>Tipo de documento <span class="req">*</span></label>
+                    <div class="ctrl select"><select required id="p-tipodoc"><option value="">Seleccione</option><option>DNI</option><option>Carné de extranjería</option><option>Pasaporte</option></select></div>
+                    <span class="field-error">Selecciona un tipo.</span>
+                  </div>
+                  <div class="field"><label>Número de documento <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-credit-card"/></svg><input required id="p-numdoc" type="text"></div>
+                    <span class="field-error">Campo obligatorio.</span>
+                  </div>
+                  <div class="field"><label>Teléfono <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-phone"/></svg><input required id="p-telefono" type="tel"></div>
+                    <span class="field-error">Campo obligatorio.</span>
+                  </div>
+                  <div class="field" style="grid-column:1/-1"><label>Correo <span class="req">*</span></label>
+                    <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-mail"/></svg><input required id="p-correo" type="email"></div>
+                    <span class="field-error">Ingresa un correo válido.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="step-panel" data-panel="4">
+                <div id="reviewArea"></div>
+              </div>
+
+            </div>
+
+            <div class="card-body" style="padding-top:0">
+              <div class="wizard-nav">
+                <button type="button" class="btn btn-ghost" id="btnPrev" disabled><svg class="icon" width="14" height="14"><use href="#i-arrow-left"/></svg> Anterior</button>
+                <span class="req-legend"><span class="req">*</span> obligatorio</span>
+                <div class="topbar-spacer"></div>
+                <button type="button" class="btn btn-primary" id="btnNext">Siguiente <svg class="icon" width="14" height="14"><use href="#i-arrow-right"/></svg></button>
+                <button type="submit" class="btn btn-primary" id="btnSubmit" hidden><svg class="icon" width="14" height="14"><use href="#i-check"/></svg> Enviar ficha</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        </div>
+
+        <div class="card success-card" id="successCard" hidden>
+          <div class="success-icon"><svg class="icon" width="30" height="30"><use href="#i-check-circle"/></svg></div>
+          <h2 style="font-size:19px">¡Ficha registrada con éxito!</h2>
+          <p style="color:var(--text-muted);font-size:13.5px;max-width:46ch;margin:8px auto 0">Hemos guardado la inscripción. Comparte el código de ficha con la institución educativa para hacer seguimiento.</p>
+          <div class="success-code mono" id="successCode">CE-2026-0000-000000</div>
+          <div class="actions-row" style="justify-content:center;margin-top:22px">
+            <button class="btn btn-ghost" id="btnAnother">Registrar otra ficha</button>
+            <button class="btn btn-primary" id="btnToList">Ver lista de fichas</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- geo mock data ---------- */
+  var GEO = {
+    "Amazonas": { "Condorcanqui": ["Nieva","Río Santiago","El Cenepa"], "Chachapoyas": ["Chachapoyas","Huancas"] },
+    "La Libertad": { "Trujillo": ["Trujillo","La Esperanza","El Porvenir"], "Ascope": ["Ascope","Casa Grande"] },
+    "Lima": { "Lima": ["San Miguel","Miraflores","San Isidro","Surco"], "Huaral": ["Huaral","Chancay"] },
+    "Cusco": { "Cusco": ["Cusco","San Sebastián","Wanchaq"], "Urubamba": ["Urubamba","Ollantaytambo"] },
+    "Piura": { "Piura": ["Piura","Castilla"], "Sullana": ["Sullana","Bellavista"] },
+    "Puno": { "Puno": ["Puno","Acora"], "San Román": ["Juliaca"] }
+  };
+
+  function fillRegions(sel){
+    Object.keys(GEO).sort().forEach(function(r){
+      var o=document.createElement("option"); o.value=r; o.textContent=r; sel.appendChild(o);
+    });
+  }
+  function wireCascade(regionSel, provSel, distSel, opts){
+    opts = opts||{};
+    fillRegions(regionSel);
+    function reset(sel, placeholder){ sel.innerHTML=""; var o=document.createElement("option"); o.value=""; o.textContent=placeholder; sel.appendChild(o); }
+    regionSel.addEventListener("change", function(){
+      reset(provSel, regionSel.value ? "Selecciona provincia" : "Selecciona región primero");
+      reset(distSel, "Selecciona provincia primero");
+      provSel.disabled = !regionSel.value; distSel.disabled = true;
+      if(regionSel.value){
+        Object.keys(GEO[regionSel.value]).sort().forEach(function(p){
+          var o=document.createElement("option"); o.value=p; o.textContent=p; provSel.appendChild(o);
+        });
+      }
+      if(opts.onChange) opts.onChange();
+    });
+    provSel.addEventListener("change", function(){
+      reset(distSel, provSel.value ? "Selecciona distrito" : "Selecciona provincia primero");
+      distSel.disabled = !provSel.value;
+      if(provSel.value){
+        GEO[regionSel.value][provSel.value].slice().sort().forEach(function(d){
+          var o=document.createElement("option"); o.value=d; o.textContent=d; distSel.appendChild(o);
+        });
+      }
+      if(opts.onChange) opts.onChange();
+    });
+    distSel.addEventListener("change", function(){ if(opts.onChange) opts.onChange(); });
+  }
+  wireCascade(document.getElementById("f-region"), document.getElementById("f-provincia"), document.getElementById("f-distrito"), { onChange: function(){ renderTable(); } });
+  wireCascade(document.getElementById("ie-region"), document.getElementById("ie-provincia"), document.getElementById("ie-distrito"));
+
+  /* ---------- sidebar / nav ---------- */
+  document.querySelectorAll(".nav-head").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      btn.closest(".nav-group").classList.toggle("open");
+    });
+  });
+
+  var sidebar=document.getElementById("sidebar"), overlay=document.getElementById("overlay");
+  function openSidebar(){ sidebar.classList.add("open"); overlay.classList.add("show"); }
+  function closeSidebar(){ sidebar.classList.remove("open"); overlay.classList.remove("show"); }
+  document.getElementById("burger").addEventListener("click", openSidebar);
+  document.getElementById("sidebarClose").addEventListener("click", closeSidebar);
+  overlay.addEventListener("click", closeSidebar);
+
+  var titles = { lista:"Lista de fichas", crear:"Crear ficha" };
+  function showView(name){
+    document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("active"); });
+    document.getElementById("view-"+name).classList.add("active");
+    document.querySelectorAll("[data-view-link]").forEach(function(a){ a.classList.toggle("active", a.dataset.viewLink===name); });
+    document.getElementById("topbarTitle").textContent = titles[name];
+    document.getElementById("crumbCurrent").textContent = titles[name];
+    closeSidebar();
+    window.scrollTo(0,0);
+  }
+  document.querySelectorAll("[data-view-link]").forEach(function(a){
+    a.addEventListener("click", function(e){ e.preventDefault(); showView(a.dataset.viewLink); location.hash = a.dataset.viewLink; });
+  });
+  showView(location.hash.replace("#","")==="crear" ? "crear" : "lista");
+
+  /* ---------- table mock data ---------- */
+  var ROWS = [
+    {codigo:"CE-2026-4906-151271286-105476", titulo:"¿Qué pasa cuando cada sol vale menos?", tema:"Metas de inflación", seudonimo:"Monetria", institucion:"Rosa Irene Infantes de Canales", lugar:"Lima · Lima · San Miguel", region:"Lima", fecha:"2026-08-18 16:12", estado:"Video confirmado"},
+    {codigo:"CE-2026-4905-014399-82798", titulo:"Pagos digitales en mi localidad", tema:"Pagos digitales", seudonimo:"Entre Letras y Voces", institucion:"Nieva", lugar:"Amazonas · Condorcanqui · Nieva", region:"Amazonas", fecha:"2026-08-18 16:02", estado:"Video confirmado"},
+    {codigo:"CE-2026-4904-131121-611257", titulo:"RIN: el escudo del Perú contra la inflación", tema:"Reservas internacionales", seudonimo:"Guardianes del Sol", institucion:"Santa Rosa", lugar:"La Libertad · Trujillo · Trujillo", region:"La Libertad", fecha:"2026-08-18 15:50", estado:"Video confirmado"},
+    {codigo:"CE-2026-4899-220310-77341", titulo:"Un sol, un valor: la lucha contra la inflación", tema:"Metas de inflación", seudonimo:"Voces del Ande", institucion:"San Sebastián", lugar:"Cusco · Cusco · San Sebastián", region:"Cusco", fecha:"2026-08-18 14:41", estado:"Pendiente de envío"},
+    {codigo:"CE-2026-4893-880213-40021", titulo:"Dolarización: por qué el sol es nuestra moneda", tema:"Dolarización", seudonimo:"Costa Films", institucion:"Castilla", lugar:"Piura · Piura · Castilla", region:"Piura", fecha:"2026-08-18 13:58", estado:"Video confirmado"},
+    {codigo:"CE-2026-4888-115502-90311", titulo:"El billete que cuenta nuestra historia", tema:"Billetes y monedas", seudonimo:"Retablo Digital", institucion:"Juliaca", lugar:"Puno · San Román · Juliaca", region:"Puno", fecha:"2026-08-18 12:33", estado:"Pendiente de envío"},
+    {codigo:"CE-2026-4881-330098-11209", titulo:"Ahorrar hoy, crecer mañana", tema:"Reservas internacionales", seudonimo:"Los Cronistas", institucion:"Huancas", lugar:"Amazonas · Chachapoyas · Huancas", region:"Amazonas", fecha:"2026-08-18 11:47", estado:"Video confirmado"},
+    {codigo:"CE-2026-4877-771402-55873", titulo:"Billetera digital, futuro cercano", tema:"Pagos digitales", seudonimo:"QR Andino", institucion:"Chancay", lugar:"Lima · Huaral · Chancay", region:"Lima", fecha:"2026-08-18 10:20", estado:"Video confirmado"},
+    {codigo:"CE-2026-4869-660110-36654", titulo:"Cuando el precio sube, ¿quién explica por qué?", tema:"Metas de inflación", seudonimo:"Clase 5B", institucion:"Ollantaytambo", lugar:"Cusco · Urubamba · Ollantaytambo", region:"Cusco", fecha:"2026-08-18 09:12", estado:"Video confirmado"},
+    {codigo:"CE-2026-4855-990887-20015", titulo:"Reservas: el ahorro de todos los peruanos", tema:"Reservas internacionales", seudonimo:"Andes en Foco", institucion:"Bellavista", lugar:"Piura · Sullana · Bellavista", region:"Piura", fecha:"2026-08-17 18:05", estado:"Pendiente de envío"},
+    {codigo:"CE-2026-4840-441207-87720", titulo:"Del trueque al QR: la evolución del pago", tema:"Pagos digitales", seudonimo:"Historias del Sur", institucion:"Acora", lugar:"Puno · Puno · Acora", region:"Puno", fecha:"2026-08-17 17:44", estado:"Video confirmado"},
+    {codigo:"CE-2026-4832-119004-63382", titulo:"Nuestra moneda, nuestra identidad", tema:"Billetes y monedas", seudonimo:"Raíces", institucion:"Wanchaq", lugar:"Cusco · Cusco · Wanchaq", region:"Cusco", fecha:"2026-08-17 16:09", estado:"Video confirmado"}
+  ];
+
+  var state = { sortKey:"fecha", sortDir:"desc", page:1, pageSize:8 };
+
+  function getFilters(){
+    var f = {};
+    document.querySelectorAll("[data-filter]").forEach(function(el){ f[el.dataset.filter] = el.value.trim().toLowerCase(); });
+    f.region = document.getElementById("f-region").value;
+    f.provincia = document.getElementById("f-provincia").value;
+    f.distrito = document.getElementById("f-distrito").value;
+    f.tema = document.getElementById("f-tema").value;
+    f.q_codigo = document.getElementById("q-codigo").value.trim().toLowerCase();
+    f.q_institucion = document.getElementById("q-institucion").value.trim().toLowerCase();
+    f.q_titulo = document.getElementById("q-titulo").value.trim().toLowerCase();
+    f.q_seudonimo = document.getElementById("q-seudonimo").value.trim().toLowerCase();
+    return f;
+  }
+
+  function filteredRows(){
+    var f = getFilters();
+    return ROWS.filter(function(r){
+      if(f.codigo && r.codigo.toLowerCase().indexOf(f.codigo)===-1) return false;
+      if(f.titulo && r.titulo.toLowerCase().indexOf(f.titulo)===-1) return false;
+      if(f.seudonimo && r.seudonimo.toLowerCase().indexOf(f.seudonimo)===-1) return false;
+      if(f.institucion && r.institucion.toLowerCase().indexOf(f.institucion)===-1) return false;
+      if(f.lugar && r.lugar.toLowerCase().indexOf(f.lugar)===-1) return false;
+      if(f.estado && r.estado !== f.estado) return false;
+      if(f.region && r.region !== f.region) return false;
+      if(f.provincia && r.lugar.toLowerCase().indexOf(f.provincia.toLowerCase())===-1) return false;
+      if(f.distrito && r.lugar.toLowerCase().indexOf(f.distrito.toLowerCase())===-1) return false;
+      if(f.tema && r.tema !== f.tema) return false;
+      if(f.q_codigo && r.codigo.toLowerCase().indexOf(f.q_codigo)===-1) return false;
+      if(f.q_institucion && r.institucion.toLowerCase().indexOf(f.q_institucion)===-1) return false;
+      if(f.q_titulo && r.titulo.toLowerCase().indexOf(f.q_titulo)===-1) return false;
+      if(f.q_seudonimo && r.seudonimo.toLowerCase().indexOf(f.q_seudonimo)===-1) return false;
+      return true;
+    });
+  }
+
+  function sortRows(rows){
+    var k = state.sortKey, dir = state.sortDir === "asc" ? 1 : -1;
+    return rows.slice().sort(function(a,b){
+      var av=(a[k]||"").toString().toLowerCase(), bv=(b[k]||"").toString().toLowerCase();
+      if(av<bv) return -1*dir; if(av>bv) return 1*dir; return 0;
+    });
+  }
+
+  var tbody = document.getElementById("tbody");
+  var emptyState = document.getElementById("emptyState");
+  var pagesEl = document.getElementById("pages");
+
+  function renderTable(){
+    state.pageSize = parseInt(document.getElementById("pageSize").value,10);
+    var all = sortRows(filteredRows());
+    document.getElementById("resultCount").textContent = all.length.toLocaleString("es-PE");
+    var pages = Math.max(1, Math.ceil(all.length / state.pageSize));
+    if(state.page > pages) state.page = pages;
+    var start = (state.page-1)*state.pageSize;
+    var pageRows = all.slice(start, start+state.pageSize);
+
+    tbody.innerHTML = "";
+    emptyState.hidden = pageRows.length !== 0;
+
+    pageRows.forEach(function(r){
+      var tr = document.createElement("tr");
+      var badgeClass = r.estado === "Video confirmado" ? "badge-green" : "badge-amber";
+      var badgeIcon = r.estado === "Video confirmado" ? "i-check" : "i-alert";
+      tr.innerHTML =
+        '<td class="mono cell-sub">'+r.codigo+'</td>'+
+        '<td><div class="cell-title">'+r.titulo+'</div><div class="cell-sub">'+r.tema+'</div></td>'+
+        '<td>'+r.seudonimo+'</td>'+
+        '<td>'+r.institucion+'</td>'+
+        '<td class="cell-place">'+r.lugar+'</td>'+
+        '<td class="cell-sub">'+r.fecha+'</td>'+
+        '<td><span class="badge '+badgeClass+'"><svg class="icon" width="11" height="11"><use href="#'+badgeIcon+'"/></svg>'+r.estado+'</span></td>'+
+        '<td><div class="rowacts">'+
+          '<button class="icon-btn" title="Ver ficha"><svg class="icon" width="14" height="14"><use href="#i-file-text"/></svg></button>'+
+          '<button class="icon-btn" title="Descargar"><svg class="icon" width="14" height="14"><use href="#i-download"/></svg></button>'+
+          '<button class="icon-btn" title="Editar"><svg class="icon" width="14" height="14"><use href="#i-edit"/></svg></button>'+
+        '</div></td>';
+      tbody.appendChild(tr);
+    });
+
+    document.getElementById("pagSummary").textContent =
+      all.length===0 ? "Sin resultados" :
+      "Mostrando "+(start+1)+"–"+Math.min(start+state.pageSize, all.length)+" de "+all.length.toLocaleString("es-PE")+" registros";
+
+    pagesEl.innerHTML = "";
+    var prev = document.createElement("button"); prev.className="page-btn"; prev.disabled = state.page===1;
+    prev.innerHTML = '<svg class="icon" width="13" height="13"><use href="#i-chevron-left"/></svg>';
+    prev.addEventListener("click", function(){ state.page--; renderTable(); });
+    pagesEl.appendChild(prev);
+
+    for(var p=1;p<=pages;p++){
+      if(pages>7 && p!==1 && p!==pages && Math.abs(p-state.page)>1){
+        if(p===2 || p===pages-1){ var dots=document.createElement("span"); dots.className="page-dots"; dots.textContent="…"; pagesEl.appendChild(dots); }
+        continue;
+      }
+      (function(p){
+        var b=document.createElement("button"); b.className="page-btn"+(p===state.page?" active":""); b.textContent=p;
+        b.addEventListener("click", function(){ state.page=p; renderTable(); });
+        pagesEl.appendChild(b);
+      })(p);
+    }
+    var next = document.createElement("button"); next.className="page-btn"; next.disabled = state.page===pages;
+    next.innerHTML = '<svg class="icon" width="13" height="13"><use href="#i-chevron-right"/></svg>';
+    next.addEventListener("click", function(){ state.page++; renderTable(); });
+    pagesEl.appendChild(next);
+  }
+
+  document.querySelectorAll("th.sortable").forEach(function(th){
+    th.addEventListener("click", function(){
+      var k = th.dataset.key;
+      if(state.sortKey===k){ state.sortDir = state.sortDir==="asc"?"desc":"asc"; } else { state.sortKey=k; state.sortDir="asc"; }
+      document.querySelectorAll("th.sortable").forEach(function(t){ t.classList.remove("sort-asc","sort-desc"); });
+      th.classList.add(state.sortDir==="asc"?"sort-asc":"sort-desc");
+      renderTable();
+    });
+  });
+  document.querySelectorAll("[data-filter]").forEach(function(el){ el.addEventListener("input", function(){ state.page=1; renderTable(); }); });
+  ["q-codigo","q-institucion","q-titulo","q-seudonimo"].forEach(function(id){
+    document.getElementById(id).addEventListener("input", function(){ state.page=1; renderTable(); });
+  });
+  document.getElementById("f-tema").addEventListener("change", function(){ state.page=1; renderTable(); });
+  document.getElementById("pageSize").addEventListener("change", function(){ state.page=1; renderTable(); });
+  document.getElementById("btnFiltrar").addEventListener("click", function(){ state.page=1; renderTable(); });
+  document.getElementById("btnBuscar").addEventListener("click", function(){ state.page=1; renderTable(); });
+  renderTable();
+
+  /* ---------- wizard ---------- */
+  var steps = 5, current = 0;
+  var stepItems = document.querySelectorAll(".step-item");
+  var panels = document.querySelectorAll(".step-panel");
+  var btnPrev = document.getElementById("btnPrev");
+  var btnNext = document.getElementById("btnNext");
+  var btnSubmit = document.getElementById("btnSubmit");
+
+  function reviewLabel(step, id, label){
+    var el = document.getElementById(id);
+    var val = el ? (el.tagName==="SELECT" ? el.options[el.selectedIndex].text : el.value) : "";
+    if(el && el.value==="") val = "";
+    return { label:label, value: val };
+  }
+
+  function buildReview(){
+    var groups = [
+      { title:"Concurso", step:0, items:[
+        reviewLabel(0,"c-concurso","Concurso"), reviewLabel(0,"c-modular","Código modular")
+      ]},
+      { title:"Institución educativa", step:1, items:[
+        reviewLabel(1,"ie-nombre","Nombre"), reviewLabel(1,"ie-direccion","Dirección"),
+        reviewLabel(1,"ie-region","Región"), reviewLabel(1,"ie-provincia","Provincia"), reviewLabel(1,"ie-distrito","Distrito"),
+        reviewLabel(1,"ie-telefono","Teléfono"), reviewLabel(1,"ie-correo","Correo")
+      ]},
+      { title:"Director", step:2, items:[
+        reviewLabel(2,"d-appat","Apellido paterno"), reviewLabel(2,"d-apmat","Apellido materno"), reviewLabel(2,"d-nombres","Nombres"),
+        reviewLabel(2,"d-tipodoc","Documento"), reviewLabel(2,"d-numdoc","Número"), reviewLabel(2,"d-telefono","Teléfono"), reviewLabel(2,"d-correo","Correo")
+      ]},
+      { title:"Profesor asesor", step:3, items:[
+        reviewLabel(3,"p-appat","Apellido paterno"), reviewLabel(3,"p-apmat","Apellido materno"), reviewLabel(3,"p-nombres","Nombres"),
+        reviewLabel(3,"p-tipodoc","Documento"), reviewLabel(3,"p-numdoc","Número"), reviewLabel(3,"p-telefono","Teléfono"), reviewLabel(3,"p-correo","Correo")
+      ]}
+    ];
+    var html = "";
+    groups.forEach(function(g){
+      html += '<div class="review-group"><div class="review-group-head">'+g.title+
+        '<button type="button" class="btn btn-ghost btn-sm" data-jump="'+g.step+'"><svg class="icon" width="12" height="12"><use href="#i-edit"/></svg> Editar</button></div><dl class="review-list">';
+      g.items.forEach(function(it){
+        html += '<div class="review-item"><dt>'+it.label+'</dt><dd class="'+(it.value?'':'empty')+'">'+(it.value||"Sin completar")+'</dd></div>';
+      });
+      html += '</dl></div>';
+    });
+    document.getElementById("reviewArea").innerHTML = html;
+    document.querySelectorAll("[data-jump]").forEach(function(b){ b.addEventListener("click", function(){ goTo(parseInt(b.dataset.jump,10)); }); });
+  }
+
+  function validateStep(i){
+    var panel = document.querySelector('.step-panel[data-panel="'+i+'"]');
+    if(!panel) return true;
+    var ok = true;
+    panel.querySelectorAll("[required]").forEach(function(el){
+      var field = el.closest(".field");
+      var valid = el.value.trim() !== "";
+      field.classList.toggle("invalid", !valid);
+      if(!valid) ok = false;
+    });
+    return ok;
+  }
+
+  function goTo(i){
+    current = Math.max(0, Math.min(steps-1, i));
+    panels.forEach(function(p,idx){ p.classList.toggle("active", idx===current); });
+    stepItems.forEach(function(s,idx){
+      s.classList.toggle("current", idx===current);
+      s.classList.toggle("done", idx<current);
+    });
+    btnPrev.disabled = current===0;
+    btnNext.hidden = current===steps-1;
+    btnSubmit.hidden = current!==steps-1;
+    if(current===steps-1) buildReview();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  stepItems.forEach(function(s){
+    s.addEventListener("click", function(){
+      var target = parseInt(s.dataset.step,10);
+      if(target <= current){ goTo(target); return; }
+      for(var i=current;i<target;i++){ if(!validateStep(i)){ goTo(i); return; } }
+      goTo(target);
+    });
+  });
+  btnNext.addEventListener("click", function(){ if(validateStep(current)) goTo(current+1); });
+  btnPrev.addEventListener("click", function(){ goTo(current-1); });
+
+  document.getElementById("ficha-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    if(!validateStep(current)) return;
+    var code = "CE-2026-"+Math.floor(1000+Math.random()*8999)+"-"+Math.floor(100000+Math.random()*899999);
+    document.getElementById("successCode").textContent = code;
+    document.getElementById("wizardWrap").hidden = true;
+    document.getElementById("successCard").hidden = false;
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+  document.getElementById("btnAnother").addEventListener("click", function(){
+    document.getElementById("ficha-form").reset();
+    document.querySelectorAll(".field.invalid").forEach(function(f){ f.classList.remove("invalid"); });
+    document.getElementById("ie-provincia").innerHTML='<option value="">Selecciona región primero</option>'; document.getElementById("ie-provincia").disabled=true;
+    document.getElementById("ie-distrito").innerHTML='<option value="">Selecciona provincia primero</option>'; document.getElementById("ie-distrito").disabled=true;
+    document.getElementById("successCard").hidden = true;
+    document.getElementById("wizardWrap").hidden = false;
+    goTo(0);
+  });
+  document.getElementById("btnToList").addEventListener("click", function(){ showView("lista"); location.hash="lista"; });
+
+})();
+</script>
