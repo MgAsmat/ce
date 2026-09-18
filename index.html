@@ -440,7 +440,6 @@
   .participant-card{ border:1px solid var(--border); border-radius:var(--r-md); padding:16px; margin-bottom:14px; background:var(--surface-2); }
   .participant-card-head{ display:flex; align-items:center; gap:8px; margin-bottom:12px; font-size:12.5px; font-weight:700; color:var(--text-muted); }
   .participant-card-head .icon{ color:var(--purple); }
-  .participant-remove{ margin-left:auto; }
 
   .entero-row{ display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
   .entero-row:last-child{ border-bottom:0; }
@@ -938,9 +937,8 @@
               </div>
 
               <div class="step-panel" data-panel="5">
-                <p style="margin:0 0 14px;font-size:12.5px;color:var(--text-muted)" id="participantesHint">Agrega de 3 a 5 estudiantes del equipo.</p>
+                <p style="margin:0 0 14px;font-size:12.5px;color:var(--text-muted)" id="participantesHint">El equipo participa con 3 estudiantes.</p>
                 <div id="participantesList"></div>
-                <button type="button" class="btn btn-ghost btn-sm" id="btnAddParticipante" style="margin-top:6px"><svg class="icon" width="13" height="13"><use href="#i-plus"/></svg> Agregar estudiante</button>
               </div>
 
               <div class="step-panel" data-panel="6">
@@ -1052,11 +1050,11 @@
           </div>
           <div class="card-body" style="display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap">
             <div class="field" style="max-width:200px">
-              <label>Mínimo de estudiantes <span class="req">*</span></label>
-              <input id="cf-min-participantes" class="qty-input" type="number" min="1" max="5" step="1" value="3">
+              <label>Número de estudiantes <span class="req">*</span></label>
+              <input id="cf-num-estudiantes" class="qty-input" type="number" min="1" max="5" step="1" value="3">
             </div>
             <div style="font-size:12px;color:var(--text-muted);max-width:440px;padding-bottom:9px" id="minParticipantesNote">
-              El paso "Estudiantes" exigirá al menos 3 estudiantes completos antes de continuar. El máximo permitido es 5.
+              El paso "Estudiantes" mostrará exactamente 3 estudiantes para completar. El máximo permitido es 5.
             </div>
           </div>
         </div>
@@ -1578,7 +1576,7 @@
   document.getElementById("btnToList").addEventListener("click", function(){ showView("lista"); location.hash="lista"; });
 
   /* ---------- participantes y campos dependientes de FIELDS ---------- */
-  var FORM_SETTINGS = { minParticipantes: 3 };
+  var FORM_SETTINGS = { numEstudiantes: 3 };
   var participantIds = [1];
   var nextParticipantId = 2;
 
@@ -1591,25 +1589,21 @@
   }
 
   function updateParticipantesHint(){
-    var min = FORM_SETTINGS.minParticipantes;
+    var min = FORM_SETTINGS.numEstudiantes;
     var hint = document.getElementById("participantesHint");
-    if(hint) hint.textContent = min>=5
-      ? "Agrega los 5 estudiantes del equipo."
-      : "Agrega entre "+min+" y 5 estudiantes del equipo.";
+    if(hint) hint.textContent = "El equipo participa con "+min+(min===1?" estudiante.":" estudiantes.");
     var note = document.getElementById("minParticipantesNote");
-    if(note) note.textContent = 'El paso "Estudiantes" exigirá al menos '+min+(min===1?" estudiante completo":" estudiantes completos")+' antes de continuar. El máximo permitido es 5.';
+    if(note) note.textContent = 'El paso "Estudiantes" mostrará exactamente '+min+(min===1?" estudiante":" estudiantes")+' para completar. El máximo permitido es 5.';
   }
 
   function ensureMinParticipantes(){
-    while(participantIds.length < FORM_SETTINGS.minParticipantes){ participantIds.push(nextParticipantId++); }
+    while(participantIds.length < FORM_SETTINGS.numEstudiantes){ participantIds.push(nextParticipantId++); }
+    if(participantIds.length > FORM_SETTINGS.numEstudiantes){ participantIds = participantIds.slice(0, FORM_SETTINGS.numEstudiantes); }
   }
 
   function participantCardHTML(id, num){
-    var removeBtn = participantIds.length>FORM_SETTINGS.minParticipantes
-      ? '<button type="button" class="icon-btn participant-remove" data-remove-participante="'+id+'" title="Eliminar estudiante"><svg class="icon" width="14" height="14"><use href="#i-x"/></svg></button>'
-      : '';
     return '<div class="participant-card">' +
-      '<div class="participant-card-head"><svg class="icon" width="15" height="15"><use href="#i-user"/></svg> ESTUDIANTE '+num+removeBtn+'</div>' +
+      '<div class="participant-card-head"><svg class="icon" width="15" height="15"><use href="#i-user"/></svg> ESTUDIANTE '+num+'</div>' +
       '<div class="grid cols-3">' +
         '<div class="field"><label>Apellido paterno <span class="req">*</span></label><div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-user"/></svg><input required id="est'+id+'-appat" type="text"></div><span class="field-error">Campo obligatorio.</span></div>' +
         '<div class="field"><label>Apellido materno <span class="req">*</span></label><div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-user"/></svg><input required id="est'+id+'-apmat" type="text"></div><span class="field-error">Campo obligatorio.</span></div>' +
@@ -1629,27 +1623,14 @@
     wrap.innerHTML = participantIds.map(function(id, idx){ return participantCardHTML(id, idx+1); }).join("");
     var gradoField = fieldByCategoria("grado", "select");
     participantIds.forEach(function(id){ populateSelectOptions(document.getElementById("est"+id+"-grado"), gradoField, "Seleccione"); });
-    wrap.querySelectorAll("[data-remove-participante]").forEach(function(btn){
-      btn.addEventListener("click", function(){
-        var id = parseInt(btn.dataset.removeParticipante,10);
-        participantIds = participantIds.filter(function(x){ return x!==id; });
-        renderParticipantes();
-      });
-    });
-    document.getElementById("btnAddParticipante").disabled = participantIds.length>=5;
   }
-  document.getElementById("btnAddParticipante").addEventListener("click", function(){
-    if(participantIds.length>=5) return;
-    participantIds.push(nextParticipantId++);
-    renderParticipantes();
-  });
 
-  document.getElementById("cf-min-participantes").addEventListener("change", function(e){
+  document.getElementById("cf-num-estudiantes").addEventListener("change", function(e){
     var v = Math.max(1, Math.min(5, parseInt(e.target.value,10) || 1));
     e.target.value = v;
-    FORM_SETTINGS.minParticipantes = v;
+    FORM_SETTINGS.numEstudiantes = v;
     renderParticipantes();
-    showToast("Mínimo de estudiantes actualizado a "+v+".");
+    showToast("Número de estudiantes actualizado a "+v+".");
   });
 
   function renderEnteraron(){
@@ -1663,7 +1644,7 @@
   }
 
   function initWizardDynamicFields(){
-    document.getElementById("cf-min-participantes").value = FORM_SETTINGS.minParticipantes;
+    document.getElementById("cf-num-estudiantes").value = FORM_SETTINGS.numEstudiantes;
     populateSelectOptions(document.getElementById("w-tema"), fieldByCategoria("trabajo","select"), "Selecciona un tema…");
     renderParticipantes();
     renderEnteraron();
