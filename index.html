@@ -383,8 +383,13 @@
   .section-label{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--text-faint); margin:18px 0 10px; }
   .section-label:first-child{ margin-top:0; }
 
-  .cat-row{ display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); }
+  .cat-row{ display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); border-top:2px solid transparent; }
   .cat-row:last-child{ border-bottom:0; }
+  .cat-row.dragging{ opacity:.4; }
+  .cat-row.drag-over-top{ border-top-color:var(--teal); }
+  .cat-row.drag-over-bottom{ border-bottom:2px solid var(--teal); }
+  .cat-drag-handle{ flex:0 0 auto; color:var(--text-faint); cursor:grab; display:flex; align-items:center; touch-action:none; }
+  .cat-drag-handle:active{ cursor:grabbing; }
   .cat-swatch{ width:14px; height:14px; border-radius:4px; flex:0 0 auto; }
   .cat-row input[type=text]{ flex:1; min-width:0; }
   .cat-row .ctrl.select{ width:150px; flex:0 0 auto; }
@@ -536,6 +541,7 @@
   <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
   <symbol id="i-video" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></symbol>
   <symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><line x1="9" y1="6" x2="9.01" y2="6"/><line x1="15" y1="6" x2="15.01" y2="6"/><line x1="9" y1="12" x2="9.01" y2="12"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="9" y1="18" x2="9.01" y2="18"/><line x1="15" y1="18" x2="15.01" y2="18"/></symbol>
 </svg>
 
 <div class="overlay" id="overlay"></div>
@@ -1735,6 +1741,7 @@
     wrap.innerHTML = keys.map(function(k){
       var count = FIELDS.filter(function(f){ return f.categoria===k; }).length;
       return '<div class="cat-row" data-cat-row="'+k+'">'+
+        '<span class="cat-drag-handle" draggable="true" title="Arrastra para reordenar"><svg class="icon" width="15" height="15"><use href="#i-grip"/></svg></span>'+
         '<span class="cat-swatch" style="background:var(--'+colorKeyOf(CATS[k].badge)+')"></span>'+
         '<input type="text" class="cat-name-input" data-rename-cat="'+k+'" value="'+esc(CATS[k].label)+'">'+
         '<div class="ctrl select"><select data-recolor-cat="'+k+'">'+CAT_COLORS.map(function(c){
@@ -1764,6 +1771,50 @@
     wrap.querySelectorAll("[data-del-cat]").forEach(function(btn){
       btn.addEventListener("click", function(){ deleteCategory(btn.dataset.delCat); });
     });
+
+    var dragKey = null;
+    function clearDragMarkers(){ wrap.querySelectorAll(".cat-row").forEach(function(r){ r.classList.remove("drag-over-top","drag-over-bottom"); }); }
+    wrap.querySelectorAll(".cat-row").forEach(function(row){
+      var key = row.dataset.catRow;
+      row.querySelector(".cat-drag-handle").addEventListener("dragstart", function(e){
+        dragKey = key;
+        row.classList.add("dragging");
+        e.dataTransfer.effectAllowed = "move";
+        try{ e.dataTransfer.setData("text/plain", key); }catch(err){}
+      });
+      row.querySelector(".cat-drag-handle").addEventListener("dragend", function(){
+        row.classList.remove("dragging");
+        clearDragMarkers();
+        dragKey = null;
+      });
+      row.addEventListener("dragover", function(e){
+        if(!dragKey || dragKey===key) return;
+        e.preventDefault();
+        var rect = row.getBoundingClientRect();
+        var after = (e.clientY - rect.top) > rect.height/2;
+        clearDragMarkers();
+        row.classList.add(after ? "drag-over-bottom" : "drag-over-top");
+      });
+      row.addEventListener("drop", function(e){
+        e.preventDefault();
+        if(!dragKey || dragKey===key) return;
+        var rect = row.getBoundingClientRect();
+        var after = (e.clientY - rect.top) > rect.height/2;
+        reorderCategory(dragKey, key, after);
+        renderCatList();
+        populateCategoriaSelect();
+        renderCampos();
+      });
+    });
+  }
+  function reorderCategory(draggedKey, targetKey, insertAfter){
+    var keys = Object.keys(CATS).filter(function(k){ return k!==draggedKey; });
+    var idx = keys.indexOf(targetKey);
+    if(idx===-1) return;
+    keys.splice(insertAfter ? idx+1 : idx, 0, draggedKey);
+    var reordered = {};
+    keys.forEach(function(k){ reordered[k] = CATS[k]; });
+    CATS = reordered;
   }
   function addCategory(){
     var nameInput = document.getElementById("newCatName");
