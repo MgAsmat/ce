@@ -1583,6 +1583,9 @@
   function fieldByCategoria(cat, tipo){
     return FIELDS.find(function(f){ return f.categoria===cat && (!tipo || f.tipo===tipo); });
   }
+  function fieldByNombre(nombre){
+    return FIELDS.find(function(f){ return f.nombre===nombre; });
+  }
   function populateSelectOptions(selectEl, field, placeholder){
     if(!selectEl) return;
     selectEl.innerHTML = '<option value="">'+placeholder+'</option>' + (field ? field.opciones.map(function(o){ return '<option>'+o.label+'</option>'; }).join("") : "");
@@ -1621,7 +1624,7 @@
     updateParticipantesHint();
     var wrap = document.getElementById("participantesList");
     wrap.innerHTML = participantIds.map(function(id, idx){ return participantCardHTML(id, idx+1); }).join("");
-    var gradoField = fieldByCategoria("grado", "select");
+    var gradoField = fieldByNombre("Grado del estudiante");
     participantIds.forEach(function(id){ populateSelectOptions(document.getElementById("est"+id+"-grado"), gradoField, "Seleccione"); });
   }
 
@@ -1681,7 +1684,7 @@
   var DOC_OPCIONES = [opt("DNI"), opt("Carné de extranjería"), opt("Pasaporte")];
 
   var FIELDS = [
-    { id:1, categoria:"concurso", nombre:"Código modular (Minedu)", tipo:"texto-corto", obligatorio:true, activo:true,
+    { id:1, categoria:"institucion", nombre:"Código modular (Minedu)", tipo:"texto-corto", obligatorio:true, activo:true,
       caracteres:"numerico", min:6, max:8, placeholder:"Ej. 1234567" },
 
     { id:2, categoria:"institucion", nombre:"Nombre de la institución educativa", tipo:"texto-corto", obligatorio:true, activo:true,
@@ -1717,7 +1720,7 @@
     { id:23, categoria:"participante", nombre:"Teléfono del estudiante", tipo:"texto-corto", obligatorio:true, activo:true, caracteres:"numerico", min:6, max:9 },
     { id:24, categoria:"participante", nombre:"Correo del estudiante", tipo:"texto-corto", obligatorio:true, activo:true, caracteres:"alfanumerico-simbolos", min:6, max:80 },
 
-    { id:25, categoria:"grado", nombre:"Grado del estudiante", tipo:"select", obligatorio:true, activo:true,
+    { id:25, categoria:"participante", nombre:"Grado del estudiante", tipo:"select", obligatorio:true, activo:true,
       opciones:[opt("1.° de secundaria"),opt("2.° de secundaria"),opt("3.° de secundaria"),opt("4.° de secundaria"),opt("5.° de secundaria")] },
 
     { id:26, categoria:"profesor", nombre:"Apellido paterno del profesor asesor", tipo:"texto-corto", obligatorio:true, activo:true, caracteres:"alfabetico", min:2, max:40 },
