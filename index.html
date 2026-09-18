@@ -30,6 +30,7 @@
     --purple:#7A3FA0;
     --purple-soft:#F1E6F7;
     --focus:#0C6E77;
+    --neutral:#8A97A3;
     --r-sm:8px;
     --r-md:12px;
     --r-lg:18px;
@@ -67,6 +68,7 @@
       --purple:#C79CE0;
       --purple-soft:#291B36;
       --focus:#57C8CD;
+      --neutral:#6E8094;
       --shadow-sm:0 1px 2px rgba(0,0,0,.35);
       --shadow-md:0 14px 36px -14px rgba(0,0,0,.6);
     }
@@ -100,6 +102,7 @@
     --purple:#C79CE0;
     --purple-soft:#291B36;
     --focus:#57C8CD;
+    --neutral:#6E8094;
     --shadow-sm:0 1px 2px rgba(0,0,0,.35);
     --shadow-md:0 14px 36px -14px rgba(0,0,0,.6);
   }
@@ -379,6 +382,14 @@
 
   .section-label{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--text-faint); margin:18px 0 10px; }
   .section-label:first-child{ margin-top:0; }
+
+  .cat-row{ display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); }
+  .cat-row:last-child{ border-bottom:0; }
+  .cat-swatch{ width:14px; height:14px; border-radius:4px; flex:0 0 auto; }
+  .cat-row input[type=text]{ flex:1; min-width:0; }
+  .cat-row .ctrl.select{ width:150px; flex:0 0 auto; }
+  .cat-count{ font-size:11.5px; color:var(--text-faint); white-space:nowrap; width:70px; flex:0 0 auto; }
+  .cat-empty{ padding:16px 0; font-size:12.5px; color:var(--text-faint); }
 
   .options-editor{ display:flex; flex-direction:column; gap:8px; }
   .option-row{ display:flex; align-items:center; gap:8px; }
@@ -1062,9 +1073,12 @@
         <div class="card">
           <div class="table-toolbar" style="flex-direction:column;align-items:stretch;gap:12px">
             <div class="chipbar" id="chipbar"></div>
-            <div class="ctrl has-icon" style="max-width:320px">
-              <svg class="icon" width="14" height="14"><use href="#i-search"/></svg>
-              <input id="cf-search" type="text" placeholder="Buscar campo por nombre…">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+              <div class="ctrl has-icon" style="max-width:320px;flex:1">
+                <svg class="icon" width="14" height="14"><use href="#i-search"/></svg>
+                <input id="cf-search" type="text" placeholder="Buscar campo por nombre…">
+              </div>
+              <button type="button" class="btn btn-ghost btn-sm" id="btnGestionarCategorias"><svg class="icon" width="13" height="13"><use href="#i-tag"/></svg> Gestionar categorías</button>
             </div>
           </div>
           <div class="table-scroll">
@@ -1116,19 +1130,7 @@
             <div class="field">
               <label>Categoría <span class="req">*</span></label>
               <div class="ctrl select">
-                <select required id="mf-categoria">
-                  <option value="concurso">Concurso</option>
-                  <option value="institucion">Institución educativa</option>
-                  <option value="director">Director</option>
-                  <option value="acceso">Contraseña de acceso</option>
-                  <option value="trabajo">Del trabajo</option>
-                  <option value="participante">Estudiante</option>
-                  <option value="grado">Grado</option>
-                  <option value="profesor">Profesor asesor</option>
-                  <option value="metodo">Método (cómo se enteraron)</option>
-                  <option value="compromiso">Compromiso</option>
-                  <option value="personalizado">Personalizado</option>
-                </select>
+                <select required id="mf-categoria"></select>
               </div>
             </div>
             <div class="field">
@@ -1214,6 +1216,39 @@
         <button type="submit" class="btn btn-primary" id="btnGuardarCampo"><svg class="icon" width="14" height="14"><use href="#i-check"/></svg> Guardar campo</button>
       </div>
     </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="catModalOverlay">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-head">
+      <div>
+        <h2>Categorías de campos</h2>
+        <p>Crea, renombra o elimina las categorías que agrupan los campos de la ficha.</p>
+      </div>
+      <button type="button" class="modal-close" id="catModalClose"><svg class="icon" width="16" height="16"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-body" style="grid-template-columns:1fr;max-height:58vh">
+      <div>
+        <div id="catList"></div>
+        <div class="section-label">Nueva categoría</div>
+        <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap">
+          <div class="field" style="flex:1;min-width:160px">
+            <label>Nombre</label>
+            <input id="newCatName" type="text" placeholder="Ej. Premios">
+          </div>
+          <div class="field" style="width:150px">
+            <label>Color</label>
+            <div class="ctrl select"><select id="newCatColor"></select></div>
+          </div>
+          <button type="button" class="btn btn-primary btn-sm" id="btnAddCat"><svg class="icon" width="13" height="13"><use href="#i-plus"/></svg> Agregar</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <div class="topbar-spacer"></div>
+      <button type="button" class="btn btn-primary" id="catModalDone">Listo</button>
+    </div>
   </div>
 </div>
 
@@ -1667,6 +1702,97 @@
     compromiso:    { label:"Compromiso",                  badge:"badge-red"     },
     personalizado: { label:"Personalizado",                badge:"badge-neutral" }
   };
+
+  var CAT_COLORS = [
+    { key:"teal", label:"Verde azulado" }, { key:"blue", label:"Azul" }, { key:"purple", label:"Morado" },
+    { key:"green", label:"Verde" }, { key:"amber", label:"Ámbar" }, { key:"red", label:"Rojo" }, { key:"neutral", label:"Gris" }
+  ];
+  function colorKeyOf(badgeClass){ return (badgeClass||"badge-neutral").replace("badge-",""); }
+  function slugifyCat(name){
+    var base = name.trim().toLowerCase()
+      .normalize("NFD").replace(/[̀-ͯ]/g,"")
+      .replace(/[^a-z0-9]+/g,"_").replace(/^_+|_+$/g,"") || "categoria";
+    var key = base, n = 2;
+    while(CATS[key]){ key = base+"_"+n; n++; }
+    return key;
+  }
+  function populateCategoriaSelect(){
+    var sel = document.getElementById("mf-categoria");
+    if(!sel) return;
+    var current = sel.value;
+    sel.innerHTML = Object.keys(CATS).map(function(k){ return '<option value="'+k+'">'+CATS[k].label+'</option>'; }).join("");
+    if(current && CATS[current]) sel.value = current;
+  }
+  function renderCatColorOptions(){
+    var sel = document.getElementById("newCatColor");
+    if(!sel || sel.options.length) return;
+    sel.innerHTML = CAT_COLORS.map(function(c){ return '<option value="'+c.key+'">'+c.label+'</option>'; }).join("");
+  }
+  function renderCatList(){
+    var wrap = document.getElementById("catList");
+    var keys = Object.keys(CATS);
+    if(keys.length===0){ wrap.innerHTML = '<div class="cat-empty">No hay categorías todavía.</div>'; return; }
+    wrap.innerHTML = keys.map(function(k){
+      var count = FIELDS.filter(function(f){ return f.categoria===k; }).length;
+      return '<div class="cat-row" data-cat-row="'+k+'">'+
+        '<span class="cat-swatch" style="background:var(--'+colorKeyOf(CATS[k].badge)+')"></span>'+
+        '<input type="text" class="cat-name-input" data-rename-cat="'+k+'" value="'+esc(CATS[k].label)+'">'+
+        '<div class="ctrl select"><select data-recolor-cat="'+k+'">'+CAT_COLORS.map(function(c){
+          return '<option value="'+c.key+'"'+(colorKeyOf(CATS[k].badge)===c.key?" selected":"")+'>'+c.label+'</option>';
+        }).join("")+'</select></div>'+
+        '<span class="cat-count">'+count+' campo'+(count===1?"":"s")+'</span>'+
+        '<button type="button" class="icon-btn" data-del-cat="'+k+'" title="Eliminar categoría"'+(k==="personalizado"?" disabled":"")+'><svg class="icon" width="14" height="14"><use href="#i-x"/></svg></button>'+
+      '</div>';
+    }).join("");
+    wrap.querySelectorAll("[data-rename-cat]").forEach(function(inp){
+      inp.addEventListener("change", function(){
+        var k = inp.dataset.renameCat;
+        var val = inp.value.trim();
+        if(!val){ inp.value = CATS[k].label; return; }
+        CATS[k].label = val;
+        populateCategoriaSelect();
+        renderCampos();
+      });
+    });
+    wrap.querySelectorAll("[data-recolor-cat]").forEach(function(sel){
+      sel.addEventListener("change", function(){
+        CATS[sel.dataset.recolorCat].badge = "badge-"+sel.value;
+        renderCatList();
+        renderCampos();
+      });
+    });
+    wrap.querySelectorAll("[data-del-cat]").forEach(function(btn){
+      btn.addEventListener("click", function(){ deleteCategory(btn.dataset.delCat); });
+    });
+  }
+  function addCategory(){
+    var nameInput = document.getElementById("newCatName");
+    var colorSel = document.getElementById("newCatColor");
+    var name = nameInput.value.trim();
+    if(!name){ nameInput.closest(".field").classList.add("invalid"); return; }
+    nameInput.closest(".field").classList.remove("invalid");
+    var key = slugifyCat(name);
+    CATS[key] = { label:name, badge:"badge-"+(colorSel.value||"neutral") };
+    nameInput.value = "";
+    colorSel.value = "neutral";
+    renderCatList();
+    populateCategoriaSelect();
+    renderCampos();
+    showToast('Categoría "'+name+'" creada.');
+  }
+  function deleteCategory(key){
+    if(key==="personalizado" || !CATS[key]) return;
+    var count = FIELDS.filter(function(f){ return f.categoria===key; }).length;
+    var name = CATS[key].label;
+    FIELDS.forEach(function(f){ if(f.categoria===key) f.categoria = "personalizado"; });
+    delete CATS[key];
+    renderCatList();
+    populateCategoriaSelect();
+    if(cfState.categoria===key) cfState.categoria = "todos";
+    renderCampos();
+    showToast('Categoría "'+name+'" eliminada'+(count>0?" · "+count+" campo"+(count===1?"":"s")+" pasó a Personalizado":".")+(count>0?".":""));
+  }
+
   var TIPOS = {
     "select":          { label:"Lista desplegable",   needsOptions:true  },
     "radio":           { label:"Selección única",     needsOptions:true  },
@@ -1924,6 +2050,7 @@
 
   function openCampoModal(id){
     resetModalForm();
+    populateCategoriaSelect();
     editingId = id || null;
     var f = id ? FIELDS.find(function(x){ return x.id===id; }) : null;
     document.getElementById("modalTitle").textContent = f ? "Editar campo" : "Nuevo campo";
@@ -1952,6 +2079,21 @@
   document.getElementById("btnCancelarCampo").addEventListener("click", closeCampoModal);
   overlay2.addEventListener("click", function(e){ if(e.target===overlay2) closeCampoModal(); });
   document.addEventListener("keydown", function(e){ if(e.key==="Escape" && overlay2.classList.contains("show")) closeCampoModal(); });
+
+  var catOverlay = document.getElementById("catModalOverlay");
+  function openCatModal(){
+    renderCatColorOptions();
+    renderCatList();
+    catOverlay.classList.add("show");
+  }
+  function closeCatModal(){ catOverlay.classList.remove("show"); }
+  document.getElementById("btnGestionarCategorias").addEventListener("click", openCatModal);
+  document.getElementById("catModalClose").addEventListener("click", closeCatModal);
+  document.getElementById("catModalDone").addEventListener("click", closeCatModal);
+  document.getElementById("btnAddCat").addEventListener("click", addCategory);
+  document.getElementById("newCatName").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); addCategory(); } });
+  catOverlay.addEventListener("click", function(e){ if(e.target===catOverlay) closeCatModal(); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape" && catOverlay.classList.contains("show")) closeCatModal(); });
 
   document.getElementById("campoForm").addEventListener("submit", function(e){
     e.preventDefault();
