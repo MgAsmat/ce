@@ -1157,7 +1157,7 @@
       <section class="view" id="view-concursos-crear">
         <div class="page-head">
           <h1 id="concursoFormTitle">Crear concurso</h1>
-          <p>Define los datos generales de la edición y las reglas de carga de video de su ficha de registro.</p>
+          <p>Define los datos generales de la edición y las reglas de carga de video.</p>
         </div>
 
         <form id="concurso-form">
@@ -1211,17 +1211,6 @@
                     <span class="file-name" id="cc-imagen-name">Ningún archivo seleccionado</span>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-head">
-              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-video"/></svg></span>
-              <h2>Ficha de registro</h2>
-            </div>
-            <div class="card-body">
-              <div class="grid cols-2">
                 <div class="field">
                   <label>Teléfono <span class="opt">(opcional)</span></label>
                   <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-phone"/></svg><input id="cc-telefono" type="tel"></div>
@@ -1231,12 +1220,8 @@
                   <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-mail"/></svg><input id="cc-email" type="email"></div>
                 </div>
                 <div class="field">
-                  <label>Formato de videos <span class="req">*</span></label>
+                  <label>Formato de archivo <span class="req">*</span></label>
                   <div class="ctrl select"><select id="cc-formato"><option>.Mp4</option><option>.Mov</option><option>.Avi</option></select></div>
-                </div>
-                <div class="field">
-                  <label>Seleccione video que desea visualizar para cargar <span class="req">*</span></label>
-                  <div class="ctrl select"><select id="cc-video-tipo"><option value="">Seleccione video que desea visualizar para cargar…</option><option>Video principal</option><option>Video principal + video de respaldo</option></select></div>
                 </div>
                 <div class="field">
                   <label>Tamaño máximo permitido (video principal) <span class="req">*</span></label>
