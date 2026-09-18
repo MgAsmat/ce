@@ -226,6 +226,14 @@
     border-radius:var(--r-sm); padding:9px 12px; font-family:inherit; transition:border-color .15s ease, box-shadow .15s ease;
   }
   .qty-input{ width:100px !important; text-align:center; font-weight:700; font-variant-numeric:tabular-nums; }
+
+  .file-field{ display:flex; align-items:center; gap:10px; }
+  .file-field input[type=file]{ display:none; }
+  .file-field .file-name{ font-size:12px; color:var(--text-faint); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+  .color-field{ display:flex; align-items:center; gap:10px; }
+  .color-field input[type=color]{ width:40px; height:38px; padding:3px; border:1px solid var(--border-strong); border-radius:var(--r-sm); background:var(--surface); cursor:pointer; flex:0 0 auto; }
+  .color-field input[type=text]{ flex:1; }
   .ctrl.has-icon input, .ctrl.has-icon select{ padding-left:34px; }
   input::placeholder{ color:var(--text-faint); }
   input:focus, select:focus, textarea:focus{ border-color:var(--teal); box-shadow:0 0 0 3px var(--teal-soft); outline:none; }
@@ -567,7 +575,10 @@
 
       <div class="nav-group" data-group="concursos">
         <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-award"/></svg> Concursos <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
-        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Concursos activos</a></li><li><a href="#" onclick="return false"><span class="dot"></span>Historial</a></li></ul>
+        <ul class="nav-sub">
+          <li><a href="#concursos-crear" data-view-link="concursos-crear"><span class="dot"></span>Crear concurso</a></li>
+          <li><a href="#concursos-historial" data-view-link="concursos-historial"><span class="dot"></span>Historial</a></li>
+        </ul>
       </div>
       <div class="nav-group" data-group="campos">
         <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-layers"/></svg> Campos de ficha <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
@@ -1110,6 +1121,137 @@
         </div>
       </section>
 
+      <!-- ================= VIEW: HISTORIAL DE CONCURSOS ================= -->
+      <section class="view" id="view-concursos-historial">
+        <div class="page-head">
+          <h1>Historial de concursos</h1>
+          <p>Todas las ediciones del Concurso Escolar del BCRP registradas en el sistema, de la más reciente a la más antigua.</p>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="result-count"><b id="concursosCount">9</b> concursos registrados</div>
+            <div class="topbar-spacer"></div>
+            <button class="btn btn-excel btn-sm" id="btnExportarConcursos"><svg class="icon" width="14" height="14"><use href="#i-download"/></svg> Exportar</button>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Periodo</th>
+                  <th>Plazo inicial</th>
+                  <th>Plazo final</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="concursosBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= VIEW: CREAR CONCURSO ================= -->
+      <section class="view" id="view-concursos-crear">
+        <div class="page-head">
+          <h1 id="concursoFormTitle">Crear concurso</h1>
+          <p>Define los datos generales de la edición y las reglas de carga de video de su ficha de registro.</p>
+        </div>
+
+        <form id="concurso-form">
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-award"/></svg></span>
+              <h2>Crear concurso</h2>
+            </div>
+            <div class="card-body">
+              <div class="grid cols-2">
+                <div class="field">
+                  <label>Nombre del concurso <span class="req">*</span></label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-award"/></svg><input id="cc-nombre" type="text" placeholder="Ej. Concurso Escolar de Videos BCRP 2027"></div>
+                </div>
+                <div class="field">
+                  <label>Periodo <span class="req">*</span></label>
+                  <div class="ctrl select"><select id="cc-periodo"><option value="">Elegir un periodo</option></select></div>
+                </div>
+                <div class="field" style="grid-column:1/-1">
+                  <label>Enlace a la página principal del concurso <span class="req">*</span></label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-external"/></svg><input id="cc-enlace" type="text" placeholder="https://www.bcrp.gob.pe/concurso-escolar"></div>
+                </div>
+                <div class="field">
+                  <label>Estilo CSS <span class="req">*</span></label>
+                  <div class="file-field">
+                    <input type="file" id="cc-css" accept=".css">
+                    <label for="cc-css" class="btn btn-ghost btn-sm">Elegir archivo</label>
+                    <span class="file-name" id="cc-css-name">Ningún archivo seleccionado</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Plazo inicial <span class="req">*</span></label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-clock"/></svg><input id="cc-plazo-inicial" type="date"></div>
+                </div>
+                <div class="field">
+                  <label>Plazo final <span class="req">*</span></label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-clock"/></svg><input id="cc-plazo-final" type="date"></div>
+                </div>
+                <div class="field">
+                  <label>Color de fondo <span class="req">*</span></label>
+                  <div class="color-field">
+                    <input type="color" id="cc-color" value="#ffffff">
+                    <input type="text" id="cc-color-hex" value="#FFFFFF" maxlength="7">
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Imagen de cabecera <span class="req">*</span></label>
+                  <div class="file-field">
+                    <input type="file" id="cc-imagen" accept="image/*">
+                    <label for="cc-imagen" class="btn btn-ghost btn-sm">Elegir archivo</label>
+                    <span class="file-name" id="cc-imagen-name">Ningún archivo seleccionado</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-video"/></svg></span>
+              <h2>Ficha de registro</h2>
+            </div>
+            <div class="card-body">
+              <div class="grid cols-2">
+                <div class="field">
+                  <label>Teléfono <span class="opt">(opcional)</span></label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-phone"/></svg><input id="cc-telefono" type="tel"></div>
+                </div>
+                <div class="field">
+                  <label>Email <span class="opt">(opcional)</span></label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-mail"/></svg><input id="cc-email" type="email"></div>
+                </div>
+                <div class="field">
+                  <label>Formato de videos <span class="req">*</span></label>
+                  <div class="ctrl select"><select id="cc-formato"><option>.Mp4</option><option>.Mov</option><option>.Avi</option></select></div>
+                </div>
+                <div class="field">
+                  <label>Seleccione video que desea visualizar para cargar <span class="req">*</span></label>
+                  <div class="ctrl select"><select id="cc-video-tipo"><option value="">Seleccione video que desea visualizar para cargar…</option><option>Video principal</option><option>Video principal + video de respaldo</option></select></div>
+                </div>
+                <div class="field">
+                  <label>Tamaño máximo permitido (video principal) <span class="req">*</span></label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-video"/></svg><input id="cc-tamano" type="text" inputmode="numeric" placeholder="0 Mb"></div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" style="padding-top:0;display:flex;justify-content:flex-end;gap:10px">
+              <button type="button" class="btn btn-ghost" id="btnCancelarConcurso" hidden>Cancelar</button>
+              <button type="submit" class="btn btn-primary"><svg class="icon" width="14" height="14"><use href="#i-check"/></svg> Guardar</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
     </main>
   </div>
 </div>
@@ -1326,7 +1468,7 @@
   document.getElementById("sidebarClose").addEventListener("click", closeSidebar);
   overlay.addEventListener("click", closeSidebar);
 
-  var titles = { lista:"Lista de fichas", crear:"Crear ficha", campos:"Campos de la ficha" };
+  var titles = { lista:"Lista de fichas", crear:"Crear ficha", campos:"Campos de la ficha", "concursos-historial":"Historial de concursos", "concursos-crear":"Crear concurso" };
   function showView(name){
     document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("active"); });
     document.getElementById("view-"+name).classList.add("active");
@@ -2199,6 +2341,140 @@
 
   renderCampos();
   initWizardDynamicFields();
+
+  /* ---------- concursos ---------- */
+  var MESES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  function fecha(y,m,d,hh,mm,ss){ return { y:y, m:m, d:d, hh:hh, mm:mm, ss:ss }; }
+  function fechaLabel(f){ return f.d+" de "+MESES[f.m-1]+" del "+f.y; }
+  function horaLabel(f){ return (""+f.hh).padStart(2,"0")+":"+(""+f.mm).padStart(2,"0")+":"+(""+f.ss).padStart(2,"0"); }
+  function fechaISO(f){ return f.y+"-"+(""+f.m).padStart(2,"0")+"-"+(""+f.d).padStart(2,"0"); }
+
+  var CONCURSOS = [
+    { id:1, nombre:"XI CONCURSO ESCOLAR BCRP 2016", periodo:2016, inicio:fecha(2016,12,1,11,59,59), fin:fecha(2016,10,26,11,59,59), abierto:false },
+    { id:2, nombre:"XII CONCURSO ESCOLAR BCRP 2017", periodo:2017, inicio:fecha(2017,1,6,11,59,59), fin:fecha(2017,8,23,11,59,59), abierto:false },
+    { id:3, nombre:"XIII CONCURSO ESCOLAR BCRP 2018", periodo:2018, inicio:fecha(2018,6,1,12,0,0), fin:fecha(2018,8,22,12,0,0), abierto:false },
+    { id:4, nombre:"XIV CONCURSO ESCOLAR BCRP 2019", periodo:2019, inicio:fecha(2019,6,1,12,0,0), fin:fecha(2019,8,21,12,0,0), abierto:false },
+    { id:5, nombre:"XV CONCURSO ESCOLAR BCRP 2022", periodo:2022, inicio:fecha(2022,6,1,12,0,0), fin:fecha(2022,8,16,11,59,59), abierto:false },
+    { id:6, nombre:"XVI CONCURSO ESCOLAR BCRP 2023", periodo:2023, inicio:fecha(2023,3,29,12,0,0), fin:fecha(2023,8,16,12,0,0), abierto:false },
+    { id:7, nombre:"XVII CONCURSO ESCOLAR BCRP 2024", periodo:2024, inicio:fecha(2024,3,1,12,0,0), fin:fecha(2025,1,15,12,0,0), abierto:false },
+    { id:8, nombre:"Concurso Escolar de Videos BCRP 2025", periodo:2025, inicio:fecha(2025,3,19,12,0,0), fin:fecha(2025,8,14,12,0,0), abierto:false },
+    { id:9, nombre:"Concurso Escolar de Videos BCRP 2026", periodo:2026, inicio:fecha(2026,2,24,12,0,0), fin:fecha(2026,8,13,12,0,0), abierto:true }
+  ];
+  var nextConcursoId = 10;
+  var editingConcursoId = null;
+
+  function renderConcursos(){
+    var body = document.getElementById("concursosBody");
+    var ordered = CONCURSOS.slice().sort(function(a,b){ return b.periodo-a.periodo; });
+    document.getElementById("concursosCount").textContent = CONCURSOS.length;
+    body.innerHTML = ordered.map(function(c, i){
+      return '<tr>'+
+        '<td class="cell-sub">'+(i+1)+'</td>'+
+        '<td class="cell-title">'+c.nombre+'</td>'+
+        '<td>'+c.periodo+'</td>'+
+        '<td class="cell-sub">'+fechaLabel(c.inicio)+'<br>Hora: '+horaLabel(c.inicio)+'</td>'+
+        '<td class="cell-sub">'+fechaLabel(c.fin)+'<br>Hora: '+horaLabel(c.fin)+'</td>'+
+        '<td>'+(c.abierto
+          ? '<span class="badge badge-green"><svg class="icon" width="11" height="11"><use href="#i-check"/></svg>Abierto</span>'
+          : '<span class="badge badge-neutral"><svg class="icon" width="11" height="11"><use href="#i-log-out"/></svg>Cerrado</span>')+'</td>'+
+        '<td><div class="rowacts"><button class="icon-btn" title="Editar" data-edit-concurso="'+c.id+'"><svg class="icon" width="14" height="14"><use href="#i-edit"/></svg></button></div></td>'+
+      '</tr>';
+    }).join("");
+    body.querySelectorAll("[data-edit-concurso]").forEach(function(btn){
+      btn.addEventListener("click", function(){ openConcursoEdit(parseInt(btn.dataset.editConcurso,10)); });
+    });
+  }
+  document.getElementById("btnExportarConcursos").addEventListener("click", function(){ showToast("Exportando historial de concursos…"); });
+
+  function populatePeriodoSelect(){
+    var sel = document.getElementById("cc-periodo");
+    var current = sel.value;
+    var years = [];
+    for(var y=2016;y<=2030;y++) years.push(y);
+    sel.innerHTML = '<option value="">Elegir un periodo</option>' + years.map(function(y){ return '<option value="'+y+'">'+y+'</option>'; }).join("");
+    if(current) sel.value = current;
+  }
+  populatePeriodoSelect();
+
+  function resetConcursoForm(){
+    document.getElementById("concurso-form").reset();
+    document.getElementById("cc-css-name").textContent = "Ningún archivo seleccionado";
+    document.getElementById("cc-imagen-name").textContent = "Ningún archivo seleccionado";
+    document.getElementById("cc-color").value = "#ffffff";
+    document.getElementById("cc-color-hex").value = "#FFFFFF";
+    document.getElementById("cc-formato").value = ".Mp4";
+    editingConcursoId = null;
+    document.getElementById("concursoFormTitle").textContent = "Crear concurso";
+    document.querySelector('#view-concursos-crear .card-head h2').textContent = "Crear concurso";
+    document.getElementById("btnCancelarConcurso").hidden = true;
+  }
+
+  function openConcursoEdit(id){
+    var c = CONCURSOS.find(function(x){ return x.id===id; });
+    if(!c) return;
+    resetConcursoForm();
+    editingConcursoId = id;
+    document.getElementById("concursoFormTitle").textContent = "Editar concurso";
+    document.querySelector('#view-concursos-crear .card-head h2').textContent = "Editar concurso";
+    document.getElementById("btnCancelarConcurso").hidden = false;
+    document.getElementById("cc-nombre").value = c.nombre;
+    populatePeriodoSelect();
+    document.getElementById("cc-periodo").value = c.periodo;
+    document.getElementById("cc-plazo-inicial").value = fechaISO(c.inicio);
+    document.getElementById("cc-plazo-final").value = fechaISO(c.fin);
+    showView("concursos-crear");
+    location.hash = "concursos-crear";
+  }
+
+  document.getElementById("cc-css").addEventListener("change", function(e){
+    document.getElementById("cc-css-name").textContent = e.target.files[0] ? e.target.files[0].name : "Ningún archivo seleccionado";
+  });
+  document.getElementById("cc-imagen").addEventListener("change", function(e){
+    document.getElementById("cc-imagen-name").textContent = e.target.files[0] ? e.target.files[0].name : "Ningún archivo seleccionado";
+  });
+  document.getElementById("cc-color").addEventListener("input", function(e){ document.getElementById("cc-color-hex").value = e.target.value.toUpperCase(); });
+  document.getElementById("cc-color-hex").addEventListener("input", function(e){
+    var v = e.target.value.trim();
+    if(/^#[0-9a-fA-F]{6}$/.test(v)) document.getElementById("cc-color").value = v;
+  });
+  document.getElementById("btnCancelarConcurso").addEventListener("click", function(){
+    resetConcursoForm();
+    showView("concursos-historial");
+    location.hash = "concursos-historial";
+  });
+
+  document.getElementById("concurso-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var nombre = document.getElementById("cc-nombre").value.trim() || "Concurso sin nombre";
+    var periodo = parseInt(document.getElementById("cc-periodo").value,10) || new Date().getFullYear();
+    var inicioVal = document.getElementById("cc-plazo-inicial").value;
+    var finVal = document.getElementById("cc-plazo-final").value;
+    function parseISO(v, fallback){
+      if(!v) return fallback;
+      var p = v.split("-");
+      return fecha(parseInt(p[0],10), parseInt(p[1],10), parseInt(p[2],10), 12, 0, 0);
+    }
+    if(editingConcursoId){
+      var c = CONCURSOS.find(function(x){ return x.id===editingConcursoId; });
+      c.nombre = nombre; c.periodo = periodo;
+      c.inicio = parseISO(inicioVal, c.inicio); c.fin = parseISO(finVal, c.fin);
+      showToast('Concurso "'+nombre+'" actualizado.');
+    } else {
+      CONCURSOS.push({
+        id: nextConcursoId++, nombre:nombre, periodo:periodo,
+        inicio: parseISO(inicioVal, fecha(periodo,1,1,12,0,0)),
+        fin: parseISO(finVal, fecha(periodo,12,31,12,0,0)),
+        abierto:true
+      });
+      showToast('Concurso "'+nombre+'" creado.');
+    }
+    resetConcursoForm();
+    renderConcursos();
+    showView("concursos-historial");
+    location.hash = "concursos-historial";
+  });
+
+  renderConcursos();
 
 })();
 </script>
