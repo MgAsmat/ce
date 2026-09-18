@@ -1176,6 +1176,17 @@
                   <label>Periodo <span class="req">*</span></label>
                   <div class="ctrl select"><select id="cc-periodo"><option value="">Elegir un periodo</option></select></div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-eye"/></svg></span>
+              <h2>Visualización del formulario</h2>
+            </div>
+            <div class="card-body">
+              <div class="grid cols-2">
                 <div class="field" style="grid-column:1/-1">
                   <label>Enlace a la página principal del concurso <span class="req">*</span></label>
                   <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-external"/></svg><input id="cc-enlace" type="text" placeholder="https://www.bcrp.gob.pe/concurso-escolar"></div>
@@ -2389,8 +2400,6 @@
     document.getElementById("cc-color-hex").value = "#FFFFFF";
     document.getElementById("cc-formato").value = ".Mp4";
     editingConcursoId = null;
-    document.getElementById("concursoFormTitle").textContent = "Crear concurso";
-    document.querySelector('#view-concursos-crear .card-head h2').textContent = "Crear concurso";
     document.getElementById("btnCancelarConcurso").hidden = true;
   }
 
@@ -2399,8 +2408,6 @@
     if(!c) return;
     resetConcursoForm();
     editingConcursoId = id;
-    document.getElementById("concursoFormTitle").textContent = "Editar concurso";
-    document.querySelector('#view-concursos-crear .card-head h2').textContent = "Editar concurso";
     document.getElementById("btnCancelarConcurso").hidden = false;
     document.getElementById("cc-nombre").value = c.nombre;
     populatePeriodoSelect();
