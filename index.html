@@ -1054,7 +1054,7 @@
               <input id="cf-num-estudiantes" class="qty-input" type="number" min="1" max="5" step="1" value="3">
             </div>
             <div style="font-size:12px;color:var(--text-muted);max-width:440px;padding-bottom:9px" id="minParticipantesNote">
-              El paso "Estudiantes" mostrará exactamente 3 estudiantes para completar. El máximo permitido es 5.
+              El paso "Estudiantes" mostrará exactamente 3 estudiantes para completar.
             </div>
           </div>
         </div>
@@ -1593,7 +1593,7 @@
     var hint = document.getElementById("participantesHint");
     if(hint) hint.textContent = "El equipo participa con "+min+(min===1?" estudiante.":" estudiantes.");
     var note = document.getElementById("minParticipantesNote");
-    if(note) note.textContent = 'El paso "Estudiantes" mostrará exactamente '+min+(min===1?" estudiante":" estudiantes")+' para completar. El máximo permitido es 5.';
+    if(note) note.textContent = 'El paso "Estudiantes" mostrará exactamente '+min+(min===1?" estudiante":" estudiantes")+' para completar.';
   }
 
   function ensureMinParticipantes(){
