@@ -680,7 +680,10 @@
       </div>
       <div class="nav-group" data-group="usuarios">
         <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-users"/></svg> Usuarios <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
-        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Administradores</a></li></ul>
+        <ul class="nav-sub">
+          <li><a href="#usuarios-crear" data-view-link="usuarios-crear"><span class="dot"></span>Crear nuevo</a></li>
+          <li><a href="#usuarios-administrar" data-view-link="usuarios-administrar"><span class="dot"></span>Administrar usuarios</a></li>
+        </ul>
       </div>
     </nav>
     <div class="sidebar-foot">Concurso Escolar de Videos BCRP · 2026</div>
@@ -1620,6 +1623,117 @@
         </div>
       </section>
 
+      <!-- ================= VIEW: ADMINISTRAR USUARIOS ================= -->
+      <section class="view" id="view-usuarios-administrar">
+        <div class="page-head">
+          <h1>Administrar usuarios</h1>
+          <p>Usuarios con acceso al panel administrativo del concurso.</p>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="result-count"><b id="usuariosCount">0</b> usuarios registrados</div>
+            <div class="topbar-spacer"></div>
+            <div class="ctrl has-icon" style="max-width:260px">
+              <svg class="icon" width="14" height="14"><use href="#i-search"/></svg>
+              <input id="usuariosSearch" type="text" placeholder="Buscar por nombre o correo…">
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" id="btnNuevoUsuario"><svg class="icon" width="14" height="14"><use href="#i-plus"/></svg> Nuevo usuario</button>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Rol</th>
+                  <th>Estado</th>
+                  <th>Último acceso</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="usuariosBody"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="usuariosEmpty" hidden>
+            <svg class="icon" width="34" height="34"><use href="#i-inbox"/></svg>
+            <div>No se encontraron usuarios con ese filtro.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= VIEW: CREAR USUARIO ================= -->
+      <section class="view" id="view-usuarios-crear">
+        <div class="page-head">
+          <h1 id="usuarioFormTitle">Crear usuario</h1>
+          <p>Datos de acceso de la persona que administrará el panel del concurso.</p>
+        </div>
+
+        <form id="usuario-form">
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-user"/></svg></span>
+              <h2>Datos del usuario</h2>
+            </div>
+            <div class="card-body">
+              <div class="grid cols-2">
+                <div class="field">
+                  <label>Nombres <span class="req">*</span></label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-user"/></svg><input id="uf-nombres" type="text"></div>
+                </div>
+                <div class="field">
+                  <label>Apellidos <span class="req">*</span></label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-user"/></svg><input id="uf-apellidos" type="text"></div>
+                </div>
+                <div class="field" style="grid-column:1/-1">
+                  <label>Correo <span class="req">*</span></label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-mail"/></svg><input id="uf-correo" type="email" placeholder="nombre.apellido@bcrp.gob.pe"></div>
+                </div>
+                <div class="field">
+                  <label>Rol <span class="req">*</span></label>
+                  <div class="ctrl select">
+                    <select id="uf-rol">
+                      <option>Administrador</option>
+                      <option>Editor de contenido</option>
+                      <option>Solo lectura</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Estado</label>
+                  <div class="ctrl" style="padding-top:6px">
+                    <label class="switch"><input type="checkbox" id="uf-activo" checked><span class="track"></span></label>
+                    <span style="margin-left:10px;font-size:12.5px;color:var(--text-muted)">Usuario activo</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-credit-card"/></svg></span>
+              <h2>Contraseña de acceso</h2>
+            </div>
+            <div class="card-body">
+              <div class="grid cols-2">
+                <div class="field">
+                  <label>Contraseña <span class="req">*</span></label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-credit-card"/></svg><input id="uf-clave" type="password" minlength="8" placeholder="Mínimo 8 caracteres"></div>
+                </div>
+                <div class="field">
+                  <label>Confirmar contraseña <span class="req">*</span></label>
+                  <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-credit-card"/></svg><input id="uf-clave2" type="password" minlength="8" placeholder="Repite la contraseña"></div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" style="padding-top:0;display:flex;justify-content:flex-end;gap:10px">
+              <button type="button" class="btn btn-ghost" id="btnCancelarUsuario" hidden>Cancelar</button>
+              <button type="submit" class="btn btn-primary"><svg class="icon" width="14" height="14"><use href="#i-check"/></svg> Guardar</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
     </main>
   </div>
 </div>
@@ -1838,7 +1952,7 @@
   document.getElementById("sidebarClose").addEventListener("click", closeSidebar);
   overlay.addEventListener("click", closeSidebar);
 
-  var titles = { lista:"Lista de fichas", crear:"Crear ficha", campos:"Campos de la ficha", "concursos-historial":"Historial de concursos", "concursos-crear":"Crear concurso", "archivos-subir":"Subir archivos", "reportes":"Dashboard de reportes", "historico":"Ediciones anteriores" };
+  var titles = { lista:"Lista de fichas", crear:"Crear ficha", campos:"Campos de la ficha", "concursos-historial":"Historial de concursos", "concursos-crear":"Crear concurso", "archivos-subir":"Subir archivos", "reportes":"Dashboard de reportes", "historico":"Ediciones anteriores", "usuarios-crear":"Crear usuario", "usuarios-administrar":"Administrar usuarios" };
   function showView(name){
     document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("active"); });
     document.getElementById("view-"+name).classList.add("active");
@@ -3361,6 +3475,110 @@
     sel.addEventListener("change", function(){ renderHistorico(sel.value); });
     renderHistorico(years[0].periodo);
   })();
+
+  /* ---------- usuarios ---------- */
+  var USERS = [
+    { id:1, nombres:"Maria Gracia", apellidos:"Asmat", correo:"mariagracia.asmat@bcrp.gob.pe", rol:"Administrador", activo:true, ultimoAcceso:"Hoy, 09:14" },
+    { id:2, nombres:"Carlos", apellidos:"Mendoza Ríos", correo:"carlos.mendoza@bcrp.gob.pe", rol:"Editor de contenido", activo:true, ultimoAcceso:"Hace 2 días" },
+    { id:3, nombres:"Lucía", apellidos:"Fernández Paredes", correo:"lucia.fernandez@bcrp.gob.pe", rol:"Editor de contenido", activo:true, ultimoAcceso:"Hace 5 días" },
+    { id:4, nombres:"Jorge", apellidos:"Salazar Quiroz", correo:"jorge.salazar@bcrp.gob.pe", rol:"Solo lectura", activo:true, ultimoAcceso:"Hace 1 semana" },
+    { id:5, nombres:"Ana", apellidos:"Torres Villanueva", correo:"ana.torres@bcrp.gob.pe", rol:"Administrador", activo:false, ultimoAcceso:"Hace 3 meses" },
+    { id:6, nombres:"Renzo", apellidos:"Huamán Castro", correo:"renzo.huaman@bcrp.gob.pe", rol:"Solo lectura", activo:true, ultimoAcceso:"Hace 2 semanas" }
+  ];
+  var nextUserId = 7;
+  var editingUserId = null;
+  var ROL_BADGE = { "Administrador":"badge-purple", "Editor de contenido":"badge-blue", "Solo lectura":"badge-neutral" };
+
+  function renderUsuarios(){
+    var q = (document.getElementById("usuariosSearch").value||"").trim().toLowerCase();
+    var rows = USERS.filter(function(u){
+      if(!q) return true;
+      return (u.nombres+" "+u.apellidos+" "+u.correo).toLowerCase().indexOf(q)!==-1;
+    });
+    document.getElementById("usuariosCount").textContent = fmtN(USERS.length);
+    document.getElementById("usuariosEmpty").hidden = rows.length!==0;
+    var body = document.getElementById("usuariosBody");
+    body.innerHTML = rows.map(function(u){
+      return '<tr>'+
+        '<td><div class="cell-title">'+u.nombres+' '+u.apellidos+'</div><div class="cell-sub">'+u.correo+'</div></td>'+
+        '<td><span class="badge '+(ROL_BADGE[u.rol]||"badge-neutral")+'">'+u.rol+'</span></td>'+
+        '<td><label class="switch"><input type="checkbox" data-toggle-user="'+u.id+'" '+(u.activo?"checked":"")+'><span class="track"></span></label></td>'+
+        '<td class="cell-sub">'+u.ultimoAcceso+'</td>'+
+        '<td><div class="rowacts"><button class="icon-btn" title="Editar" data-edit-user="'+u.id+'"><svg class="icon" width="14" height="14"><use href="#i-edit"/></svg></button></div></td>'+
+      '</tr>';
+    }).join("");
+    body.querySelectorAll("[data-toggle-user]").forEach(function(cb){
+      cb.addEventListener("change", function(){
+        var u = USERS.find(function(x){ return x.id===parseInt(cb.dataset.toggleUser,10); });
+        u.activo = cb.checked;
+        showToast((u.nombres+" "+u.apellidos)+(u.activo?" activado.":" desactivado."));
+      });
+    });
+    body.querySelectorAll("[data-edit-user]").forEach(function(btn){
+      btn.addEventListener("click", function(){ openUserEdit(parseInt(btn.dataset.editUser,10)); });
+    });
+  }
+  document.getElementById("usuariosSearch").addEventListener("input", renderUsuarios);
+  document.getElementById("btnNuevoUsuario").addEventListener("click", function(){
+    resetUserForm();
+    showView("usuarios-crear");
+    location.hash = "usuarios-crear";
+  });
+
+  function resetUserForm(){
+    document.getElementById("usuario-form").reset();
+    document.querySelectorAll("#usuario-form .field.invalid").forEach(function(f){ f.classList.remove("invalid"); });
+    document.getElementById("uf-activo").checked = true;
+    editingUserId = null;
+    document.getElementById("usuarioFormTitle").textContent = "Crear usuario";
+    document.getElementById("btnCancelarUsuario").hidden = true;
+  }
+
+  function openUserEdit(id){
+    var u = USERS.find(function(x){ return x.id===id; });
+    if(!u) return;
+    resetUserForm();
+    editingUserId = id;
+    document.getElementById("usuarioFormTitle").textContent = "Editar usuario";
+    document.getElementById("btnCancelarUsuario").hidden = false;
+    document.getElementById("uf-nombres").value = u.nombres;
+    document.getElementById("uf-apellidos").value = u.apellidos;
+    document.getElementById("uf-correo").value = u.correo;
+    document.getElementById("uf-rol").value = u.rol;
+    document.getElementById("uf-activo").checked = u.activo;
+    showView("usuarios-crear");
+    location.hash = "usuarios-crear";
+  }
+
+  document.getElementById("btnCancelarUsuario").addEventListener("click", function(){
+    resetUserForm();
+    showView("usuarios-administrar");
+    location.hash = "usuarios-administrar";
+  });
+
+  document.getElementById("usuario-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var nombres = document.getElementById("uf-nombres").value.trim() || "Sin nombre";
+    var apellidos = document.getElementById("uf-apellidos").value.trim();
+    var correo = document.getElementById("uf-correo").value.trim() || "sin-correo@bcrp.gob.pe";
+    var rol = document.getElementById("uf-rol").value;
+    var activo = document.getElementById("uf-activo").checked;
+
+    if(editingUserId){
+      var u = USERS.find(function(x){ return x.id===editingUserId; });
+      u.nombres=nombres; u.apellidos=apellidos; u.correo=correo; u.rol=rol; u.activo=activo;
+      showToast('Usuario "'+nombres+' '+apellidos+'" actualizado.');
+    } else {
+      USERS.push({ id:nextUserId++, nombres:nombres, apellidos:apellidos, correo:correo, rol:rol, activo:activo, ultimoAcceso:"Nunca" });
+      showToast('Usuario "'+nombres+' '+apellidos+'" creado.');
+    }
+    resetUserForm();
+    renderUsuarios();
+    showView("usuarios-administrar");
+    location.hash = "usuarios-administrar";
+  });
+
+  renderUsuarios();
 
 })();
 </script>
