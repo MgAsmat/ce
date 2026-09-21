@@ -247,6 +247,57 @@
   .ficha-preview .fp-title{ font-weight:600; font-size:13px; }
   .ficha-preview .fp-sub{ font-size:11.5px; color:var(--text-faint); }
   .ficha-preview .topbar-spacer{ flex:1; }
+
+  /* ===== Reportes / dashboard ===== */
+  .viz-root{
+    --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a; --series-4:#eda100; --series-5:#e87ba4;
+  }
+  :root:not([data-theme="light"]) .viz-root{ --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500; --series-5:#d55181; }
+  :root[data-theme="dark"] .viz-root{ --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500; --series-5:#d55181; }
+
+  .kpi-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px; margin-bottom:16px; }
+  .kpi-tile{ background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:18px 20px; box-shadow:var(--shadow-sm); }
+  .kpi-label{ font-size:12px; color:var(--text-muted); font-weight:600; }
+  .kpi-value{ font-size:32px; font-weight:700; line-height:1.15; margin-top:6px; }
+  .kpi-value small{ font-size:14px; font-weight:600; color:var(--text-faint); }
+  .kpi-delta{ display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:700; padding:3px 8px; border-radius:999px; margin-top:8px; }
+  .kpi-delta.up{ color:var(--green); background:var(--green-soft); }
+  .kpi-delta.down{ color:var(--red); background:var(--red-soft); }
+  .kpi-sub{ font-size:11.5px; color:var(--text-faint); margin-top:6px; }
+
+  .dash-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start; }
+  @media (max-width:960px){ .dash-grid{ grid-template-columns:1fr; } }
+
+  .chart-table-toggle{ font-size:11.5px; color:var(--teal); background:transparent; border:0; cursor:pointer; font-weight:700; padding:0; margin-left:auto; }
+  .chart-table-toggle:hover{ text-decoration:underline; }
+
+  .viz-root svg{ display:block; width:100%; height:auto; overflow:visible; }
+  .viz-bar-hit{ cursor:pointer; }
+  .viz-bar-hit:hover{ filter:brightness(1.1); }
+  .viz-cat-label{ font-size:11.5px; fill:var(--text-muted); }
+  .viz-val-label{ font-size:11.5px; font-weight:700; fill:var(--text); font-variant-numeric:tabular-nums; }
+  .viz-axis{ stroke:var(--border-strong); stroke-width:1; }
+  .viz-grid{ stroke:var(--border); stroke-width:1; }
+
+  .chart-legend{ display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:14px; }
+  .chart-legend-item{ display:flex; align-items:center; gap:7px; font-size:12px; color:var(--text-muted); }
+  .chart-legend-item b{ color:var(--text); font-variant-numeric:tabular-nums; }
+  .chart-legend-swatch{ width:10px; height:10px; border-radius:3px; flex:0 0 auto; }
+
+  .data-table-wrap{ margin-top:14px; border-top:1px solid var(--border); padding-top:12px; }
+  .data-table-wrap table{ min-width:0; }
+  .data-table-wrap th, .data-table-wrap td{ padding:6px 10px; font-size:12px; }
+
+  .chart-tooltip{
+    position:fixed; pointer-events:none; z-index:300; background:var(--navy); color:#fff; font-size:12px; line-height:1.4;
+    padding:8px 11px; border-radius:9px; box-shadow:var(--shadow-md); max-width:230px; transform:translate(-50%,-100%); margin-top:-12px;
+    opacity:0; transition:opacity .1s ease;
+  }
+  .chart-tooltip.show{ opacity:1; }
+  .chart-tooltip b{ font-size:13px; }
+  .chart-tooltip .tip-row{ display:flex; align-items:center; gap:6px; }
+  .chart-tooltip .tip-swatch{ width:8px; height:8px; border-radius:2px; flex:0 0 auto; }
+  .chart-tooltip .tip-muted{ color:#9FB1C4; font-size:11px; }
   .ctrl.has-icon input, .ctrl.has-icon select{ padding-left:34px; }
   input::placeholder{ color:var(--text-faint); }
   input:focus, select:focus, textarea:focus{ border-color:var(--teal); box-shadow:0 0 0 3px var(--teal-soft); outline:none; }
@@ -603,7 +654,7 @@
       </div>
       <div class="nav-group" data-group="reportes">
         <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-bar-chart"/></svg> Reportes <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
-        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Reportes generales</a></li></ul>
+        <ul class="nav-sub"><li><a href="#reportes" data-view-link="reportes"><span class="dot"></span>Dashboard</a></li></ul>
       </div>
       <div class="nav-group" data-group="historico">
         <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-clock"/></svg> Histórico <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
@@ -1357,6 +1408,86 @@
         </div>
       </section>
 
+      <!-- ================= VIEW: REPORTES ================= -->
+      <section class="view" id="view-reportes">
+        <div class="page-head">
+          <h1>Dashboard de reportes</h1>
+          <p>Indicadores del Concurso Escolar de Videos BCRP 2026. Pasa el cursor sobre cualquier gráfico para ver el detalle.</p>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-tile">
+            <div class="kpi-label">Equipos inscritos en 2026</div>
+            <div class="kpi-value" id="kpiTotal">—</div>
+            <div><span class="kpi-delta up" id="kpiDelta">—</span></div>
+            <div class="kpi-sub">vs. 2025 · histórico completo en el gráfico de años</div>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-map-pin"/></svg></span>
+              <h2>Inscritos por región</h2>
+              <button type="button" class="chart-table-toggle" data-table-toggle="tbl-region">Ver tabla</button>
+            </div>
+            <div class="card-body">
+              <div class="viz-root" id="chart-region"></div>
+              <div class="data-table-wrap" id="tbl-region" hidden></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-tag"/></svg></span>
+              <h2>Temas elegidos</h2>
+              <button type="button" class="chart-table-toggle" data-table-toggle="tbl-temas">Ver tabla</button>
+            </div>
+            <div class="card-body">
+              <div class="viz-root" id="chart-temas"></div>
+              <div class="data-table-wrap" id="tbl-temas" hidden></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-users"/></svg></span>
+              <h2>Cómo se enteraron del concurso</h2>
+              <button type="button" class="chart-table-toggle" data-table-toggle="tbl-medios">Ver tabla</button>
+            </div>
+            <div class="card-body">
+              <div class="viz-root" id="chart-medios"></div>
+              <div class="data-table-wrap" id="tbl-medios" hidden></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-bar-chart"/></svg></span>
+              <h2>Comparación con años anteriores</h2>
+              <button type="button" class="chart-table-toggle" data-table-toggle="tbl-years">Ver tabla</button>
+            </div>
+            <div class="card-body">
+              <div class="viz-root" id="chart-years"></div>
+              <div class="data-table-wrap" id="tbl-years" hidden></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-clock"/></svg></span>
+            <h2>Inscritos por mes</h2>
+            <button type="button" class="chart-table-toggle" data-table-toggle="tbl-mes">Ver tabla</button>
+          </div>
+          <div class="card-body">
+            <p style="margin:0 0 14px;font-size:12px;color:var(--text-faint)">Periodo de inscripción: febrero – agosto 2026.</p>
+            <div class="viz-root" id="chart-mes"></div>
+            <div class="data-table-wrap" id="tbl-mes" hidden></div>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 </div>
@@ -1510,6 +1641,8 @@
   <button type="button" id="toastUndo" hidden>Deshacer</button>
 </div>
 
+<div class="chart-tooltip" id="chartTooltip"></div>
+
 <script>
 (function(){
   "use strict";
@@ -1573,7 +1706,7 @@
   document.getElementById("sidebarClose").addEventListener("click", closeSidebar);
   overlay.addEventListener("click", closeSidebar);
 
-  var titles = { lista:"Lista de fichas", crear:"Crear ficha", campos:"Campos de la ficha", "concursos-historial":"Historial de concursos", "concursos-crear":"Crear concurso", "archivos-subir":"Subir archivos" };
+  var titles = { lista:"Lista de fichas", crear:"Crear ficha", campos:"Campos de la ficha", "concursos-historial":"Historial de concursos", "concursos-crear":"Crear concurso", "archivos-subir":"Subir archivos", "reportes":"Dashboard de reportes" };
   function showView(name){
     document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("active"); });
     document.getElementById("view-"+name).classList.add("active");
@@ -2730,6 +2863,233 @@
 
   renderUploadLog();
   renderBatch();
+
+  /* ---------- reportes / dashboard ---------- */
+  var tipEl = document.getElementById("chartTooltip");
+  function showTip(x, y, html){
+    tipEl.innerHTML = html;
+    var left = Math.min(window.innerWidth-20, Math.max(120, x));
+    tipEl.style.left = left+"px";
+    tipEl.style.top = Math.max(80, y)+"px";
+    tipEl.classList.add("show");
+  }
+  function hideTip(){ tipEl.classList.remove("show"); }
+
+  document.querySelectorAll("[data-table-toggle]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var el = document.getElementById(btn.dataset.tableToggle);
+      el.hidden = !el.hidden;
+      btn.textContent = el.hidden ? "Ver tabla" : "Ocultar tabla";
+    });
+  });
+
+  function fmtN(n){ return n.toLocaleString("es-PE"); }
+
+  function renderHBar(containerId, tableId, data, opts){
+    opts = opts || {};
+    var root = document.getElementById(containerId);
+    var total = data.reduce(function(s,d){ return s+d.value; }, 0);
+    var max = Math.max.apply(null, data.map(function(d){ return d.value; }));
+    var barH = 16, gap = 11, rowH = barH+gap;
+    var leftW = opts.leftW || 148, chartW = opts.chartW || 330, rightPad = 92;
+    var vbW = leftW + chartW + rightPad;
+    var vbH = data.length*rowH + 8;
+    var color = opts.color || "var(--teal-2)";
+    var rows = data.map(function(d,i){
+      var y = 6 + i*rowH;
+      var w = Math.max(2, (d.value/max)*chartW);
+      var pct = ((d.value/total)*100).toFixed(1);
+      var valueText = fmtN(d.value) + (opts.showPct ? " · "+pct+"%" : (opts.unit ? " "+opts.unit : ""));
+      return '<g class="viz-bar-hit" data-idx="'+i+'" tabindex="0">'+
+        '<rect x="0" y="'+(y-gap/2)+'" width="'+vbW+'" height="'+rowH+'" fill="transparent" pointer-events="all"></rect>'+
+        '<text class="viz-cat-label" x="'+(leftW-10)+'" y="'+(y+barH/2+4)+'" text-anchor="end">'+esc(d.label)+'</text>'+
+        '<rect class="viz-bar" x="'+leftW+'" y="'+y+'" width="'+w+'" height="'+barH+'" rx="4" fill="'+color+'"></rect>'+
+        '<text class="viz-val-label" x="'+(leftW+w+8)+'" y="'+(y+barH/2+4)+'">'+valueText+'</text>'+
+      '</g>';
+    }).join("");
+    root.innerHTML = '<svg viewBox="0 0 '+vbW+' '+vbH+'" role="img" aria-label="'+(opts.ariaLabel||"Gráfico de barras")+'">'+rows+'</svg>';
+
+    var svg = root.querySelector("svg");
+    svg.addEventListener("pointermove", function(e){
+      var g = e.target.closest(".viz-bar-hit");
+      if(!g){ hideTip(); return; }
+      var d = data[parseInt(g.dataset.idx,10)];
+      var pct = ((d.value/total)*100).toFixed(1);
+      showTip(e.clientX, e.clientY, '<div class="tip-row"><span class="tip-swatch" style="background:'+color+'"></span><b>'+esc(d.label)+'</b></div><div>'+fmtN(d.value)+(opts.showPct? " · "+pct+"%" : " "+(opts.unit||""))+'</div>');
+    });
+    svg.addEventListener("pointerleave", hideTip);
+
+    document.getElementById(tableId).innerHTML =
+      '<table><thead><tr><th>'+(opts.catHeader||"Categoría")+'</th><th>Cantidad</th>'+(opts.showPct?'<th>%</th>':'')+'</tr></thead><tbody>'+
+      data.map(function(d){ var pct=((d.value/total)*100).toFixed(1); return '<tr><td>'+esc(d.label)+'</td><td class="mono">'+fmtN(d.value)+'</td>'+(opts.showPct?'<td class="mono">'+pct+'%</td>':'')+'</tr>'; }).join("")+
+      '</tbody></table>';
+  }
+
+  function renderDonut(containerId, tableId, data){
+    var root = document.getElementById(containerId);
+    var total = data.reduce(function(s,d){ return s+d.value; }, 0);
+    var cx=110, cy=100, R=88, r=54, start=-90;
+    function pt(a,radius){ var rad=a*Math.PI/180; return [cx+radius*Math.cos(rad), cy+radius*Math.sin(rad)]; }
+    var paths = data.map(function(d,i){
+      var frac = d.value/total, angle = frac*360, end = start+angle, large = angle>180?1:0;
+      var p1=pt(start,R), p2=pt(end,R), p3=pt(end,r), p4=pt(start,r);
+      var dStr = "M"+p1[0]+","+p1[1]+" A"+R+","+R+" 0 "+large+" 1 "+p2[0]+","+p2[1]+" L"+p3[0]+","+p3[1]+" A"+r+","+r+" 0 "+large+" 0 "+p4[0]+","+p4[1]+" Z";
+      var html = '<path d="'+dStr+'" fill="'+d.color+'" class="viz-bar-hit" data-idx="'+i+'" stroke="var(--surface)" stroke-width="2"></path>';
+      start = end;
+      return html;
+    }).join("");
+    root.innerHTML = '<svg viewBox="0 0 220 200" role="img" aria-label="Gráfico de temas elegidos">'+paths+
+      '<text x="110" y="96" text-anchor="middle" font-size="22" font-weight="700" fill="var(--text)">'+fmtN(total)+'</text>'+
+      '<text x="110" y="114" text-anchor="middle" font-size="11" fill="var(--text-faint)">equipos</text>'+
+    '</svg>'+
+    '<div class="chart-legend">'+data.map(function(d){
+      var pct = ((d.value/total)*100).toFixed(1);
+      return '<span class="chart-legend-item"><span class="chart-legend-swatch" style="background:'+d.color+'"></span>'+esc(d.label)+' — <b>'+pct+'%</b></span>';
+    }).join("")+'</div>';
+
+    var svg = root.querySelector("svg");
+    svg.addEventListener("pointermove", function(e){
+      var p = e.target.closest(".viz-bar-hit");
+      if(!p){ hideTip(); return; }
+      var d = data[parseInt(p.dataset.idx,10)];
+      var pct = ((d.value/total)*100).toFixed(1);
+      showTip(e.clientX, e.clientY, '<div class="tip-row"><span class="tip-swatch" style="background:'+d.color+'"></span><b>'+esc(d.label)+'</b></div><div>'+fmtN(d.value)+' equipos · '+pct+'%</div>');
+    });
+    svg.addEventListener("pointerleave", hideTip);
+
+    document.getElementById(tableId).innerHTML =
+      '<table><thead><tr><th>Tema</th><th>Equipos</th><th>%</th></tr></thead><tbody>'+
+      data.map(function(d){ var pct=((d.value/total)*100).toFixed(1); return '<tr><td>'+esc(d.label)+'</td><td class="mono">'+fmtN(d.value)+'</td><td class="mono">'+pct+'%</td></tr>'; }).join("")+
+      '</tbody></table>';
+  }
+
+  function renderVBar(containerId, tableId, data){
+    var root = document.getElementById(containerId);
+    var max = Math.max.apply(null, data.map(function(d){ return d.value; }));
+    var barW=26, gap=16, baseY=170, topPad=28;
+    var chartH = baseY-topPad;
+    var vbW = data.length*(barW+gap)+gap;
+    var vbH = baseY+30;
+    var bars = data.map(function(d,i){
+      var x = gap + i*(barW+gap);
+      var h = (d.value/max)*chartH;
+      var y = baseY-h;
+      var fill = d.highlight ? "var(--teal-2)" : "var(--teal-soft-strong)";
+      return '<g class="viz-bar-hit" data-idx="'+i+'" tabindex="0">'+
+        '<rect x="'+x+'" y="0" width="'+barW+'" height="'+vbH+'" fill="transparent" pointer-events="all"></rect>'+
+        '<rect class="viz-bar" x="'+x+'" y="'+y+'" width="'+barW+'" height="'+h+'" rx="4" fill="'+fill+'"></rect>'+
+        '<text class="viz-val-label" x="'+(x+barW/2)+'" y="'+(y-7)+'" text-anchor="middle">'+fmtN(d.value)+'</text>'+
+        '<text class="viz-cat-label" x="'+(x+barW/2)+'" y="'+(baseY+18)+'" text-anchor="middle">'+esc(d.label)+'</text>'+
+      '</g>';
+    }).join("");
+    root.innerHTML = '<svg viewBox="0 0 '+vbW+' '+vbH+'" role="img" aria-label="Comparación de inscritos por año">'+
+      '<line class="viz-axis" x1="0" y1="'+baseY+'" x2="'+vbW+'" y2="'+baseY+'"></line>'+bars+'</svg>';
+
+    var svg = root.querySelector("svg");
+    svg.addEventListener("pointermove", function(e){
+      var g = e.target.closest(".viz-bar-hit");
+      if(!g){ hideTip(); return; }
+      var d = data[parseInt(g.dataset.idx,10)];
+      showTip(e.clientX, e.clientY, '<div class="tip-row"><span class="tip-swatch" style="background:'+(d.highlight?"var(--teal-2)":"var(--teal-soft-strong)")+'"></span><b>'+esc(d.label)+'</b></div><div>'+fmtN(d.value)+' equipos'+(d.highlight?" · año actual":"")+'</div>');
+    });
+    svg.addEventListener("pointerleave", hideTip);
+
+    document.getElementById(tableId).innerHTML =
+      '<table><thead><tr><th>Año</th><th>Equipos inscritos</th></tr></thead><tbody>'+
+      data.map(function(d){ return '<tr><td>'+esc(d.label)+(d.highlight?' (actual)':'')+'</td><td class="mono">'+fmtN(d.value)+'</td></tr>'; }).join("")+
+      '</tbody></table>';
+  }
+
+  function renderLine(containerId, tableId, data){
+    var root = document.getElementById(containerId);
+    var W=740, H=220, padL=44, padR=16, padT=18, padB=32;
+    var chartW=W-padL-padR, chartH=H-padT-padB;
+    var max = Math.ceil(Math.max.apply(null, data.map(function(d){ return d.value; }))/100)*100;
+    function xAt(i){ return padL + (i/(data.length-1))*chartW; }
+    function yAt(v){ return padT + chartH - (v/max)*chartH; }
+    var linePts = data.map(function(d,i){ return xAt(i)+","+yAt(d.value); }).join(" L ");
+    var baseY = yAt(0);
+    var areaPath = "M "+xAt(0)+","+baseY+" L "+linePts+" L "+xAt(data.length-1)+","+baseY+" Z";
+    var grid = [0, max/2, max].map(function(v){
+      var y = yAt(v);
+      return '<line class="viz-grid" x1="'+padL+'" y1="'+y+'" x2="'+(W-padR)+'" y2="'+y+'"></line>'+
+        '<text class="viz-cat-label" x="'+(padL-8)+'" y="'+(y+4)+'" text-anchor="end">'+fmtN(v)+'</text>';
+    }).join("");
+    var xlabels = data.map(function(d,i){ return '<text class="viz-cat-label" x="'+xAt(i)+'" y="'+(H-8)+'" text-anchor="middle">'+esc(d.label)+'</text>'; }).join("");
+    var lastX = xAt(data.length-1), lastY = yAt(data[data.length-1].value);
+    root.innerHTML = '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Inscritos por mes">'+
+      grid+
+      '<path d="'+areaPath+'" fill="var(--teal-2)" opacity="0.12"></path>'+
+      '<path d="M '+linePts+'" fill="none" stroke="var(--teal-2)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>'+
+      xlabels+
+      '<circle cx="'+lastX+'" cy="'+lastY+'" r="5" fill="var(--teal-2)" stroke="var(--surface)" stroke-width="2"></circle>'+
+      '<text class="viz-val-label" x="'+lastX+'" y="'+(lastY-12)+'" text-anchor="end">'+fmtN(data[data.length-1].value)+'</text>'+
+      '<line id="crosshair-'+containerId+'" class="viz-axis" x1="0" y1="'+padT+'" x2="0" y2="'+(H-padB)+'" opacity="0"></line>'+
+      '<rect id="hit-'+containerId+'" x="'+padL+'" y="'+padT+'" width="'+chartW+'" height="'+chartH+'" fill="transparent" pointer-events="all"></rect>'+
+    '</svg>';
+
+    var svgEl = root.querySelector("svg");
+    var hit = document.getElementById("hit-"+containerId);
+    var crosshair = document.getElementById("crosshair-"+containerId);
+    hit.addEventListener("pointermove", function(e){
+      var pt = svgEl.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY;
+      var loc = pt.matrixTransform(svgEl.getScreenCTM().inverse());
+      var idx = Math.round(((loc.x-padL)/chartW)*(data.length-1));
+      idx = Math.max(0, Math.min(data.length-1, idx));
+      var x = xAt(idx);
+      crosshair.setAttribute("x1", x); crosshair.setAttribute("x2", x); crosshair.setAttribute("opacity","1");
+      var d = data[idx];
+      showTip(e.clientX, e.clientY, '<div class="tip-row"><span class="tip-swatch" style="background:var(--teal-2)"></span><b>'+esc(d.label)+'</b></div><div>'+fmtN(d.value)+' equipos</div>');
+    });
+    hit.addEventListener("pointerleave", function(){ crosshair.setAttribute("opacity","0"); hideTip(); });
+
+    document.getElementById(tableId).innerHTML =
+      '<table><thead><tr><th>Mes</th><th>Inscritos</th></tr></thead><tbody>'+
+      data.map(function(d){ return '<tr><td>'+esc(d.label)+'</td><td class="mono">'+fmtN(d.value)+'</td></tr>'; }).join("")+
+      '</tbody></table>';
+  }
+
+  var REG_DATA = [
+    {label:"Lima", value:440}, {label:"Piura", value:172}, {label:"La Libertad", value:152},
+    {label:"Cusco", value:134}, {label:"Arequipa", value:132}, {label:"Puno", value:114},
+    {label:"Junín", value:96}, {label:"Cajamarca", value:94}, {label:"Áncash", value:94},
+    {label:"Amazonas", value:76}, {label:"Otras regiones", value:400}
+  ];
+  var TEMA_DATA = [
+    {label:"Metas de inflación", value:468, color:"var(--series-1)"},
+    {label:"Pagos digitales", value:410, color:"var(--series-2)"},
+    {label:"Reservas internacionales", value:372, color:"var(--series-3)"},
+    {label:"Billetes y monedas", value:341, color:"var(--series-4)"},
+    {label:"Dolarización", value:313, color:"var(--series-5)"}
+  ];
+  var MEDIOS_DATA = [
+    {label:"Colegio", value:612}, {label:"Facebook", value:498}, {label:"WhatsApp", value:431},
+    {label:"Web", value:376}, {label:"Instagram", value:340}, {label:"YouTube", value:265},
+    {label:"UGEL", value:240}, {label:"Correo", value:198}, {label:"TikTok", value:176},
+    {label:"Periódico o revista", value:120}, {label:"Televisión", value:98}, {label:"X (Twitter)", value:84},
+    {label:"Radio", value:62}, {label:"Teléfono", value:40}, {label:"Otro", value:35}
+  ];
+  var YEARS_DATA = [
+    {label:"2016", value:210}, {label:"2017", value:340}, {label:"2018", value:480}, {label:"2019", value:890},
+    {label:"2022", value:1120}, {label:"2023", value:1340}, {label:"2024", value:1587}, {label:"2025", value:1756},
+    {label:"2026", value:1904, highlight:true}
+  ];
+  var MES_DATA = [
+    {label:"Feb", value:45}, {label:"Mar", value:180}, {label:"Abr", value:210}, {label:"May", value:240},
+    {label:"Jun", value:265}, {label:"Jul", value:420}, {label:"Ago", value:544}
+  ];
+
+  document.getElementById("kpiTotal").innerHTML = fmtN(1904)+' <small>equipos</small>';
+  (function(){
+    var prev = 1756, cur = 1904, diff = cur-prev, pct = ((diff/prev)*100).toFixed(1);
+    document.getElementById("kpiDelta").innerHTML = '<svg class="icon" width="11" height="11" style="transform:rotate(-90deg)"><use href="#i-chevron-right"/></svg> +'+fmtN(diff)+' ('+ (diff>=0?"+":"") +pct+'%)';
+  })();
+
+  renderHBar("chart-region", "tbl-region", REG_DATA, { showPct:true, catHeader:"Región", ariaLabel:"Inscritos por región" });
+  renderDonut("chart-temas", "tbl-temas", TEMA_DATA);
+  renderHBar("chart-medios", "tbl-medios", MEDIOS_DATA, { unit:"menciones", catHeader:"Medio", leftW:175, chartW:300, ariaLabel:"Cómo se enteraron del concurso" });
+  renderVBar("chart-years", "tbl-years", YEARS_DATA);
+  renderLine("chart-mes", "tbl-mes", MES_DATA);
 
 })();
 </script>
