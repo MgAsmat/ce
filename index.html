@@ -268,6 +268,12 @@
   .dash-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start; }
   @media (max-width:960px){ .dash-grid{ grid-template-columns:1fr; } }
 
+  .dash-grid-4{ grid-template-columns:repeat(4,1fr); }
+  @media (max-width:1300px){ .dash-grid-4{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:640px){ .dash-grid-4{ grid-template-columns:1fr; } }
+  .dash-grid-4 .card-head h2{ font-size:12.5px; }
+  .dash-grid-4 .card-body{ padding:14px; }
+
   .chart-table-toggle{ font-size:11.5px; color:var(--teal); background:transparent; border:0; cursor:pointer; font-weight:700; padding:0; margin-left:auto; }
   .chart-table-toggle:hover{ text-decoration:underline; }
 
@@ -1514,7 +1520,7 @@
           </div>
         </div>
 
-        <div class="dash-grid">
+        <div class="dash-grid dash-grid-4">
           <div class="card">
             <div class="card-head">
               <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-map-pin"/></svg></span>
@@ -3001,13 +3007,19 @@
     opts = opts || {};
     var root = document.getElementById(containerId);
     var total = data.reduce(function(s,d){ return s+d.value; }, 0);
-    var max = Math.max.apply(null, data.map(function(d){ return d.value; }));
+    var chartData = data;
+    if(opts.topN && data.length>opts.topN){
+      var top = data.slice(0, opts.topN);
+      var restSum = data.slice(opts.topN).reduce(function(s,d){ return s+d.value; }, 0);
+      chartData = top.concat([{ label: opts.restLabel||"Otros", value: restSum }]);
+    }
+    var max = Math.max.apply(null, chartData.map(function(d){ return d.value; }));
     var barH = 16, gap = 11, rowH = barH+gap;
     var leftW = opts.leftW || 148, chartW = opts.chartW || 330, rightPad = 92;
     var vbW = leftW + chartW + rightPad;
-    var vbH = data.length*rowH + 8;
+    var vbH = chartData.length*rowH + 8;
     var color = opts.color || "var(--teal-2)";
-    var rows = data.map(function(d,i){
+    var rows = chartData.map(function(d,i){
       var y = 6 + i*rowH;
       var w = Math.max(2, (d.value/max)*chartW);
       var pct = ((d.value/total)*100).toFixed(1);
@@ -3025,7 +3037,7 @@
     svg.addEventListener("pointermove", function(e){
       var g = e.target.closest(".viz-bar-hit");
       if(!g){ hideTip(); return; }
-      var d = data[parseInt(g.dataset.idx,10)];
+      var d = chartData[parseInt(g.dataset.idx,10)];
       var pct = ((d.value/total)*100).toFixed(1);
       showTip(e.clientX, e.clientY, '<div class="tip-row"><span class="tip-swatch" style="background:'+color+'"></span><b>'+esc(d.label)+'</b></div><div>'+fmtN(d.value)+(opts.showPct? " · "+pct+"%" : " "+(opts.unit||""))+'</div>');
     });
@@ -3314,9 +3326,9 @@
     var mesScaled = mesDataForYear(year, total);
     var yearsHighlighted = YEARS_DATA.map(function(d){ return Object.assign({}, d, { highlight: d.label===String(year) }); });
 
-    renderHBar("hist-chart-region", "hist-tbl-region", regionScaled, { showPct:true, catHeader:"Región", ariaLabel:"Inscritos por región" });
+    renderHBar("hist-chart-region", "hist-tbl-region", regionScaled, { showPct:true, catHeader:"Región", ariaLabel:"Inscritos por región", topN:5, restLabel:"Otras regiones", leftW:88, chartW:120 });
     renderDonut("hist-chart-temas", "hist-tbl-temas", temaScaled);
-    renderHBar("hist-chart-medios", "hist-tbl-medios", mediosScaled, { unit:"menciones", catHeader:"Medio", leftW:175, chartW:300, ariaLabel:"Cómo se enteraron del concurso" });
+    renderHBar("hist-chart-medios", "hist-tbl-medios", mediosScaled, { unit:"menciones", catHeader:"Medio", ariaLabel:"Cómo se enteraron del concurso", topN:5, restLabel:"Otros medios", leftW:88, chartW:120 });
     renderVBar("hist-chart-years", "hist-tbl-years", yearsHighlighted);
     renderLine("hist-chart-mes", "hist-tbl-mes", mesScaled);
 
