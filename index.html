@@ -652,6 +652,7 @@
         <ul class="nav-sub">
           <li><a href="#lista" data-view-link="lista" class="active"><span class="dot"></span>Fichas</a></li>
           <li><a href="#crear" data-view-link="crear"><span class="dot"></span>Crear ficha</a></li>
+          <li><a href="#lote" data-view-link="lote"><span class="dot"></span>Subir por lote</a></li>
         </ul>
       </div>
 
@@ -1128,6 +1129,62 @@
           <div class="actions-row" style="justify-content:center;margin-top:22px">
             <button class="btn btn-ghost" id="btnAnother">Registrar otra ficha</button>
             <button class="btn btn-primary" id="btnToList">Ver lista de fichas</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= VIEW: SUBIR FICHAS POR LOTE ================= -->
+      <section class="view" id="view-lote">
+        <div class="page-head">
+          <h1>Subir por lote</h1>
+          <p>Sube uno o más archivos Excel con los datos de varios equipos. Cada fila de cada archivo se valida y se registra automáticamente como una ficha nueva.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-file-text"/></svg></span>
+            <h2>Plantilla</h2>
+            <span class="hint">Usa el formato de columnas esperado para evitar errores</span>
+          </div>
+          <div class="card-body" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+            <p style="margin:0;font-size:12.5px;color:var(--text-muted);flex:1;min-width:240px">Descarga la plantilla, complétala con los datos de cada equipo (una fila por equipo) y súbela aquí. Puedes subir varios archivos a la vez.</p>
+            <button type="button" class="btn btn-excel" id="btnDescargarPlantillaLote"><svg class="icon" width="14" height="14"><use href="#i-download"/></svg> Descargar plantilla</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-layers"/></svg></span>
+            <h2>Cargar archivos Excel</h2>
+            <span class="hint">.xlsx o .xls</span>
+          </div>
+          <div class="card-body">
+            <div class="dropzone" id="lote-dropzone">
+              <svg class="icon" width="28" height="28"><use href="#i-upload"/></svg>
+              <div class="dz-title">Arrastra uno o varios archivos Excel aquí o haz clic para elegirlos</div>
+              <div class="dz-sub">Cada fila de cada archivo se registrará como una ficha nueva</div>
+              <input type="file" id="lote-file" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" multiple>
+            </div>
+
+            <div class="table-toolbar" id="loteSummaryBar" hidden>
+              <div class="result-count"><b id="loteValidCount">0</b> listas para registrar<span id="loteErrorCount" style="margin-left:10px"></span></div>
+            </div>
+
+            <div class="table-scroll" style="margin-top:16px">
+              <table>
+                <thead><tr><th>Archivo</th><th>Fila</th><th>Equipo / Institución</th><th>Tema</th><th>Ubicación</th><th>Estado</th><th></th></tr></thead>
+                <tbody id="loteBody"></tbody>
+              </table>
+            </div>
+            <div class="empty-state" id="loteEmpty">
+              <svg class="icon" width="34" height="34"><use href="#i-inbox"/></svg>
+              <div>Agrega archivos Excel para revisarlos antes de registrarlos.</div>
+            </div>
+
+            <div class="actions-row">
+              <button type="button" class="btn btn-primary" id="btnRegistrarLote" disabled><svg class="icon" width="14" height="14"><use href="#i-check"/></svg> Registrar equipos</button>
+              <button type="button" class="btn btn-ghost" id="btnLimpiarLoteFichas" disabled>Limpiar lista</button>
+            </div>
           </div>
         </div>
       </section>
@@ -1889,6 +1946,7 @@
 
 <div class="chart-tooltip" id="chartTooltip"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 (function(){
   "use strict";
@@ -1952,7 +2010,7 @@
   document.getElementById("sidebarClose").addEventListener("click", closeSidebar);
   overlay.addEventListener("click", closeSidebar);
 
-  var titles = { lista:"Lista de fichas", crear:"Crear ficha", campos:"Campos de la ficha", "concursos-historial":"Historial de concursos", "concursos-crear":"Crear concurso", "archivos-subir":"Subir archivos", "reportes":"Dashboard de reportes", "historico":"Ediciones anteriores", "usuarios-crear":"Crear usuario", "usuarios-administrar":"Administrar usuarios" };
+  var titles = { lista:"Lista de fichas", crear:"Crear ficha", lote:"Subir fichas por lote", campos:"Campos de la ficha", "concursos-historial":"Historial de concursos", "concursos-crear":"Crear concurso", "archivos-subir":"Subir archivos", "reportes":"Dashboard de reportes", "historico":"Ediciones anteriores", "usuarios-crear":"Crear usuario", "usuarios-administrar":"Administrar usuarios" };
   function showView(name){
     document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("active"); });
     document.getElementById("view-"+name).classList.add("active");
@@ -2978,7 +3036,10 @@
     });
   });
 
-  document.getElementById("fichaCodigos").innerHTML = ROWS.map(function(r){ return '<option value="'+r.codigo+'">'; }).join("");
+  function refreshFichaCodigos(){
+    document.getElementById("fichaCodigos").innerHTML = ROWS.map(function(r){ return '<option value="'+r.codigo+'">'; }).join("");
+  }
+  refreshFichaCodigos();
 
   function fichaEstadoBadge(estado){
     return estado==="Video confirmado"
@@ -3109,6 +3170,222 @@
 
   renderUploadLog();
   renderBatch();
+
+  /* ---------- subir fichas por lote (Excel) ---------- */
+  function normKey(s){
+    return String(s==null ? "" : s)
+      .normalize("NFD").replace(/[̀-ͯ]/g,"")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g," ")
+      .trim();
+  }
+
+  var LOTE_FIELD_ALIASES = {
+    concurso: ["concurso"],
+    modular: ["codigo modular","codigo modular minedu","modular"],
+    institucion: ["institucion educativa","nombre de la institucion educativa","institucion","colegio","ie"],
+    direccion: ["direccion"],
+    region: ["region"],
+    provincia: ["provincia"],
+    distrito: ["distrito"],
+    telefonoIE: ["telefono ie","telefono institucion educativa","telefono de la institucion educativa","telefono institucion"],
+    correoIE: ["correo ie","correo institucion educativa","correo de la institucion educativa","correo institucion"],
+    tema: ["tema","tema del video"],
+    titulo: ["titulo","titulo del video"],
+    seudonimo: ["seudonimo","seudonimo del equipo","seudonimo del grupo"],
+    directorNombres: ["nombres del director","director nombres","director"],
+    directorCorreo: ["correo del director","director correo"],
+    directorTelefono: ["telefono del director","director telefono"],
+    profesorNombres: ["nombres del profesor asesor","profesor asesor nombres","profesor asesor","profesor"],
+    profesorCorreo: ["correo del profesor asesor","profesor asesor correo"],
+    profesorTelefono: ["telefono del profesor asesor","profesor asesor telefono"]
+  };
+  var LOTE_FIELD_LABELS = {
+    institucion:"Institución educativa", region:"Región", provincia:"Provincia", distrito:"Distrito",
+    tema:"Tema", titulo:"Título del video", seudonimo:"Seudónimo del equipo"
+  };
+  var LOTE_ALIAS_LOOKUP = {};
+  Object.keys(LOTE_FIELD_ALIASES).forEach(function(key){
+    LOTE_FIELD_ALIASES[key].forEach(function(alias){ LOTE_ALIAS_LOOKUP[alias] = key; });
+  });
+
+  function extractLoteFields(rowObj){
+    var out = {};
+    Object.keys(rowObj).forEach(function(h){
+      var key = LOTE_ALIAS_LOOKUP[normKey(h)];
+      if(key && !out[key]){
+        var v = rowObj[h];
+        out[key] = (v==null ? "" : String(v)).trim();
+      }
+    });
+    return out;
+  }
+
+  function validateLoteRow(fields){
+    var errors = [];
+    ["institucion","region","provincia","distrito","tema","titulo","seudonimo"].forEach(function(k){
+      if(!fields[k]) errors.push(LOTE_FIELD_LABELS[k]+" vacío");
+    });
+
+    var regionKey = null, provinciaKey = null, distritoKey = null;
+    if(fields.region){
+      regionKey = Object.keys(GEO).find(function(r){ return r.toLowerCase()===fields.region.toLowerCase(); });
+      if(!regionKey) errors.push('Región "'+fields.region+'" no reconocida');
+    }
+    if(regionKey && fields.provincia){
+      provinciaKey = Object.keys(GEO[regionKey]).find(function(p){ return p.toLowerCase()===fields.provincia.toLowerCase(); });
+      if(!provinciaKey) errors.push('Provincia "'+fields.provincia+'" no pertenece a '+regionKey);
+    }
+    if(regionKey && provinciaKey && fields.distrito){
+      distritoKey = GEO[regionKey][provinciaKey].find(function(d){ return d.toLowerCase()===fields.distrito.toLowerCase(); });
+      if(!distritoKey) errors.push('Distrito "'+fields.distrito+'" no pertenece a '+provinciaKey);
+    }
+
+    var temaLabel = fields.tema || "";
+    if(fields.tema){
+      var temaField = fieldByCategoria("trabajo","select");
+      var temaOpt = temaField && temaField.opciones.find(function(o){ return o.label.toLowerCase()===fields.tema.toLowerCase(); });
+      if(temaOpt) temaLabel = temaOpt.label;
+      else errors.push('Tema "'+fields.tema+'" no está entre los temas configurados');
+    }
+
+    return { errors:errors, region:regionKey, provincia:provinciaKey, distrito:distritoKey, tema:temaLabel };
+  }
+
+  var loteRows = [], loteRowId = 1;
+
+  function parseLoteFile(file){
+    if(typeof XLSX==="undefined"){ showToast("No se pudo cargar el lector de Excel. Verifica tu conexión e inténtalo de nuevo."); return; }
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try{
+        var wb = XLSX.read(new Uint8Array(e.target.result), { type:"array" });
+        var sheet = wb.Sheets[wb.SheetNames[0]];
+        var json = XLSX.utils.sheet_to_json(sheet, { defval:"" });
+        var added = 0;
+        json.forEach(function(rowObj, idx){
+          var fields = extractLoteFields(rowObj);
+          var hasAny = Object.keys(fields).some(function(k){ return fields[k]; });
+          if(!hasAny) return;
+          var v = validateLoteRow(fields);
+          loteRows.push({ id:loteRowId++, file:file.name, rowNum:idx+2, fields:fields, region:v.region, provincia:v.provincia, distrito:v.distrito, tema:v.tema, errors:v.errors });
+          added++;
+        });
+        if(added===0) showToast('No se encontraron filas con datos en "'+file.name+'".');
+        renderLote();
+      } catch(err){
+        showToast('No se pudo leer "'+file.name+'". Verifica que sea un archivo Excel válido.');
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function addLoteFiles(fileList){
+    Array.prototype.forEach.call(fileList, function(f){ parseLoteFile(f); });
+  }
+
+  function renderLote(){
+    var body = document.getElementById("loteBody");
+    document.getElementById("loteEmpty").hidden = loteRows.length!==0;
+    document.getElementById("loteSummaryBar").hidden = loteRows.length===0;
+    body.innerHTML = loteRows.map(function(r){
+      var ok = r.errors.length===0;
+      var lugar = [ok ? r.region : r.fields.region, ok ? r.provincia : r.fields.provincia, ok ? r.distrito : r.fields.distrito].filter(Boolean).join(" · ");
+      var estadoBadge = ok
+        ? '<span class="badge badge-green"><svg class="icon" width="11" height="11"><use href="#i-check"/></svg>Lista para registrar</span>'
+        : '<span class="badge badge-red" title="'+esc(r.errors.join("; "))+'"><svg class="icon" width="11" height="11"><use href="#i-alert"/></svg>'+r.errors.length+' error'+(r.errors.length===1?"":"es")+'</span>';
+      return '<tr>'+
+        '<td class="cell-sub">'+esc(r.file)+'</td>'+
+        '<td class="cell-sub">'+r.rowNum+'</td>'+
+        '<td><div class="cell-title">'+esc(r.fields.institucion||"—")+'</div><div class="cell-sub">'+esc(r.fields.seudonimo||"")+'</div></td>'+
+        '<td class="cell-sub">'+esc(r.tema||"—")+'</td>'+
+        '<td class="cell-sub">'+esc(lugar||"—")+'</td>'+
+        '<td>'+estadoBadge+'</td>'+
+        '<td><button type="button" class="icon-btn" title="Quitar" data-remove-lote="'+r.id+'"><svg class="icon" width="14" height="14"><use href="#i-x"/></svg></button></td>'+
+      '</tr>';
+    }).join("");
+    body.querySelectorAll("[data-remove-lote]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var id = parseInt(btn.dataset.removeLote,10);
+        loteRows = loteRows.filter(function(r){ return r.id!==id; });
+        renderLote();
+      });
+    });
+    var validRows = loteRows.filter(function(r){ return r.errors.length===0; });
+    var errorCount = loteRows.length - validRows.length;
+    document.getElementById("loteValidCount").textContent = fmtN(validRows.length);
+    document.getElementById("loteErrorCount").textContent = errorCount>0 ? "· "+fmtN(errorCount)+" con errores" : "";
+    document.getElementById("btnRegistrarLote").disabled = validRows.length===0;
+    document.getElementById("btnLimpiarLoteFichas").disabled = loteRows.length===0;
+  }
+
+  var loteFileInput = document.getElementById("lote-file");
+  var loteDropzone = document.getElementById("lote-dropzone");
+  loteDropzone.addEventListener("click", function(){ loteFileInput.click(); });
+  loteFileInput.addEventListener("change", function(){ addLoteFiles(loteFileInput.files); loteFileInput.value = ""; });
+  ["dragover","dragenter"].forEach(function(ev){
+    loteDropzone.addEventListener(ev, function(e){ e.preventDefault(); loteDropzone.classList.add("drag-active"); });
+  });
+  ["dragleave","dragend"].forEach(function(ev){
+    loteDropzone.addEventListener(ev, function(){ loteDropzone.classList.remove("drag-active"); });
+  });
+  loteDropzone.addEventListener("drop", function(e){
+    e.preventDefault();
+    loteDropzone.classList.remove("drag-active");
+    if(e.dataTransfer.files.length) addLoteFiles(e.dataTransfer.files);
+  });
+
+  document.getElementById("btnLimpiarLoteFichas").addEventListener("click", function(){ loteRows = []; renderLote(); });
+
+  function pad2(n){ return n<10 ? "0"+n : ""+n; }
+
+  document.getElementById("btnRegistrarLote").addEventListener("click", function(){
+    var validRows = loteRows.filter(function(r){ return r.errors.length===0; });
+    if(validRows.length===0) return;
+    var now = new Date();
+    var fecha = now.getFullYear()+"-"+pad2(now.getMonth()+1)+"-"+pad2(now.getDate())+" "+pad2(now.getHours())+":"+pad2(now.getMinutes());
+    validRows.forEach(function(r){
+      var codigo = "CE-2026-"+Math.floor(1000+Math.random()*8999)+"-"+Math.floor(100000+Math.random()*899999);
+      ROWS.unshift({
+        codigo: codigo,
+        titulo: r.fields.titulo,
+        tema: r.tema,
+        seudonimo: r.fields.seudonimo,
+        institucion: r.fields.institucion,
+        lugar: r.region+" · "+r.provincia+" · "+r.distrito,
+        region: r.region,
+        fecha: fecha,
+        estado: "Pendiente de envío"
+      });
+    });
+    loteRows = loteRows.filter(function(r){ return r.errors.length>0; });
+    renderLote();
+    if(typeof renderTable==="function") renderTable();
+    refreshFichaCodigos();
+    showToast(validRows.length+" equipo"+(validRows.length===1?"":"s")+" registrado"+(validRows.length===1?"":"s")+" correctamente.");
+  });
+
+  document.getElementById("btnDescargarPlantillaLote").addEventListener("click", function(){
+    if(typeof XLSX==="undefined"){ showToast("No se pudo cargar el generador de Excel. Verifica tu conexión e inténtalo de nuevo."); return; }
+    var headers = ["Institución educativa","Código modular","Región","Provincia","Distrito","Dirección","Teléfono IE","Correo IE",
+      "Tema","Título del video","Seudónimo del equipo","Nombres del director","Correo del director","Teléfono del director",
+      "Nombres del profesor asesor","Correo del profesor asesor","Teléfono del profesor asesor"];
+    var example = ["I.E. Rosa Irene Infantes de Canales","1234567","Lima","Lima","San Miguel","Av. La Marina 123","012345678","contacto@institucion.edu.pe",
+      "Metas de inflación","¿Qué pasa cuando cada sol vale menos?","Monetria","Ana Pérez Gómez","director@institucion.edu.pe","987654321",
+      "Luis Ramos Díaz","profesor@institucion.edu.pe","987654322"];
+    var wsEquipos = XLSX.utils.aoa_to_sheet([headers, example]);
+    wsEquipos["!cols"] = headers.map(function(){ return { wch:24 }; });
+    var temaField = fieldByCategoria("trabajo","select");
+    var temasList = temaField ? temaField.opciones.map(function(o){ return [o.label]; }) : [];
+    var wsTemas = XLSX.utils.aoa_to_sheet([["Temas válidos"]].concat(temasList));
+    wsTemas["!cols"] = [{ wch:32 }];
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, wsEquipos, "Equipos");
+    XLSX.utils.book_append_sheet(wb, wsTemas, "Temas válidos");
+    XLSX.writeFile(wb, "plantilla-fichas-por-lote.xlsx");
+  });
+
+  renderLote();
 
   /* ---------- reportes / dashboard ---------- */
   var tipEl = document.getElementById("chartTooltip");
