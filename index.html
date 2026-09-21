@@ -658,7 +658,7 @@
       </div>
       <div class="nav-group" data-group="historico">
         <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-clock"/></svg> Histórico <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
-        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Ediciones anteriores</a></li></ul>
+        <ul class="nav-sub"><li><a href="#historico" data-view-link="historico"><span class="dot"></span>Ediciones anteriores</a></li></ul>
       </div>
       <div class="nav-group" data-group="usuarios">
         <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-users"/></svg> Usuarios <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
@@ -1488,6 +1488,118 @@
         </div>
       </section>
 
+      <!-- ================= VIEW: HISTÓRICO ================= -->
+      <section class="view" id="view-historico">
+        <div class="page-head">
+          <h1>Ediciones anteriores</h1>
+          <p>El mismo panel de indicadores de Reportes, por edición. Cambia el año para ver sus cifras y la lista completa de inscritos.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-body" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+            <div class="field" style="min-width:280px">
+              <label>Edición</label>
+              <div class="ctrl select"><select id="histYear"></select></div>
+            </div>
+            <div class="topbar-spacer"></div>
+            <div class="kpi-sub" id="histConcursoMeta" style="text-align:right"></div>
+          </div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-tile">
+            <div class="kpi-label" id="histKpiLabel">Equipos inscritos</div>
+            <div class="kpi-value" id="histKpiTotal">—</div>
+            <div><span class="kpi-delta" id="histKpiDelta">—</span></div>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-map-pin"/></svg></span>
+              <h2>Inscritos por región</h2>
+              <button type="button" class="chart-table-toggle" data-table-toggle="hist-tbl-region">Ver tabla</button>
+            </div>
+            <div class="card-body">
+              <div class="viz-root" id="hist-chart-region"></div>
+              <div class="data-table-wrap" id="hist-tbl-region" hidden></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-tag"/></svg></span>
+              <h2>Temas elegidos</h2>
+              <button type="button" class="chart-table-toggle" data-table-toggle="hist-tbl-temas">Ver tabla</button>
+            </div>
+            <div class="card-body">
+              <div class="viz-root" id="hist-chart-temas"></div>
+              <div class="data-table-wrap" id="hist-tbl-temas" hidden></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-users"/></svg></span>
+              <h2>Cómo se enteraron del concurso</h2>
+              <button type="button" class="chart-table-toggle" data-table-toggle="hist-tbl-medios">Ver tabla</button>
+            </div>
+            <div class="card-body">
+              <div class="viz-root" id="hist-chart-medios"></div>
+              <div class="data-table-wrap" id="hist-tbl-medios" hidden></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-bar-chart"/></svg></span>
+              <h2>Comparación con años anteriores</h2>
+              <button type="button" class="chart-table-toggle" data-table-toggle="hist-tbl-years">Ver tabla</button>
+            </div>
+            <div class="card-body">
+              <div class="viz-root" id="hist-chart-years"></div>
+              <div class="data-table-wrap" id="hist-tbl-years" hidden></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-clock"/></svg></span>
+            <h2>Inscritos por mes</h2>
+            <button type="button" class="chart-table-toggle" data-table-toggle="hist-tbl-mes">Ver tabla</button>
+          </div>
+          <div class="card-body">
+            <div class="viz-root" id="hist-chart-mes"></div>
+            <div class="data-table-wrap" id="hist-tbl-mes" hidden></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="result-count"><b id="histFichasCount">0</b> fichas inscritas</div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Cód. ficha</th>
+                  <th>Título y tema</th>
+                  <th>Seudónimo</th>
+                  <th>Institución educativa</th>
+                  <th>Lugar</th>
+                  <th>Registro</th>
+                  <th>Video</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="histFichasBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 </div>
@@ -1706,7 +1818,7 @@
   document.getElementById("sidebarClose").addEventListener("click", closeSidebar);
   overlay.addEventListener("click", closeSidebar);
 
-  var titles = { lista:"Lista de fichas", crear:"Crear ficha", campos:"Campos de la ficha", "concursos-historial":"Historial de concursos", "concursos-crear":"Crear concurso", "archivos-subir":"Subir archivos", "reportes":"Dashboard de reportes" };
+  var titles = { lista:"Lista de fichas", crear:"Crear ficha", campos:"Campos de la ficha", "concursos-historial":"Historial de concursos", "concursos-crear":"Crear concurso", "archivos-subir":"Subir archivos", "reportes":"Dashboard de reportes", "historico":"Ediciones anteriores" };
   function showView(name){
     document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("active"); });
     document.getElementById("view-"+name).classList.add("active");
@@ -3090,6 +3202,134 @@
   renderHBar("chart-medios", "tbl-medios", MEDIOS_DATA, { unit:"menciones", catHeader:"Medio", leftW:175, chartW:300, ariaLabel:"Cómo se enteraron del concurso" });
   renderVBar("chart-years", "tbl-years", YEARS_DATA);
   renderLine("chart-mes", "tbl-mes", MES_DATA);
+
+  /* ---------- histórico ---------- */
+  var MEDIOS_TOTAL_2026 = MEDIOS_DATA.reduce(function(s,d){ return s+d.value; }, 0);
+  var MESES_ABR = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+
+  function scaleData(base, targetTotal){
+    var baseTotal = base.reduce(function(s,d){ return s+d.value; }, 0);
+    var scaled = base.map(function(d){ return Object.assign({}, d, { value: Math.max(1, Math.round(d.value/baseTotal*targetTotal)) }); });
+    var sum = scaled.reduce(function(s,d){ return s+d.value; }, 0);
+    var diff = targetTotal-sum;
+    if(diff!==0){
+      var idxMax = 0;
+      for(var i=1;i<scaled.length;i++){ if(scaled[i].value>scaled[idxMax].value) idxMax=i; }
+      scaled[idxMax].value = Math.max(1, scaled[idxMax].value+diff);
+    }
+    return scaled;
+  }
+
+  function mesDataForYear(year, total){
+    var c = CONCURSOS.find(function(x){ return x.periodo===year; });
+    var startM = c ? c.inicio.m : 2, endM = c ? c.fin.m : 8;
+    var months = [startM];
+    var m = startM, guard = 0;
+    while(m!==endM && guard<12){ m = m%12+1; months.push(m); guard++; }
+    if(months.length<2) months = [startM, (startM%12)+1];
+    var weights = months.map(function(_,i){ return i+1; });
+    var wsum = weights.reduce(function(a,b){ return a+b; }, 0);
+    var vals = weights.map(function(w){ return Math.max(1, Math.round(w/wsum*total)); });
+    var vsum = vals.reduce(function(a,b){ return a+b; }, 0);
+    vals[vals.length-1] = Math.max(1, vals[vals.length-1]+(total-vsum));
+    return months.map(function(mo,i){ return { label: MESES_ABR[mo-1], value: vals[i] }; });
+  }
+
+  function computeYearDelta(year){
+    var idx = YEARS_DATA.findIndex(function(d){ return d.label===String(year); });
+    if(idx<=0) return null;
+    var cur = YEARS_DATA[idx].value, prev = YEARS_DATA[idx-1].value;
+    return { diff:cur-prev, pct:((cur-prev)/prev*100).toFixed(1), prevLabel:YEARS_DATA[idx-1].label };
+  }
+
+  var histFichaCache = {};
+  function getHistFichas(year){
+    if(histFichaCache[year]) return histFichaCache[year];
+    if(year===2026){ histFichaCache[2026] = ROWS; return ROWS; }
+    var c = CONCURSOS.find(function(x){ return x.periodo===year; });
+    var yd = YEARS_DATA.find(function(d){ return d.label===String(year); });
+    var total = yd ? yd.value : 200;
+    var count = Math.max(6, Math.min(ROWS.length, Math.round(total/140)));
+    var endMonth = c ? c.fin.m : 8;
+    var rows = ROWS.slice(0, count).map(function(base, i){
+      var day = 10+((i*5)%18);
+      return {
+        codigo: "CE-"+year+"-"+(4800+i*11)+"-"+((year*131+i*977)%900000+100000)+"-"+((year*57+i*331)%900000+100000),
+        titulo: base.titulo, tema: base.tema, seudonimo: base.seudonimo, institucion: base.institucion,
+        lugar: base.lugar, region: base.region,
+        fecha: year+"-"+String(endMonth).padStart(2,"0")+"-"+String(day).padStart(2,"0")+" "+String(9+(i%8)).padStart(2,"0")+":"+String((i*7)%60).padStart(2,"0"),
+        estado: "Video confirmado"
+      };
+    });
+    histFichaCache[year] = rows;
+    return rows;
+  }
+
+  function renderHistFichasTable(year){
+    var rows = getHistFichas(year);
+    document.getElementById("histFichasCount").textContent = fmtN(rows.length);
+    document.getElementById("histFichasBody").innerHTML = rows.map(function(r){
+      var badgeClass = r.estado==="Video confirmado" ? "badge-green" : "badge-amber";
+      var badgeIcon = r.estado==="Video confirmado" ? "i-check" : "i-alert";
+      return '<tr>'+
+        '<td class="mono cell-sub">'+r.codigo+'</td>'+
+        '<td><div class="cell-title">'+r.titulo+'</div><div class="cell-sub">'+r.tema+'</div></td>'+
+        '<td>'+r.seudonimo+'</td>'+
+        '<td>'+r.institucion+'</td>'+
+        '<td class="cell-place">'+r.lugar+'</td>'+
+        '<td class="cell-sub">'+r.fecha+'</td>'+
+        '<td><span class="badge '+badgeClass+'"><svg class="icon" width="11" height="11"><use href="#'+badgeIcon+'"/></svg>'+r.estado+'</span></td>'+
+        '<td><div class="rowacts">'+
+          '<button class="icon-btn" title="Ver ficha"><svg class="icon" width="14" height="14"><use href="#i-file-text"/></svg></button>'+
+          '<button class="icon-btn" title="Descargar"><svg class="icon" width="14" height="14"><use href="#i-download"/></svg></button>'+
+        '</div></td>'+
+      '</tr>';
+    }).join("");
+  }
+
+  function renderHistorico(year){
+    year = parseInt(year, 10);
+    var yd = YEARS_DATA.find(function(d){ return d.label===String(year); });
+    var total = yd ? yd.value : 0;
+    var concurso = CONCURSOS.find(function(c){ return c.periodo===year; });
+
+    document.getElementById("histConcursoMeta").textContent = concurso ? concurso.nombre : ("Concurso "+year);
+    document.getElementById("histKpiLabel").textContent = "Equipos inscritos en "+year;
+    document.getElementById("histKpiTotal").innerHTML = fmtN(total)+' <small>equipos</small>';
+
+    var delta = computeYearDelta(year);
+    var deltaEl = document.getElementById("histKpiDelta");
+    if(delta){
+      var up = delta.diff>=0;
+      deltaEl.className = "kpi-delta "+(up?"up":"down");
+      deltaEl.innerHTML = '<svg class="icon" width="11" height="11" style="transform:rotate('+(up?-90:90)+'deg)"><use href="#i-chevron-right"/></svg> '+(up?"+":"")+fmtN(delta.diff)+' ('+(up?"+":"")+delta.pct+'%) vs. '+delta.prevLabel;
+    } else {
+      deltaEl.className = "kpi-delta";
+      deltaEl.textContent = "Primera edición registrada en el sistema";
+    }
+
+    var regionScaled = scaleData(REG_DATA, total);
+    var temaScaled = scaleData(TEMA_DATA, total);
+    var mediosScaled = scaleData(MEDIOS_DATA, Math.round(total*(MEDIOS_TOTAL_2026/1904)));
+    var mesScaled = mesDataForYear(year, total);
+    var yearsHighlighted = YEARS_DATA.map(function(d){ return Object.assign({}, d, { highlight: d.label===String(year) }); });
+
+    renderHBar("hist-chart-region", "hist-tbl-region", regionScaled, { showPct:true, catHeader:"Región", ariaLabel:"Inscritos por región" });
+    renderDonut("hist-chart-temas", "hist-tbl-temas", temaScaled);
+    renderHBar("hist-chart-medios", "hist-tbl-medios", mediosScaled, { unit:"menciones", catHeader:"Medio", leftW:175, chartW:300, ariaLabel:"Cómo se enteraron del concurso" });
+    renderVBar("hist-chart-years", "hist-tbl-years", yearsHighlighted);
+    renderLine("hist-chart-mes", "hist-tbl-mes", mesScaled);
+
+    renderHistFichasTable(year);
+  }
+
+  (function initHistorico(){
+    var sel = document.getElementById("histYear");
+    var years = CONCURSOS.slice().sort(function(a,b){ return b.periodo-a.periodo; });
+    sel.innerHTML = years.map(function(c){ return '<option value="'+c.periodo+'">'+c.periodo+' — '+c.nombre+'</option>'; }).join("");
+    sel.addEventListener("change", function(){ renderHistorico(sel.value); });
+    renderHistorico(years[0].periodo);
+  })();
 
 })();
 </script>
