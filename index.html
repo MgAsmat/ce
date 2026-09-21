@@ -234,6 +234,19 @@
   .color-field{ display:flex; align-items:center; gap:10px; }
   .color-field input[type=color]{ width:40px; height:38px; padding:3px; border:1px solid var(--border-strong); border-radius:var(--r-sm); background:var(--surface); cursor:pointer; flex:0 0 auto; }
   .color-field input[type=text]{ flex:1; }
+
+  .dropzone{ border:2px dashed var(--border-strong); border-radius:var(--r-md); padding:30px 20px; text-align:center; cursor:pointer; background:var(--surface-2); transition:border-color .15s ease, background .15s ease; }
+  .dropzone:hover, .dropzone.drag-active{ border-color:var(--teal); background:var(--teal-soft); }
+  .dropzone input[type=file]{ display:none; }
+  .dropzone .icon{ width:28px; height:28px; color:var(--text-faint); margin-bottom:8px; }
+  .dropzone .dz-title{ font-size:13.5px; font-weight:600; }
+  .dropzone .dz-sub{ font-size:12px; color:var(--text-faint); margin-top:4px; }
+
+  .ficha-preview{ display:flex; align-items:center; gap:12px; padding:12px 14px; border:1px solid var(--border); border-radius:var(--r-md); background:var(--surface-2); margin-top:10px; }
+  .ficha-preview .icon-badge{ width:32px; height:32px; border-radius:9px; background:var(--teal-soft); color:var(--teal); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+  .ficha-preview .fp-title{ font-weight:600; font-size:13px; }
+  .ficha-preview .fp-sub{ font-size:11.5px; color:var(--text-faint); }
+  .ficha-preview .topbar-spacer{ flex:1; }
   .ctrl.has-icon input, .ctrl.has-icon select{ padding-left:34px; }
   input::placeholder{ color:var(--text-faint); }
   input:focus, select:focus, textarea:focus{ border-color:var(--teal); box-shadow:0 0 0 3px var(--teal-soft); outline:none; }
@@ -586,7 +599,7 @@
       </div>
       <div class="nav-group" data-group="archivos">
         <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-folder"/></svg> Archivos <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
-        <ul class="nav-sub"><li><a href="#" onclick="return false"><span class="dot"></span>Subir archivos</a></li></ul>
+        <ul class="nav-sub"><li><a href="#archivos-subir" data-view-link="archivos-subir"><span class="dot"></span>Subir archivos</a></li></ul>
       </div>
       <div class="nav-group" data-group="reportes">
         <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-bar-chart"/></svg> Reportes <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
@@ -1248,6 +1261,102 @@
         </form>
       </section>
 
+      <!-- ================= VIEW: SUBIR ARCHIVOS ================= -->
+      <section class="view" id="view-archivos-subir">
+        <div class="page-head">
+          <h1>Subir archivos</h1>
+          <p>Sube el video de una ficha ya creada, de forma individual o en lote.</p>
+        </div>
+
+        <div class="chipbar" id="uploadModeToggle" style="margin-bottom:16px">
+          <button type="button" class="chip active" data-upload-mode="individual"><svg class="icon" width="13" height="13"><use href="#i-upload"/></svg> Individual</button>
+          <button type="button" class="chip" data-upload-mode="lote"><svg class="icon" width="13" height="13"><use href="#i-layers"/></svg> Por lote</button>
+        </div>
+
+        <div id="uploadPanelIndividual">
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-file-text"/></svg></span>
+              <h2>Buscar ficha</h2>
+            </div>
+            <div class="card-body">
+              <div class="field" style="max-width:440px">
+                <label>Código de ficha <span class="req">*</span></label>
+                <div class="ctrl has-icon">
+                  <svg class="icon" width="14" height="14"><use href="#i-search"/></svg>
+                  <input id="up-codigo" type="text" list="fichaCodigos" placeholder="Ej. CE-2026-4899-220310-77341" autocomplete="off">
+                </div>
+                <datalist id="fichaCodigos"></datalist>
+              </div>
+              <div id="up-preview"></div>
+
+              <div class="section-label" style="margin-top:20px">Archivo de video</div>
+              <div class="dropzone" id="up-dropzone">
+                <svg class="icon" width="28" height="28"><use href="#i-upload"/></svg>
+                <div class="dz-title">Arrastra el video aquí o haz clic para elegirlo</div>
+                <div class="dz-sub" id="up-file-name">Ningún archivo seleccionado · MP4, MOV o AVI</div>
+                <input type="file" id="up-file" accept="video/*">
+              </div>
+
+              <div class="actions-row">
+                <button type="button" class="btn btn-primary" id="btnSubirIndividual"><svg class="icon" width="14" height="14"><use href="#i-upload"/></svg> Subir video</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-clock"/></svg></span>
+              <h2>Subidas recientes</h2>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Ficha</th><th>Archivo</th><th>Hora</th></tr></thead>
+                <tbody id="uploadLogBody"></tbody>
+              </table>
+            </div>
+            <div class="empty-state" id="uploadLogEmpty">
+              <svg class="icon" width="34" height="34"><use href="#i-inbox"/></svg>
+              <div>Aún no subes archivos en esta sesión.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="uploadPanelLote" hidden>
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-layers"/></svg></span>
+              <h2>Cargar por lote</h2>
+              <span class="hint">Nombra cada archivo con el código de la ficha</span>
+            </div>
+            <div class="card-body">
+              <div class="dropzone" id="batch-dropzone">
+                <svg class="icon" width="28" height="28"><use href="#i-upload"/></svg>
+                <div class="dz-title">Arrastra varios videos aquí o haz clic para elegirlos</div>
+                <div class="dz-sub">Ej. CE-2026-4899-220310-77341.mp4 — el código en el nombre enlaza el archivo con su ficha</div>
+                <input type="file" id="batch-file" accept="video/*" multiple>
+              </div>
+
+              <div class="table-scroll" style="margin-top:16px">
+                <table>
+                  <thead><tr><th>Archivo</th><th>Ficha detectada</th><th>Estado</th><th></th></tr></thead>
+                  <tbody id="batchBody"></tbody>
+                </table>
+              </div>
+              <div class="empty-state" id="batchEmpty">
+                <svg class="icon" width="34" height="34"><use href="#i-inbox"/></svg>
+                <div>Agrega archivos para revisarlos antes de subir.</div>
+              </div>
+
+              <div class="actions-row">
+                <button type="button" class="btn btn-primary" id="btnSubirLote" disabled><svg class="icon" width="14" height="14"><use href="#i-upload"/></svg> Subir archivos</button>
+                <button type="button" class="btn btn-ghost" id="btnLimpiarLote" disabled>Limpiar lista</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 </div>
@@ -1464,7 +1573,7 @@
   document.getElementById("sidebarClose").addEventListener("click", closeSidebar);
   overlay.addEventListener("click", closeSidebar);
 
-  var titles = { lista:"Lista de fichas", crear:"Crear ficha", campos:"Campos de la ficha", "concursos-historial":"Historial de concursos", "concursos-crear":"Crear concurso" };
+  var titles = { lista:"Lista de fichas", crear:"Crear ficha", campos:"Campos de la ficha", "concursos-historial":"Historial de concursos", "concursos-crear":"Crear concurso", "archivos-subir":"Subir archivos" };
   function showView(name){
     document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("active"); });
     document.getElementById("view-"+name).classList.add("active");
@@ -2467,6 +2576,149 @@
   });
 
   renderConcursos();
+
+  /* ---------- subir archivos ---------- */
+  var uploadMode = "individual";
+  document.querySelectorAll("[data-upload-mode]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      uploadMode = btn.dataset.uploadMode;
+      document.querySelectorAll("[data-upload-mode]").forEach(function(b){ b.classList.toggle("active", b===btn); });
+      document.getElementById("uploadPanelIndividual").hidden = uploadMode!=="individual";
+      document.getElementById("uploadPanelLote").hidden = uploadMode!=="lote";
+    });
+  });
+
+  document.getElementById("fichaCodigos").innerHTML = ROWS.map(function(r){ return '<option value="'+r.codigo+'">'; }).join("");
+
+  function fichaEstadoBadge(estado){
+    return estado==="Video confirmado"
+      ? '<span class="badge badge-green"><svg class="icon" width="11" height="11"><use href="#i-check"/></svg>'+estado+'</span>'
+      : '<span class="badge badge-amber"><svg class="icon" width="11" height="11"><use href="#i-alert"/></svg>'+estado+'</span>';
+  }
+
+  function renderUpPreview(){
+    var codigo = document.getElementById("up-codigo").value.trim();
+    var wrap = document.getElementById("up-preview");
+    var r = ROWS.find(function(x){ return x.codigo===codigo; });
+    if(!r){ wrap.innerHTML = codigo ? '<div class="preview-note" style="color:var(--red)">No se encontró ninguna ficha con ese código.</div>' : ""; return; }
+    wrap.innerHTML = '<div class="ficha-preview">'+
+      '<span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-video"/></svg></span>'+
+      '<div><div class="fp-title">'+r.titulo+'</div><div class="fp-sub">'+r.seudonimo+' · '+r.institucion+'</div></div>'+
+      '<div class="topbar-spacer"></div>'+ fichaEstadoBadge(r.estado) +
+    '</div>';
+  }
+  document.getElementById("up-codigo").addEventListener("input", renderUpPreview);
+
+  var upFileInput = document.getElementById("up-file");
+  var upDropzone = document.getElementById("up-dropzone");
+  upDropzone.addEventListener("click", function(){ upFileInput.click(); });
+  upFileInput.addEventListener("change", function(){
+    document.getElementById("up-file-name").textContent = upFileInput.files[0] ? upFileInput.files[0].name : "Ningún archivo seleccionado · MP4, MOV o AVI";
+  });
+  ["dragover","dragenter"].forEach(function(ev){
+    upDropzone.addEventListener(ev, function(e){ e.preventDefault(); upDropzone.classList.add("drag-active"); });
+  });
+  ["dragleave","dragend"].forEach(function(ev){
+    upDropzone.addEventListener(ev, function(){ upDropzone.classList.remove("drag-active"); });
+  });
+  upDropzone.addEventListener("drop", function(e){
+    e.preventDefault();
+    upDropzone.classList.remove("drag-active");
+    if(e.dataTransfer.files.length){ upFileInput.files = e.dataTransfer.files; upFileInput.dispatchEvent(new Event("change")); }
+  });
+
+  var uploadLog = [];
+  function renderUploadLog(){
+    var body = document.getElementById("uploadLogBody");
+    document.getElementById("uploadLogEmpty").hidden = uploadLog.length!==0;
+    body.innerHTML = uploadLog.map(function(u){
+      return '<tr><td class="cell-title">'+u.titulo+'<div class="cell-sub mono">'+u.codigo+'</div></td><td class="cell-sub">'+u.archivo+'</td><td class="cell-sub">'+u.hora+'</td></tr>';
+    }).join("");
+  }
+
+  document.getElementById("btnSubirIndividual").addEventListener("click", function(){
+    var codigo = document.getElementById("up-codigo").value.trim();
+    var r = ROWS.find(function(x){ return x.codigo===codigo; });
+    var file = upFileInput.files[0];
+    if(!r){ showToast("Ingresa el código de una ficha válida."); return; }
+    if(!file){ showToast("Selecciona un archivo de video."); return; }
+    r.estado = "Video confirmado";
+    uploadLog.unshift({ codigo:r.codigo, titulo:r.titulo, archivo:file.name, hora:new Date().toLocaleTimeString("es-PE",{hour:"2-digit",minute:"2-digit"}) });
+    renderUploadLog();
+    renderUpPreview();
+    if(typeof renderTable==="function") renderTable();
+    document.getElementById("up-codigo").value = "";
+    document.getElementById("up-preview").innerHTML = "";
+    upFileInput.value = "";
+    document.getElementById("up-file-name").textContent = "Ningún archivo seleccionado · MP4, MOV o AVI";
+    showToast('Video de "'+r.titulo+'" subido correctamente.');
+  });
+
+  var batchFiles = [];
+  function matchFichaByFilename(name){
+    var base = name.replace(/\.[^.]+$/,"");
+    return ROWS.find(function(r){ return base.toUpperCase().indexOf(r.codigo.toUpperCase())!==-1; });
+  }
+  function addBatchFiles(fileList){
+    Array.prototype.forEach.call(fileList, function(f){
+      if(batchFiles.some(function(b){ return b.file.name===f.name && b.file.size===f.size; })) return;
+      batchFiles.push({ file:f, ficha: matchFichaByFilename(f.name) });
+    });
+    renderBatch();
+  }
+  function renderBatch(){
+    var body = document.getElementById("batchBody");
+    document.getElementById("batchEmpty").hidden = batchFiles.length!==0;
+    body.innerHTML = batchFiles.map(function(b, i){
+      var ficha = b.ficha;
+      return '<tr>'+
+        '<td class="cell-sub">'+b.file.name+'</td>'+
+        '<td>'+(ficha ? '<div class="cell-title">'+ficha.titulo+'</div><div class="cell-sub mono">'+ficha.codigo+'</div>' : '<span class="cell-sub">—</span>')+'</td>'+
+        '<td>'+(ficha ? '<span class="badge badge-green"><svg class="icon" width="11" height="11"><use href="#i-check"/></svg>Coincidencia encontrada</span>' : '<span class="badge badge-red"><svg class="icon" width="11" height="11"><use href="#i-alert"/></svg>Sin coincidencia</span>')+'</td>'+
+        '<td><button type="button" class="icon-btn" title="Quitar" data-remove-batch="'+i+'"><svg class="icon" width="14" height="14"><use href="#i-x"/></svg></button></td>'+
+      '</tr>';
+    }).join("");
+    body.querySelectorAll("[data-remove-batch]").forEach(function(btn){
+      btn.addEventListener("click", function(){ batchFiles.splice(parseInt(btn.dataset.removeBatch,10),1); renderBatch(); });
+    });
+    var matched = batchFiles.filter(function(b){ return b.ficha; }).length;
+    document.getElementById("btnSubirLote").disabled = matched===0;
+    document.getElementById("btnLimpiarLote").disabled = batchFiles.length===0;
+  }
+
+  var batchFileInput = document.getElementById("batch-file");
+  var batchDropzone = document.getElementById("batch-dropzone");
+  batchDropzone.addEventListener("click", function(){ batchFileInput.click(); });
+  batchFileInput.addEventListener("change", function(){ addBatchFiles(batchFileInput.files); batchFileInput.value = ""; });
+  ["dragover","dragenter"].forEach(function(ev){
+    batchDropzone.addEventListener(ev, function(e){ e.preventDefault(); batchDropzone.classList.add("drag-active"); });
+  });
+  ["dragleave","dragend"].forEach(function(ev){
+    batchDropzone.addEventListener(ev, function(){ batchDropzone.classList.remove("drag-active"); });
+  });
+  batchDropzone.addEventListener("drop", function(e){
+    e.preventDefault();
+    batchDropzone.classList.remove("drag-active");
+    if(e.dataTransfer.files.length) addBatchFiles(e.dataTransfer.files);
+  });
+
+  document.getElementById("btnLimpiarLote").addEventListener("click", function(){ batchFiles = []; renderBatch(); });
+  document.getElementById("btnSubirLote").addEventListener("click", function(){
+    var matched = batchFiles.filter(function(b){ return b.ficha; });
+    var sinMatch = batchFiles.length - matched.length;
+    matched.forEach(function(b){
+      b.ficha.estado = "Video confirmado";
+      uploadLog.unshift({ codigo:b.ficha.codigo, titulo:b.ficha.titulo, archivo:b.file.name, hora:new Date().toLocaleTimeString("es-PE",{hour:"2-digit",minute:"2-digit"}) });
+    });
+    renderUploadLog();
+    if(typeof renderTable==="function") renderTable();
+    batchFiles = [];
+    renderBatch();
+    showToast(matched.length+' archivo'+(matched.length===1?"":"s")+' subido'+(matched.length===1?"":"s")+(sinMatch>0 ? ' · '+sinMatch+' sin coincidencia' : '.'));
+  });
+
+  renderUploadLog();
+  renderBatch();
 
 })();
 </script>
