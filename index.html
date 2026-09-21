@@ -1661,6 +1661,15 @@
   var emptyState = document.getElementById("emptyState");
   var pagesEl = document.getElementById("pages");
 
+  function goToUploadForFicha(codigo){
+    showView("archivos-subir");
+    location.hash = "archivos-subir";
+    var indivBtn = document.querySelector('[data-upload-mode="individual"]');
+    if(indivBtn) indivBtn.click();
+    document.getElementById("up-codigo").value = codigo;
+    renderUpPreview();
+  }
+
   function renderTable(){
     state.pageSize = parseInt(document.getElementById("pageSize").value,10);
     var all = sortRows(filteredRows());
@@ -1689,7 +1698,9 @@
           '<button class="icon-btn" title="Ver ficha"><svg class="icon" width="14" height="14"><use href="#i-file-text"/></svg></button>'+
           '<button class="icon-btn" title="Descargar"><svg class="icon" width="14" height="14"><use href="#i-download"/></svg></button>'+
           '<button class="icon-btn" title="Editar"><svg class="icon" width="14" height="14"><use href="#i-edit"/></svg></button>'+
+          '<button class="icon-btn" title="Subir video" data-upload-ficha="'+r.codigo+'"><svg class="icon" width="14" height="14"><use href="#i-upload"/></svg></button>'+
         '</div></td>';
+      tr.querySelector("[data-upload-ficha]").addEventListener("click", function(){ goToUploadForFicha(r.codigo); });
       tbody.appendChild(tr);
     });
 
