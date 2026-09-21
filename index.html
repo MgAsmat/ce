@@ -274,6 +274,12 @@
   .dash-grid-4 .card-head h2{ font-size:12.5px; }
   .dash-grid-4 .card-body{ padding:14px; }
 
+  .dash-grid-3{ grid-template-columns:repeat(3,1fr); }
+  @media (max-width:1100px){ .dash-grid-3{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:640px){ .dash-grid-3{ grid-template-columns:1fr; } }
+  .dash-grid-3 .card-head h2{ font-size:12.5px; }
+  .dash-grid-3 .card-body{ padding:14px; }
+
   .chart-table-toggle{ font-size:11.5px; color:var(--teal); background:transparent; border:0; cursor:pointer; font-weight:700; padding:0; margin-left:auto; }
   .chart-table-toggle:hover{ text-decoration:underline; }
 
@@ -1520,7 +1526,7 @@
           </div>
         </div>
 
-        <div class="dash-grid dash-grid-4">
+        <div class="dash-grid dash-grid-3">
           <div class="card">
             <div class="card-head">
               <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-map-pin"/></svg></span>
@@ -1556,7 +1562,9 @@
               <div class="data-table-wrap" id="hist-tbl-medios" hidden></div>
             </div>
           </div>
+        </div>
 
+        <div class="dash-grid">
           <div class="card">
             <div class="card-head">
               <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-bar-chart"/></svg></span>
@@ -1568,17 +1576,17 @@
               <div class="data-table-wrap" id="hist-tbl-years" hidden></div>
             </div>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="card-head">
-            <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-clock"/></svg></span>
-            <h2>Inscritos por mes</h2>
-            <button type="button" class="chart-table-toggle" data-table-toggle="hist-tbl-mes">Ver tabla</button>
-          </div>
-          <div class="card-body">
-            <div class="viz-root" id="hist-chart-mes"></div>
-            <div class="data-table-wrap" id="hist-tbl-mes" hidden></div>
+          <div class="card">
+            <div class="card-head">
+              <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-clock"/></svg></span>
+              <h2>Inscritos por mes</h2>
+              <button type="button" class="chart-table-toggle" data-table-toggle="hist-tbl-mes">Ver tabla</button>
+            </div>
+            <div class="card-body">
+              <div class="viz-root" id="hist-chart-mes"></div>
+              <div class="data-table-wrap" id="hist-tbl-mes" hidden></div>
+            </div>
           </div>
         </div>
 
