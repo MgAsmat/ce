@@ -450,6 +450,33 @@
   .field-name{ font-weight:600; }
   .field-key{ color:var(--text-faint); font-size:11.5px; }
 
+  /* ===== Landing ===== */
+  .lock-note{ display:flex; align-items:flex-start; gap:10px; padding:10px 14px; border-radius:var(--r-md); background:var(--surface-2); border:1px dashed var(--border-strong); color:var(--text-muted); font-size:12.5px; margin-bottom:16px; }
+  .lock-note .icon{ flex:0 0 auto; margin-top:1px; color:var(--teal); }
+  .struct-strip{ display:flex; align-items:stretch; gap:6px; margin-bottom:18px; flex-wrap:wrap; }
+  .struct-slot{ display:flex; align-items:center; gap:6px; padding:7px 10px; border-radius:var(--r-sm); background:var(--teal-soft); color:var(--teal); font-size:11.5px; font-weight:600; }
+  .struct-slot .n{ width:18px; height:18px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-size:10.5px; }
+  .struct-slot.grow{ flex:1; min-width:120px; }
+  .logo-field{ display:flex; align-items:center; gap:12px; }
+  .logo-thumb{ width:64px; height:48px; border-radius:var(--r-sm); border:1px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center; overflow:hidden; flex:0 0 auto; }
+  .logo-thumb img{ max-width:100%; max-height:100%; object-fit:contain; }
+  .fixed-target{ font-size:11px; color:var(--text-faint); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  textarea.code-area{ font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:12.5px; line-height:1.55; min-height:360px; resize:vertical; tab-size:2; white-space:pre; overflow:auto; }
+  .editor-toolbar{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+  .editor-toolbar .meta{ margin-left:auto; font-size:12px; color:var(--text-faint); }
+  .css-file-card{ display:flex; align-items:center; gap:12px; padding:12px 14px; border:1px solid var(--border); border-radius:var(--r-md); background:var(--surface-2); }
+  .css-file-card .fname{ font-weight:600; font-size:13px; word-break:break-all; }
+  .css-file-card .fmeta{ font-size:12px; color:var(--text-faint); }
+  .css-code{ margin-top:12px; }
+  .css-code summary{ cursor:pointer; font-size:12.5px; font-weight:600; color:var(--text-muted); }
+  .css-code pre{ margin:10px 0 0; max-height:260px; overflow:auto; padding:12px; border-radius:var(--r-sm); background:var(--surface-2); border:1px solid var(--border); font-size:12px; }
+  .preview-stage{ background:var(--surface-2); border:1px solid var(--border); border-radius:var(--r-md); padding:14px; display:flex; justify-content:center; }
+  .preview-stage iframe{ width:100%; height:680px; border:1px solid var(--border); border-radius:var(--r-sm); background:#fff; transition:max-width .2s ease; }
+  .preview-stage.mobile iframe{ max-width:390px; }
+  .sticky-actions{ position:sticky; bottom:0; z-index:5; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; padding:12px 0; background:linear-gradient(to top, var(--bg) 70%, transparent); }
+  .file-chip{ display:inline-flex; align-items:center; gap:5px; padding:3px 8px; border-radius:6px; background:var(--surface-2); border:1px solid var(--border); font-size:11.5px; margin:2px 4px 2px 0; }
+  @media (max-width:760px){ .preview-stage iframe{ height:520px; } #view-landing-config .card-head{ flex-wrap:wrap; } [data-lp-device]{ padding:6px 10px; } .sticky-actions .btn{ flex:1; } }
+
   /* modal */
   .modal-overlay{
     position:fixed; inset:0; background:rgba(8,14,24,.55); z-index:60; display:flex; align-items:flex-start; justify-content:center;
@@ -631,6 +658,12 @@
   <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
   <symbol id="i-video" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></symbol>
   <symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+  <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="16" x2="21" y2="16"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol>
+  <symbol id="i-smartphone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
   <symbol id="i-grip" viewBox="0 0 24 24"><line x1="9" y1="6" x2="9.01" y2="6"/><line x1="15" y1="6" x2="15.01" y2="6"/><line x1="9" y1="12" x2="9.01" y2="12"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="9" y1="18" x2="9.01" y2="18"/><line x1="15" y1="18" x2="15.01" y2="18"/></symbol>
 </svg>
 
@@ -661,6 +694,13 @@
         <ul class="nav-sub">
           <li><a href="#concursos-crear" data-view-link="concursos-crear"><span class="dot"></span>Crear concurso</a></li>
           <li><a href="#concursos-historial" data-view-link="concursos-historial"><span class="dot"></span>Historial</a></li>
+        </ul>
+      </div>
+      <div class="nav-group" data-group="landing">
+        <button class="nav-head" type="button"><svg class="icon" width="18" height="18"><use href="#i-layout"/></svg> Landing <svg class="icon chev" width="15" height="15"><use href="#i-chevron-down"/></svg></button>
+        <ul class="nav-sub">
+          <li><a href="#landing-config" data-view-link="landing-config"><span class="dot"></span>Configurar landing</a></li>
+          <li><a href="#landing-historial" data-view-link="landing-historial"><span class="dot"></span>Historial de páginas</a></li>
         </ul>
       </div>
       <div class="nav-group" data-group="campos">
@@ -1336,6 +1376,219 @@
         </form>
       </section>
 
+      <!-- ================= VIEW: CONFIGURAR LANDING ================= -->
+      <section class="view" id="view-landing-config">
+        <div class="page-head">
+          <h1>Configuración de landing</h1>
+          <p>Configura la página pública con las bases del concurso. El header y el footer tienen estructura fija: solo se cambian el logo y los textos. El contenido se edita en HTML y el estilo se define con un archivo .css.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-award"/></svg></span>
+            <h2>Datos de la página</h2>
+          </div>
+          <div class="card-body">
+            <div class="grid cols-2">
+              <div class="field">
+                <label>Concurso <span class="req">*</span></label>
+                <div class="ctrl select"><select id="lp-concurso"></select></div>
+              </div>
+              <div class="field">
+                <label>Nombre del archivo <span class="req">*</span></label>
+                <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-file-text"/></svg><input id="lp-slug" type="text" placeholder="concurso-escolar-bcrp-2026"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-layout"/></svg></span>
+            <h2>Header</h2>
+            <span class="hint">Estructura fija</span>
+          </div>
+          <div class="card-body">
+            <div class="lock-note"><svg class="icon" width="15" height="15"><use href="#i-lock"/></svg><span>El orden de los elementos no se puede modificar. Puedes cambiar el logo y los textos de cada posición.</span></div>
+            <div class="struct-strip" aria-hidden="true">
+              <span class="struct-slot"><span class="n">1</span>Logo</span>
+              <span class="struct-slot grow"><span class="n">2</span>Nombre institucional · Subtítulo</span>
+              <span class="struct-slot"><span class="n">3</span>Menú (4 enlaces)</span>
+            </div>
+            <div class="grid cols-2">
+              <div class="field">
+                <label>1 · Logo <span class="req">*</span></label>
+                <div class="logo-field">
+                  <span class="logo-thumb"><img id="lp-h-logo-img" alt=""></span>
+                  <div class="file-field">
+                    <input type="file" id="lp-h-logo" accept="image/png,image/jpeg,image/svg+xml,image/webp">
+                    <label for="lp-h-logo" class="btn btn-ghost btn-sm">Cambiar logo</label>
+                    <span class="file-name" id="lp-h-logo-name">Logo por defecto</span>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label>Texto alternativo del logo <span class="req">*</span></label>
+                <input id="lp-h-alt" type="text" data-lp>
+              </div>
+              <div class="field">
+                <label>2 · Nombre institucional <span class="req">*</span></label>
+                <input id="lp-h-inst" type="text" data-lp>
+              </div>
+              <div class="field">
+                <label>2 · Subtítulo <span class="opt">(opcional)</span></label>
+                <input id="lp-h-sub" type="text" data-lp>
+              </div>
+            </div>
+            <div class="section-label" style="margin-top:20px">3 · Textos del menú</div>
+            <div class="grid cols-2" id="lp-menu"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-code"/></svg></span>
+            <h2>Contenido de la página (HTML)</h2>
+            <span class="hint">Se muestra entre el header y el footer</span>
+          </div>
+          <div class="card-body">
+            <div class="editor-toolbar">
+              <button type="button" class="btn btn-ghost btn-sm" id="lp-reset-html"><svg class="icon" width="13" height="13"><use href="#i-file-text"/></svg> Restablecer plantilla</button>
+              <input type="file" id="lp-import-html" accept=".html,.htm,text/html" hidden>
+              <label for="lp-import-html" class="btn btn-ghost btn-sm"><svg class="icon" width="13" height="13"><use href="#i-upload"/></svg> Importar .html</label>
+              <span class="meta" id="lp-html-meta"></span>
+            </div>
+            <textarea id="lp-html" class="code-area" spellcheck="false" data-lp aria-label="Contenido HTML de la página"></textarea>
+            <p class="hint" style="margin:8px 0 0;font-size:12px;color:var(--text-faint)">Por seguridad, las etiquetas &lt;script&gt; y los atributos de evento (onclick, onload…) se eliminan al generar la página.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-file-text"/></svg></span>
+            <h2>Hoja de estilos (.css)</h2>
+          </div>
+          <div class="card-body">
+            <div class="css-file-card">
+              <span class="icon-badge" style="width:36px;height:36px;border-radius:10px;background:var(--teal-soft);color:var(--teal);display:flex;align-items:center;justify-content:center"><svg class="icon" width="17" height="17"><use href="#i-code"/></svg></span>
+              <div style="flex:1;min-width:0">
+                <div class="fname" id="lp-css-name"></div>
+                <div class="fmeta" id="lp-css-meta"></div>
+              </div>
+              <input type="file" id="lp-css" accept=".css,text/css" hidden>
+              <label for="lp-css" class="btn btn-ghost btn-sm"><svg class="icon" width="13" height="13"><use href="#i-upload"/></svg> Subir .css</label>
+              <button type="button" class="btn btn-ghost btn-sm" id="lp-css-reset" title="Volver a la hoja de estilos base">Usar base</button>
+            </div>
+            <details class="css-code">
+              <summary>Ver contenido del CSS</summary>
+              <pre class="mono" id="lp-css-code"></pre>
+            </details>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-layout"/></svg></span>
+            <h2>Footer</h2>
+            <span class="hint">Estructura fija</span>
+          </div>
+          <div class="card-body">
+            <div class="lock-note"><svg class="icon" width="15" height="15"><use href="#i-lock"/></svg><span>El orden de los elementos no se puede modificar. Puedes cambiar el logo y los textos de cada posición.</span></div>
+            <div class="struct-strip" aria-hidden="true">
+              <span class="struct-slot"><span class="n">1</span>Logo · Institución</span>
+              <span class="struct-slot grow"><span class="n">2</span>Dirección · Teléfono · Correo</span>
+              <span class="struct-slot"><span class="n">3</span>Texto legal</span>
+            </div>
+            <div class="grid cols-2">
+              <div class="field">
+                <label>1 · Logo <span class="req">*</span></label>
+                <div class="logo-field">
+                  <span class="logo-thumb" style="background:#0B2A4A"><img id="lp-f-logo-img" alt=""></span>
+                  <div class="file-field">
+                    <input type="file" id="lp-f-logo" accept="image/png,image/jpeg,image/svg+xml,image/webp">
+                    <label for="lp-f-logo" class="btn btn-ghost btn-sm">Cambiar logo</label>
+                    <span class="file-name" id="lp-f-logo-name">Logo por defecto</span>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label>1 · Institución <span class="req">*</span></label>
+                <input id="lp-f-inst" type="text" data-lp>
+              </div>
+              <div class="field">
+                <label>2 · Dirección <span class="req">*</span></label>
+                <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-map-pin"/></svg><input id="lp-f-dir" type="text" data-lp></div>
+              </div>
+              <div class="field">
+                <label>2 · Teléfono <span class="opt">(opcional)</span></label>
+                <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-phone"/></svg><input id="lp-f-tel" type="text" data-lp></div>
+              </div>
+              <div class="field">
+                <label>2 · Correo <span class="opt">(opcional)</span></label>
+                <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-mail"/></svg><input id="lp-f-mail" type="text" data-lp></div>
+              </div>
+              <div class="field">
+                <label>3 · Texto legal <span class="req">*</span></label>
+                <input id="lp-f-legal" type="text" data-lp>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="icon-badge"><svg class="icon" width="15" height="15"><use href="#i-eye"/></svg></span>
+            <h2>Vista previa</h2>
+            <div class="chipbar" style="margin-left:auto;flex-wrap:nowrap">
+              <button type="button" class="chip active" data-lp-device="desktop"><svg class="icon" width="13" height="13"><use href="#i-monitor"/></svg> Escritorio</button>
+              <button type="button" class="chip" data-lp-device="mobile"><svg class="icon" width="13" height="13"><use href="#i-smartphone"/></svg> Móvil</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="preview-stage" id="lp-stage">
+              <iframe id="lp-preview" title="Vista previa de la landing" sandbox="allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+
+        <div class="sticky-actions">
+          <button type="button" class="btn btn-ghost" id="lp-open"><svg class="icon" width="14" height="14"><use href="#i-external"/></svg> Abrir en pestaña</button>
+          <button type="button" class="btn btn-ghost" id="lp-dl-html"><svg class="icon" width="14" height="14"><use href="#i-download"/></svg> HTML</button>
+          <button type="button" class="btn btn-ghost" id="lp-dl-css"><svg class="icon" width="14" height="14"><use href="#i-download"/></svg> CSS</button>
+          <button type="button" class="btn btn-primary" id="lp-publish"><svg class="icon" width="14" height="14"><use href="#i-check"/></svg> Publicar</button>
+        </div>
+      </section>
+
+      <!-- ================= VIEW: HISTORIAL DE LANDINGS ================= -->
+      <section class="view" id="view-landing-historial">
+        <div class="page-head">
+          <h1>Historial de páginas</h1>
+          <p>Versiones publicadas de la landing. Descarga el HTML y el CSS de cualquier edición para usarlos como modelo, o cárgala en el editor.</p>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="result-count"><b id="landingsCount">0</b> páginas publicadas</div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Concurso</th>
+                  <th>Periodo</th>
+                  <th>Publicación</th>
+                  <th>Archivos</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="landingsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <!-- ================= VIEW: SUBIR ARCHIVOS ================= -->
       <section class="view" id="view-archivos-subir">
         <div class="page-head">
@@ -1741,6 +1994,27 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="landingModalOverlay">
+  <div class="modal" style="max-width:1100px">
+    <div class="modal-head">
+      <div>
+        <h2 id="landingModalTitle">Vista previa</h2>
+        <p id="landingModalSub"></p>
+      </div>
+      <button type="button" class="modal-close" id="landingModalClose" aria-label="Cerrar"><svg class="icon" width="16" height="16"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-body" style="grid-template-columns:1fr;max-height:none;padding:14px">
+      <iframe id="landingModalFrame" title="Vista previa de la página histórica" sandbox="allow-same-origin" style="width:100%;height:68vh;border:1px solid var(--border);border-radius:var(--r-sm);background:#fff"></iframe>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-ghost btn-sm" id="landingModalHtml"><svg class="icon" width="13" height="13"><use href="#i-download"/></svg> Descargar HTML</button>
+      <button type="button" class="btn btn-ghost btn-sm" id="landingModalCss"><svg class="icon" width="13" height="13"><use href="#i-download"/></svg> Descargar CSS</button>
+      <div class="topbar-spacer"></div>
+      <button type="button" class="btn btn-primary btn-sm" id="landingModalUse"><svg class="icon" width="13" height="13"><use href="#i-copy"/></svg> Usar como modelo</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-head">
@@ -1956,7 +2230,7 @@
   document.getElementById("sidebarClose").addEventListener("click", closeSidebar);
   overlay.addEventListener("click", closeSidebar);
 
-  var titles = { lista:"Lista de fichas", crear:"Crear ficha", lote:"Subir fichas por lote", campos:"Campos de la ficha", "concursos-historial":"Historial de concursos", "concursos-crear":"Crear concurso", "archivos-subir":"Subir archivos", "reportes":"Dashboard de reportes", "historico":"Ediciones anteriores", "usuarios-crear":"Crear usuario", "usuarios-administrar":"Administrar usuarios" };
+  var titles = { lista:"Lista de fichas", crear:"Crear ficha", lote:"Subir fichas por lote", campos:"Campos de la ficha", "concursos-historial":"Historial de concursos", "concursos-crear":"Crear concurso", "archivos-subir":"Subir archivos", "reportes":"Dashboard de reportes", "historico":"Ediciones anteriores", "usuarios-crear":"Crear usuario", "usuarios-administrar":"Administrar usuarios", "landing-config":"Configuración de landing", "landing-historial":"Historial de páginas" };
   function showView(name){
     document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("active"); });
     document.getElementById("view-"+name).classList.add("active");
@@ -3784,6 +4058,513 @@
     showView("usuarios-administrar");
     location.hash = "usuarios-administrar";
   });
+
+  /* ---------- landing ---------- */
+  var LP_MENU_TARGETS = [
+    { href:"https://www.bcrp.gob.pe", label:"Sitio del BCRP" },
+    { href:"#bases", label:"Sección #bases" },
+    { href:"#cronograma", label:"Sección #cronograma" },
+    { href:"#contacto", label:"Sección #contacto" }
+  ];
+  var LP_DEFAULT_LOGO = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="160" height="48" viewBox="0 0 160 48"><rect x="0" y="4" width="40" height="40" rx="8" fill="#0B2A4A"/><text x="20" y="30" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">BC</text><text x="50" y="31" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#0B2A4A">BCRP</text></svg>');
+  var LP_DEFAULT_LOGO_LIGHT = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="160" height="48" viewBox="0 0 160 48"><rect x="0" y="4" width="40" height="40" rx="8" fill="#fff"/><text x="20" y="30" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#0B2A4A" text-anchor="middle">BC</text><text x="50" y="31" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#fff">BCRP</text></svg>');
+
+  // Estructura fija del header/footer: se incluye siempre y no es editable.
+  var LP_BASE_CSS = [
+    "*,*::before,*::after{box-sizing:border-box}",
+    "body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#1d2733;background:#fff;line-height:1.6}",
+    "img{max-width:100%}",
+    ".ce-header{background:#fff;border-bottom:4px solid #C8102E}",
+    ".ce-header__inner{max-width:1120px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}",
+    ".ce-brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;margin-right:auto}",
+    ".ce-brand img{height:44px;width:auto}",
+    ".ce-brand strong{display:block;font-size:15px;color:#0B2A4A}",
+    ".ce-brand span{display:block;font-size:12.5px;color:#5c6b7a}",
+    ".ce-nav{display:flex;gap:4px;flex-wrap:wrap}",
+    ".ce-nav a{padding:8px 12px;border-radius:6px;color:#0B2A4A;text-decoration:none;font-size:14px;font-weight:600}",
+    ".ce-nav a:hover{background:#eef2f7}",
+    ".ce-content{max-width:1120px;margin:0 auto;padding:0 20px 40px}",
+    ".ce-footer{background:#0B2A4A;color:#d6e0ea;font-size:13.5px}",
+    ".ce-footer__inner{max-width:1120px;margin:0 auto;padding:28px 20px;display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start}",
+    ".ce-footer__brand{display:flex;align-items:center;gap:12px;margin-right:auto}",
+    ".ce-footer__brand img{height:40px;width:auto}",
+    ".ce-footer__brand strong{color:#fff;font-size:14px;max-width:260px}",
+    ".ce-footer__contact p{margin:0 0 4px}",
+    ".ce-footer__contact a{color:#fff}",
+    ".ce-footer__legal{border-top:1px solid rgba(255,255,255,.15);text-align:center;padding:12px 20px;font-size:12px;color:#9fb1c4}",
+    "@media (max-width:640px){.ce-brand img{height:32px}.ce-brand strong{font-size:14px}.ce-nav{width:100%}.ce-nav a{flex:1;text-align:center;padding:8px 6px}}"
+  ].join("\n");
+
+  function lpStarterCss(accent, soft){
+    return [
+      "/* Hoja de estilos de la landing del Concurso Escolar BCRP",
+      "   El header (.ce-header) y el footer (.ce-footer) tienen estructura fija.",
+      "   Estas reglas dan estilo al contenido editable (.ce-content). */",
+      "",
+      ":root{ --ce-accent:"+accent+"; --ce-soft:"+soft+"; --ce-ink:#0B2A4A; }",
+      "",
+      ".ce-hero{ margin:0 -20px 32px; padding:48px 20px; background:linear-gradient(135deg,var(--ce-ink),var(--ce-accent)); color:#fff; text-align:center; }",
+      ".ce-hero h1{ margin:0 0 10px; font-size:clamp(26px,4vw,40px); line-height:1.15; }",
+      ".ce-hero p{ margin:0 auto 20px; max-width:640px; font-size:17px; opacity:.92; }",
+      ".ce-btn{ display:inline-block; padding:12px 22px; border-radius:999px; background:#fff; color:var(--ce-ink); font-weight:700; text-decoration:none; }",
+      ".ce-btn--outline{ background:transparent; color:#fff; border:2px solid #fff; margin-left:8px; }",
+      "",
+      ".ce-section{ padding:26px 0; border-bottom:1px solid #e3e8ee; }",
+      ".ce-section:last-child{ border-bottom:0; }",
+      ".ce-section h2{ margin:0 0 12px; font-size:22px; color:var(--ce-ink); }",
+      ".ce-section h2::after{ content:\"\"; display:block; width:48px; height:3px; margin-top:8px; background:var(--ce-accent); }",
+      "",
+      ".ce-cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }",
+      ".ce-card{ padding:18px; border-radius:12px; background:var(--ce-soft); }",
+      ".ce-card h3{ margin:0 0 6px; font-size:16px; color:var(--ce-ink); }",
+      ".ce-card p{ margin:0; font-size:14px; }",
+      "",
+      ".ce-table{ width:100%; border-collapse:collapse; font-size:14px; }",
+      ".ce-table th, .ce-table td{ padding:10px 12px; border-bottom:1px solid #e3e8ee; text-align:left; }",
+      ".ce-table th{ background:var(--ce-soft); color:var(--ce-ink); }",
+      "",
+      ".ce-note{ padding:14px 16px; border-left:4px solid var(--ce-accent); background:var(--ce-soft); border-radius:6px; }"
+    ].join("\n");
+  }
+
+  function lpStarterHtml(c){
+    var year = c ? c.periodo : new Date().getFullYear();
+    var nombre = c ? c.nombre : "Concurso Escolar BCRP "+year;
+    var ini = c ? fechaLabel(c.inicio) : "[fecha de inicio]";
+    var fin = c ? fechaLabel(c.fin) : "[fecha de cierre]";
+    return [
+      '<section class="ce-hero">',
+      '  <h1>'+nombre+'</h1>',
+      '  <p>Participa con tu equipo elaborando un video sobre el rol del Banco Central de Reserva del Perú en la economía.</p>',
+      '  <a class="ce-btn" href="#bases">Conoce las bases</a>',
+      '  <a class="ce-btn ce-btn--outline" href="#">Inscríbete</a>',
+      '</section>',
+      '',
+      '<section class="ce-section" id="bases">',
+      '  <h2>Bases del concurso</h2>',
+      '  <p>El concurso está dirigido a estudiantes de secundaria de instituciones educativas públicas y privadas de todo el país, organizados en equipos con un docente asesor.</p>',
+      '  <div class="ce-cards">',
+      '    <div class="ce-card"><h3>¿Quiénes participan?</h3><p>Equipos de estudiantes de secundaria acompañados por un docente asesor.</p></div>',
+      '    <div class="ce-card"><h3>¿Qué se presenta?</h3><p>Un video original sobre uno de los temas propuestos por el BCRP.</p></div>',
+      '    <div class="ce-card"><h3>¿Cómo se evalúa?</h3><p>Contenido, creatividad, claridad del mensaje y calidad de la producción.</p></div>',
+      '  </div>',
+      '  <p><a href="#">Descargar las bases completas (PDF)</a></p>',
+      '</section>',
+      '',
+      '<section class="ce-section" id="temas">',
+      '  <h2>Temas</h2>',
+      '  <ul>',
+      '    <li>Metas de inflación</li>',
+      '    <li>Reservas internacionales</li>',
+      '    <li>Pagos digitales</li>',
+      '    <li>Billetes y monedas</li>',
+      '  </ul>',
+      '</section>',
+      '',
+      '<section class="ce-section" id="cronograma">',
+      '  <h2>Cronograma</h2>',
+      '  <table class="ce-table">',
+      '    <thead><tr><th>Etapa</th><th>Fecha</th></tr></thead>',
+      '    <tbody>',
+      '      <tr><td>Inicio de inscripciones</td><td>'+ini+'</td></tr>',
+      '      <tr><td>Cierre de inscripciones y envío de videos</td><td>'+fin+'</td></tr>',
+      '      <tr><td>Publicación de resultados</td><td>[por definir]</td></tr>',
+      '    </tbody>',
+      '  </table>',
+      '</section>',
+      '',
+      '<section class="ce-section" id="premios">',
+      '  <h2>Premios</h2>',
+      '  <p class="ce-note">Los premios para los equipos ganadores, sus docentes asesores y sus instituciones educativas se detallan en las bases.</p>',
+      '</section>',
+      '',
+      '<section class="ce-section" id="contacto">',
+      '  <h2>Contacto</h2>',
+      '  <p>Si tienes consultas sobre el concurso, escríbenos al correo indicado al pie de esta página.</p>',
+      '</section>'
+    ].join("\n");
+  }
+
+  function escHtml(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function lpSanitize(html){
+    return String(html||"")
+      .replace(/<script[\s\S]*?<\/script\s*>/gi, "")
+      .replace(/<script[^>]*>/gi, "")
+      .replace(/\son[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+      .replace(/(href|src)\s*=\s*(["'])\s*javascript:[^"']*\2/gi, '$1="#"');
+  }
+  function lpSlug(c){ return c ? "concurso-escolar-bcrp-"+c.periodo : "concurso-escolar-bcrp"; }
+  function lpConcursoById(id){ return CONCURSOS.find(function(x){ return x.id===id; }); }
+
+  function lpDefaults(c){
+    return {
+      concursoId: c ? c.id : null,
+      slug: lpSlug(c),
+      header: { logo:LP_DEFAULT_LOGO, logoName:"", alt:"Banco Central de Reserva del Perú", inst:"Banco Central de Reserva del Perú", sub:c ? c.nombre : "Concurso Escolar", menu:["Inicio","Bases","Cronograma","Contacto"] },
+      footer: { logo:LP_DEFAULT_LOGO_LIGHT, logoName:"", inst:"Banco Central de Reserva del Perú", dir:"Jr. Santa Rosa 441-445, Lima 1, Perú", tel:"(511) 613-2000", mail:"concursoescolar@bcrp.gob.pe", legal:"© "+(c ? c.periodo : new Date().getFullYear())+" Banco Central de Reserva del Perú. Todos los derechos reservados." },
+      html: lpStarterHtml(c),
+      css: lpStarterCss("#C8102E","#FBEFF1"),
+      cssName: "estilos-landing.css",
+      cssIsBase: true
+    };
+  }
+
+  function lpBuildDoc(p, opts){
+    opts = opts || {};
+    var h = p.header, f = p.footer;
+    var cssTag = opts.linkCss
+      ? '<link rel="stylesheet" href="'+escHtml(p.cssName)+'">'
+      : '<style id="ce-custom">\n'+p.css.replace(/<\/style/gi,"<\\/style")+'\n</style>';
+    var menu = h.menu.map(function(t,i){ return '      <a href="'+LP_MENU_TARGETS[i].href+'">'+escHtml(t)+'</a>'; }).join("\n");
+    var contact = [
+      '        <p>'+escHtml(f.dir)+'</p>',
+      f.tel ? '        <p>Teléfono: '+escHtml(f.tel)+'</p>' : '',
+      f.mail ? '        <p>Correo: <a href="mailto:'+escHtml(f.mail)+'">'+escHtml(f.mail)+'</a></p>' : ''
+    ].filter(Boolean).join("\n");
+    return [
+      '<!DOCTYPE html>',
+      '<html lang="es">',
+      '<head>',
+      '<meta charset="utf-8">',
+      '<meta name="viewport" content="width=device-width, initial-scale=1">',
+      '<title>'+escHtml(h.sub || h.inst)+'</title>',
+      '<!-- Estructura fija del header y footer (no editable) -->',
+      '<style id="ce-base">\n'+LP_BASE_CSS+'\n</style>',
+      '<!-- Hoja de estilos de la edición -->',
+      cssTag,
+      '</head>',
+      '<body>',
+      '<header class="ce-header">',
+      '  <div class="ce-header__inner">',
+      '    <a class="ce-brand" href="'+LP_MENU_TARGETS[0].href+'">',
+      '      <img src="'+h.logo+'" alt="'+escHtml(h.alt)+'">',
+      '      <span><strong>'+escHtml(h.inst)+'</strong>'+(h.sub ? '<span>'+escHtml(h.sub)+'</span>' : '')+'</span>',
+      '    </a>',
+      '    <nav class="ce-nav">',
+      menu,
+      '    </nav>',
+      '  </div>',
+      '</header>',
+      '',
+      '<main class="ce-content">',
+      '<!-- ===== Contenido editable ===== -->',
+      lpSanitize(p.html),
+      '<!-- ===== Fin del contenido editable ===== -->',
+      '</main>',
+      '',
+      '<footer class="ce-footer">',
+      '  <div class="ce-footer__inner">',
+      '    <div class="ce-footer__brand">',
+      '      <img src="'+f.logo+'" alt="'+escHtml(f.inst)+'">',
+      '      <strong>'+escHtml(f.inst)+'</strong>',
+      '    </div>',
+      '    <div class="ce-footer__contact">',
+      contact,
+      '    </div>',
+      '  </div>',
+      '  <div class="ce-footer__legal">'+escHtml(f.legal)+'</div>',
+      '</footer>',
+      '</body>',
+      '</html>'
+    ].join("\n");
+  }
+
+  function lpDownload(name, text, type){
+    var blob = new Blob([text], { type:type+";charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  }
+  function lpDownloadHtml(p){ lpDownload(p.slug+".html", lpBuildDoc(p, { linkCss:true }), "text/html"); }
+  function lpDownloadCss(p){ lpDownload(p.cssName, p.css, "text/css"); }
+  function lpOpenTab(p){
+    var url = URL.createObjectURL(new Blob([lpBuildDoc(p)], { type:"text/html;charset=utf-8" }));
+    window.open(url, "_blank", "noopener");
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
+  }
+  function lpClone(p){ return JSON.parse(JSON.stringify(p)); }
+
+  /* historial (datos de ejemplo) */
+  var LANDINGS = [];
+  (function seedLandings(){
+    var seeds = [
+      { concursoId:6, fecha:"2023-03-27 10:15", autor:"Maria Gracia Asmat", accent:"#1B6FA8", soft:"#EAF3FA" },
+      { concursoId:7, fecha:"2024-02-26 09:40", autor:"Maria Gracia Asmat", accent:"#2E7D4F", soft:"#EAF5EE" },
+      { concursoId:8, fecha:"2025-03-17 11:05", autor:"Maria Gracia Asmat", accent:"#7A3E9D", soft:"#F3ECF8" },
+      { concursoId:9, fecha:"2026-02-20 16:30", autor:"Maria Gracia Asmat", accent:"#C8102E", soft:"#FBEFF1" }
+    ];
+    seeds.forEach(function(s, i){
+      var c = lpConcursoById(s.concursoId);
+      var p = lpDefaults(c);
+      p.css = lpStarterCss(s.accent, s.soft);
+      p.cssName = "estilos-landing-"+c.periodo+".css";
+      p.cssIsBase = false;
+      LANDINGS.push({ id:i+1, fecha:s.fecha, autor:s.autor, page:p });
+    });
+  })();
+  var nextLandingId = LANDINGS.length+1;
+
+  function lpCurrentId(concursoId){
+    var list = LANDINGS.filter(function(l){ return l.page.concursoId===concursoId; });
+    return list.length ? list[list.length-1].id : null;
+  }
+
+  /* editor */
+  var lpState;
+  var lpConcursoSel = document.getElementById("lp-concurso");
+  var lpMenuWrap = document.getElementById("lp-menu");
+  var lpFrame = document.getElementById("lp-preview");
+
+  function lpPopulateConcursos(){
+    var ordered = CONCURSOS.slice().sort(function(a,b){ return b.periodo-a.periodo; });
+    lpConcursoSel.innerHTML = ordered.map(function(c){ return '<option value="'+c.id+'">'+escHtml(c.nombre)+'</option>'; }).join("");
+  }
+
+  function lpRenderMenuInputs(){
+    lpMenuWrap.innerHTML = LP_MENU_TARGETS.map(function(t, i){
+      return '<div class="field">'+
+        '<label>Enlace '+(i+1)+' <span class="req">*</span></label>'+
+        '<input type="text" data-lp-menu="'+i+'" maxlength="28">'+
+        '<span class="fixed-target"><svg class="icon" width="11" height="11" style="vertical-align:-1px"><use href="#i-lock"/></svg> Destino fijo: '+escHtml(t.label)+'</span>'+
+      '</div>';
+    }).join("");
+    lpMenuWrap.querySelectorAll("[data-lp-menu]").forEach(function(inp){
+      inp.addEventListener("input", function(){ lpState.header.menu[+inp.dataset.lpMenu] = inp.value; lpSchedulePreview(); });
+    });
+  }
+
+  var LP_BINDINGS = [
+    ["lp-slug", null, "slug"],
+    ["lp-h-alt", "header", "alt"], ["lp-h-inst", "header", "inst"], ["lp-h-sub", "header", "sub"],
+    ["lp-f-inst", "footer", "inst"], ["lp-f-dir", "footer", "dir"], ["lp-f-tel", "footer", "tel"], ["lp-f-mail", "footer", "mail"], ["lp-f-legal", "footer", "legal"],
+    ["lp-html", null, "html"]
+  ];
+  LP_BINDINGS.forEach(function(b){
+    document.getElementById(b[0]).addEventListener("input", function(e){
+      (b[1] ? lpState[b[1]] : lpState)[b[2]] = e.target.value;
+      if(b[0]==="lp-html") lpUpdateHtmlMeta();
+      lpSchedulePreview();
+    });
+  });
+
+  function lpUpdateHtmlMeta(){
+    var n = lpState.html.split("\n").length;
+    document.getElementById("lp-html-meta").textContent = n+" líneas · "+lpState.html.length.toLocaleString("es-PE")+" caracteres";
+  }
+  function lpUpdateCssCard(){
+    document.getElementById("lp-css-name").textContent = lpState.cssName;
+    var lines = lpState.css.split("\n").length;
+    document.getElementById("lp-css-meta").textContent = (lpState.cssIsBase ? "Hoja de estilos base · " : "")+lines+" líneas · "+(new Blob([lpState.css]).size/1024).toFixed(1)+" KB";
+    document.getElementById("lp-css-code").textContent = lpState.css;
+    document.getElementById("lp-css-reset").hidden = lpState.cssIsBase;
+  }
+
+  function lpLoadIntoEditor(p){
+    lpState = lpClone(p);
+    if(lpState.concursoId) lpConcursoSel.value = lpState.concursoId;
+    LP_BINDINGS.forEach(function(b){ document.getElementById(b[0]).value = (b[1] ? lpState[b[1]] : lpState)[b[2]] || ""; });
+    lpMenuWrap.querySelectorAll("[data-lp-menu]").forEach(function(inp){ inp.value = lpState.header.menu[+inp.dataset.lpMenu] || ""; });
+    document.getElementById("lp-h-logo-img").src = lpState.header.logo;
+    document.getElementById("lp-f-logo-img").src = lpState.footer.logo;
+    document.getElementById("lp-h-logo-name").textContent = lpState.header.logoName || "Logo por defecto";
+    document.getElementById("lp-f-logo-name").textContent = lpState.footer.logoName || "Logo por defecto";
+    lpUpdateHtmlMeta();
+    lpUpdateCssCard();
+    lpRenderPreview();
+  }
+
+  var lpPreviewTimer;
+  function lpRenderPreview(){ lpFrame.srcdoc = lpBuildDoc(lpState); }
+  function lpSchedulePreview(){ clearTimeout(lpPreviewTimer); lpPreviewTimer = setTimeout(lpRenderPreview, 300); }
+
+  function lpReadFile(file, asDataUrl, cb){
+    var r = new FileReader();
+    r.onload = function(){ cb(r.result); };
+    if(asDataUrl) r.readAsDataURL(file); else r.readAsText(file);
+  }
+  [["lp-h-logo","header","lp-h-logo-img","lp-h-logo-name"],["lp-f-logo","footer","lp-f-logo-img","lp-f-logo-name"]].forEach(function(cfg){
+    document.getElementById(cfg[0]).addEventListener("change", function(e){
+      var file = e.target.files[0]; if(!file) return;
+      if(!/^image\//.test(file.type)){ showToast("El logo debe ser una imagen (PNG, JPG, SVG o WEBP)."); e.target.value=""; return; }
+      if(file.size > 1024*1024){ showToast("El logo no debe superar 1 MB."); e.target.value=""; return; }
+      lpReadFile(file, true, function(data){
+        lpState[cfg[1]].logo = data;
+        lpState[cfg[1]].logoName = file.name;
+        document.getElementById(cfg[2]).src = data;
+        document.getElementById(cfg[3]).textContent = file.name;
+        e.target.value = "";
+        lpRenderPreview();
+      });
+    });
+  });
+
+  document.getElementById("lp-css").addEventListener("change", function(e){
+    var file = e.target.files[0]; if(!file) return;
+    if(!/\.css$/i.test(file.name)){ showToast("Selecciona un archivo con extensión .css"); e.target.value=""; return; }
+    lpReadFile(file, false, function(text){
+      lpState.css = text; lpState.cssName = file.name; lpState.cssIsBase = false;
+      e.target.value = "";
+      lpUpdateCssCard(); lpRenderPreview();
+      showToast('Hoja de estilos "'+file.name+'" cargada.');
+    });
+  });
+  document.getElementById("lp-css-reset").addEventListener("click", function(){
+    var d = lpDefaults(null);
+    lpState.css = d.css; lpState.cssName = d.cssName; lpState.cssIsBase = true;
+    lpUpdateCssCard(); lpRenderPreview();
+  });
+
+  document.getElementById("lp-import-html").addEventListener("change", function(e){
+    var file = e.target.files[0]; if(!file) return;
+    lpReadFile(file, false, function(text){
+      // si es un documento completo, toma solo el contenido editable o el <body>
+      var m = text.match(/<!-- ===== Contenido editable ===== -->([\s\S]*?)<!-- ===== Fin del contenido editable ===== -->/) || text.match(/<main[^>]*class="ce-content"[^>]*>([\s\S]*?)<\/main>/i) || text.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+      lpState.html = (m ? m[1] : text).trim();
+      document.getElementById("lp-html").value = lpState.html;
+      e.target.value = "";
+      lpUpdateHtmlMeta(); lpRenderPreview();
+      showToast('Contenido importado desde "'+file.name+'".');
+    });
+  });
+  document.getElementById("lp-reset-html").addEventListener("click", function(){
+    lpState.html = lpStarterHtml(lpConcursoById(lpState.concursoId));
+    document.getElementById("lp-html").value = lpState.html;
+    lpUpdateHtmlMeta(); lpRenderPreview();
+  });
+  // Tab inserta 2 espacios en el editor HTML
+  document.getElementById("lp-html").addEventListener("keydown", function(e){
+    if(e.key!=="Tab" || e.shiftKey) return;
+    e.preventDefault();
+    var t = e.target, s = t.selectionStart;
+    t.value = t.value.slice(0,s)+"  "+t.value.slice(t.selectionEnd);
+    t.selectionStart = t.selectionEnd = s+2;
+    t.dispatchEvent(new Event("input"));
+  });
+
+  lpConcursoSel.addEventListener("change", function(){
+    var id = parseInt(lpConcursoSel.value,10);
+    var cur = lpCurrentId(id);
+    var land = cur ? LANDINGS.find(function(l){ return l.id===cur; }) : null;
+    lpLoadIntoEditor(land ? land.page : lpDefaults(lpConcursoById(id)));
+    lpState.concursoId = id;
+  });
+
+  document.querySelectorAll("[data-lp-device]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      document.querySelectorAll("[data-lp-device]").forEach(function(b){ b.classList.toggle("active", b===btn); });
+      document.getElementById("lp-stage").classList.toggle("mobile", btn.dataset.lpDevice==="mobile");
+    });
+  });
+
+  document.getElementById("lp-open").addEventListener("click", function(){ lpOpenTab(lpState); });
+  document.getElementById("lp-dl-html").addEventListener("click", function(){ lpDownloadHtml(lpState); });
+  document.getElementById("lp-dl-css").addEventListener("click", function(){ lpDownloadCss(lpState); });
+
+  function lpValidate(){
+    var h = lpState.header, f = lpState.footer;
+    var missing = [];
+    if(!lpState.slug.trim()) missing.push("nombre del archivo");
+    if(!h.alt.trim()) missing.push("texto alternativo del logo");
+    if(!h.inst.trim()) missing.push("nombre institucional");
+    if(h.menu.some(function(t){ return !String(t).trim(); })) missing.push("textos del menú");
+    if(!f.inst.trim()) missing.push("institución del footer");
+    if(!f.dir.trim()) missing.push("dirección");
+    if(!f.legal.trim()) missing.push("texto legal");
+    if(!lpState.html.trim()) missing.push("contenido HTML");
+    return missing;
+  }
+  function lpNow(){
+    var d = new Date(), p = function(n){ return (""+n).padStart(2,"0"); };
+    return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes());
+  }
+  document.getElementById("lp-publish").addEventListener("click", function(){
+    var missing = lpValidate();
+    if(missing.length){ showToast("Completa: "+missing.join(", ")+"."); return; }
+    lpState.slug = lpState.slug.trim().replace(/\.html?$/i,"").replace(/[^a-zA-Z0-9_-]+/g,"-").toLowerCase();
+    document.getElementById("lp-slug").value = lpState.slug;
+    LANDINGS.push({ id:nextLandingId++, fecha:lpNow(), autor:"Maria Gracia Asmat", page:lpClone(lpState) });
+    renderLandings();
+    showToast("Página publicada. La versión anterior quedó en el historial.");
+  });
+
+  /* historial */
+  var lpModalOverlay = document.getElementById("landingModalOverlay");
+  var lpModalLanding = null;
+  function lpById(id){ return LANDINGS.find(function(l){ return l.id===id; }); }
+  function lpUseAsModel(l){
+    // Se copia el contenido, pero la página queda asignada al concurso seleccionado en el editor.
+    var p = lpClone(l.page);
+    var target = lpConcursoById(lpState ? lpState.concursoId : p.concursoId) || lpConcursoById(p.concursoId);
+    p.concursoId = target.id;
+    p.slug = lpSlug(target);
+    lpLoadIntoEditor(p);
+    showView("landing-config");
+    location.hash = "landing-config";
+    showToast('Se cargó la página de "'+(lpConcursoById(l.page.concursoId)||{nombre:"—"}).nombre+'" como modelo.');
+  }
+  function lpOpenModal(l){
+    lpModalLanding = l;
+    var c = lpConcursoById(l.page.concursoId);
+    document.getElementById("landingModalTitle").textContent = c ? c.nombre : "Vista previa";
+    document.getElementById("landingModalSub").textContent = "Publicada el "+l.fecha+" · "+l.page.slug+".html · "+l.page.cssName;
+    document.getElementById("landingModalFrame").srcdoc = lpBuildDoc(l.page);
+    lpModalOverlay.classList.add("show");
+  }
+  function lpCloseModal(){ lpModalOverlay.classList.remove("show"); document.getElementById("landingModalFrame").srcdoc = ""; }
+  document.getElementById("landingModalClose").addEventListener("click", lpCloseModal);
+  lpModalOverlay.addEventListener("click", function(e){ if(e.target===lpModalOverlay) lpCloseModal(); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape" && lpModalOverlay.classList.contains("show")) lpCloseModal(); });
+  document.getElementById("landingModalHtml").addEventListener("click", function(){ lpDownloadHtml(lpModalLanding.page); });
+  document.getElementById("landingModalCss").addEventListener("click", function(){ lpDownloadCss(lpModalLanding.page); });
+  document.getElementById("landingModalUse").addEventListener("click", function(){ var l = lpModalLanding; lpCloseModal(); lpUseAsModel(l); });
+
+  function renderLandings(){
+    var body = document.getElementById("landingsBody");
+    var ordered = LANDINGS.slice().sort(function(a,b){ return b.fecha<a.fecha ? -1 : b.fecha>a.fecha ? 1 : b.id-a.id; });
+    document.getElementById("landingsCount").textContent = LANDINGS.length;
+    body.innerHTML = ordered.map(function(l, i){
+      var c = lpConcursoById(l.page.concursoId) || { nombre:"—", periodo:"—" };
+      var vigente = lpCurrentId(l.page.concursoId)===l.id;
+      return '<tr>'+
+        '<td class="cell-sub">'+(i+1)+'</td>'+
+        '<td class="cell-title">'+escHtml(c.nombre)+'</td>'+
+        '<td>'+c.periodo+'</td>'+
+        '<td class="cell-sub">'+escHtml(l.fecha)+'<br>'+escHtml(l.autor)+'</td>'+
+        '<td><span class="file-chip mono">'+escHtml(l.page.slug)+'.html</span><br><span class="file-chip mono">'+escHtml(l.page.cssName)+'</span></td>'+
+        '<td>'+(vigente
+          ? '<span class="badge badge-green"><svg class="icon" width="11" height="11"><use href="#i-check"/></svg>Vigente</span>'
+          : '<span class="badge badge-neutral"><svg class="icon" width="11" height="11"><use href="#i-clock"/></svg>Reemplazada</span>')+'</td>'+
+        '<td><div class="rowacts">'+
+          '<button class="icon-btn" title="Vista previa" data-lp-act="ver" data-id="'+l.id+'"><svg class="icon" width="14" height="14"><use href="#i-eye"/></svg></button>'+
+          '<button class="icon-btn" title="Descargar HTML" data-lp-act="html" data-id="'+l.id+'"><svg class="icon" width="14" height="14"><use href="#i-code"/></svg></button>'+
+          '<button class="icon-btn" title="Descargar CSS" data-lp-act="css" data-id="'+l.id+'"><svg class="icon" width="14" height="14"><use href="#i-download"/></svg></button>'+
+          '<button class="icon-btn" title="Usar como modelo" data-lp-act="usar" data-id="'+l.id+'"><svg class="icon" width="14" height="14"><use href="#i-copy"/></svg></button>'+
+        '</div></td>'+
+      '</tr>';
+    }).join("");
+  }
+  document.getElementById("landingsBody").addEventListener("click", function(e){
+    var btn = e.target.closest("[data-lp-act]"); if(!btn) return;
+    var l = lpById(parseInt(btn.dataset.id,10)); if(!l) return;
+    if(btn.dataset.lpAct==="ver") lpOpenModal(l);
+    else if(btn.dataset.lpAct==="html") lpDownloadHtml(l.page);
+    else if(btn.dataset.lpAct==="css") lpDownloadCss(l.page);
+    else if(btn.dataset.lpAct==="usar") lpUseAsModel(l);
+  });
+
+  lpPopulateConcursos();
+  lpRenderMenuInputs();
+  document.querySelectorAll('[data-view-link="landing-config"]').forEach(function(a){
+    a.addEventListener("click", function(){ var v = lpConcursoSel.value; lpPopulateConcursos(); lpConcursoSel.value = v; });
+  });
+  (function initLanding(){
+    var open = CONCURSOS.find(function(c){ return c.abierto; }) || CONCURSOS[CONCURSOS.length-1];
+    lpConcursoSel.value = open.id;
+    lpConcursoSel.dispatchEvent(new Event("change"));
+  })();
+  renderLandings();
 
   renderUsuarios();
 
