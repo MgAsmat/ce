@@ -1495,7 +1495,7 @@
             <div class="struct-strip" aria-hidden="true">
               <span class="struct-slot grow"><span class="n">1</span>Logo · Descripción · Redes sociales</span>
               <span class="struct-slot grow"><span class="n">2</span>Contáctanos: Email · WhatsApp · Teléfono</span>
-              <span class="struct-slot grow"><span class="n">3</span>© · Descargar Bases · Términos y condiciones</span>
+              <span class="struct-slot grow"><span class="n">3</span>© · Términos y condiciones · Descargar Bases</span>
             </div>
 
             <div class="section-label">1 · Columna institucional</div>
@@ -1548,19 +1548,7 @@
                 <input id="lp-f-copy" type="text">
               </div>
               <div class="field">
-                <label>Texto del enlace de bases <span class="req">*</span></label>
-                <input id="lp-f-bases-text" type="text">
-              </div>
-              <div class="field">
-                <label>Archivo de bases (PDF) <span class="req">*</span></label>
-                <div class="file-field">
-                  <input type="file" id="lp-f-bases" accept="application/pdf,.pdf">
-                  <label for="lp-f-bases" class="btn btn-ghost btn-sm">Elegir PDF</label>
-                  <span class="file-name" id="lp-f-bases-name">Ningún archivo seleccionado</span>
-                </div>
-              </div>
-              <div class="field">
-                <label>Texto del botón de términos y condiciones <span class="req">*</span></label>
+                <label>Texto del enlace de términos y condiciones <span class="req">*</span></label>
                 <input id="lp-f-tyc-text" type="text">
               </div>
               <div class="field">
@@ -1569,6 +1557,18 @@
                   <input type="file" id="lp-f-tyc" accept="application/pdf,.pdf">
                   <label for="lp-f-tyc" class="btn btn-ghost btn-sm">Elegir PDF</label>
                   <span class="file-name" id="lp-f-tyc-name">Ningún archivo seleccionado</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>Texto del botón de bases <span class="req">*</span></label>
+                <input id="lp-f-bases-text" type="text">
+              </div>
+              <div class="field">
+                <label>Archivo de bases (PDF) <span class="req">*</span></label>
+                <div class="file-field">
+                  <input type="file" id="lp-f-bases" accept="application/pdf,.pdf">
+                  <label for="lp-f-bases" class="btn btn-ghost btn-sm">Elegir PDF</label>
+                  <span class="file-name" id="lp-f-bases-name">Ningún archivo seleccionado</span>
                 </div>
               </div>
             </div>
@@ -4158,8 +4158,8 @@
     ".ce-footer__docs{display:flex;align-items:center;gap:18px;flex-wrap:wrap}",
     ".ce-footer__link{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:inherit;text-decoration:none}",
     ".ce-footer__link:hover{color:var(--ce-primary)}",
-    ".ce-tyc-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:8px;background:var(--ce-primary);color:#fff;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;text-decoration:none}",
-    ".ce-tyc-btn:hover{background:var(--ce-primary-dark);color:#fff}",
+    ".ce-footer__btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:8px;background:var(--ce-primary);color:#fff;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;text-decoration:none}",
+    ".ce-footer__btn:hover{background:var(--ce-primary-dark);color:#fff}",
     "@media (max-width:767px){.ce-footer__cols{grid-template-columns:1fr}.ce-footer__bottom{flex-direction:column;text-align:center}.ce-footer__docs{justify-content:center}}"
   ].join("\n");
 
@@ -4455,8 +4455,8 @@
       '    <div class="ce-footer__bottom">',
       '      <p class="ce-footer__copy">'+escHtml(f.copy)+'</p>',
       '      <div class="ce-footer__docs">',
-      '        <a class="ce-footer__link" href="'+escHtml(lpDocHref(f.bases, ex))+'" download="'+escHtml(f.bases.name)+'">'+escHtml(f.basesText)+'</a>',
-      '        <a class="ce-tyc-btn" href="'+escHtml(lpDocHref(f.tyc, ex))+'" download="'+escHtml(f.tyc.name)+'">'+lpSvg(LP_ICON.file,16)+'<span>'+escHtml(f.tycText)+'</span></a>',
+      '        <a class="ce-footer__link" href="'+escHtml(lpDocHref(f.tyc, ex))+'" download="'+escHtml(f.tyc.name)+'">'+escHtml(f.tycText)+'</a>',
+      '        <a class="ce-footer__btn" href="'+escHtml(lpDocHref(f.bases, ex))+'" download="'+escHtml(f.bases.name)+'">'+lpSvg(LP_ICON.file,16)+'<span>'+escHtml(f.basesText)+'</span></a>',
       '      </div>',
       '    </div>',
       '  </div>',
@@ -4690,8 +4690,8 @@
     if(!f.ctitle.trim()) missing.push("título de contacto");
     if(!f.mail.trim()) missing.push("email");
     if(!f.copy.trim()) missing.push("texto de copyright");
-    if(!f.basesText.trim() || !f.bases.name) missing.push("enlace y PDF de bases");
-    if(!f.tycText.trim() || !f.tyc.name) missing.push("botón y PDF de términos y condiciones");
+    if(!f.basesText.trim() || !f.bases.name) missing.push("botón y PDF de bases");
+    if(!f.tycText.trim() || !f.tyc.name) missing.push("enlace y PDF de términos y condiciones");
     if(!lpState.html.trim()) missing.push("contenido HTML");
     return missing;
   }
