@@ -1409,11 +1409,10 @@
             <span class="hint">Estructura fija</span>
           </div>
           <div class="card-body">
-            <div class="lock-note"><svg class="icon" width="15" height="15"><use href="#i-lock"/></svg><span>El orden de los elementos no se puede modificar. Puedes cambiar el logo y los textos de cada posición.</span></div>
+            <div class="lock-note"><svg class="icon" width="15" height="15"><use href="#i-lock"/></svg><span>El orden de los elementos y los destinos de los enlaces no se pueden modificar. Puedes cambiar el logo y los textos de cada posición.</span></div>
             <div class="struct-strip" aria-hidden="true">
               <span class="struct-slot"><span class="n">1</span>Logo</span>
-              <span class="struct-slot grow"><span class="n">2</span>Nombre institucional · Subtítulo</span>
-              <span class="struct-slot"><span class="n">3</span>Menú (4 enlaces)</span>
+              <span class="struct-slot grow"><span class="n">2</span>Menú (5 enlaces)</span>
             </div>
             <div class="grid cols-2">
               <div class="field">
@@ -1428,19 +1427,11 @@
                 </div>
               </div>
               <div class="field">
-                <label>Texto alternativo del logo <span class="req">*</span></label>
-                <input id="lp-h-alt" type="text" data-lp>
-              </div>
-              <div class="field">
-                <label>2 · Nombre institucional <span class="req">*</span></label>
-                <input id="lp-h-inst" type="text" data-lp>
-              </div>
-              <div class="field">
-                <label>2 · Subtítulo <span class="opt">(opcional)</span></label>
-                <input id="lp-h-sub" type="text" data-lp>
+                <label>1 · Texto alternativo del logo <span class="req">*</span></label>
+                <input id="lp-h-alt" type="text">
               </div>
             </div>
-            <div class="section-label" style="margin-top:20px">3 · Textos del menú</div>
+            <div class="section-label" style="margin-top:20px">2 · Textos del menú</div>
             <div class="grid cols-2" id="lp-menu"></div>
           </div>
         </div>
@@ -1458,7 +1449,7 @@
               <label for="lp-import-html" class="btn btn-ghost btn-sm"><svg class="icon" width="13" height="13"><use href="#i-upload"/></svg> Importar .html</label>
               <span class="meta" id="lp-html-meta"></span>
             </div>
-            <textarea id="lp-html" class="code-area" spellcheck="false" data-lp aria-label="Contenido HTML de la página"></textarea>
+            <textarea id="lp-html" class="code-area" spellcheck="false" aria-label="Contenido HTML de la página"></textarea>
             <p class="hint" style="margin:8px 0 0;font-size:12px;color:var(--text-faint)">Por seguridad, las etiquetas &lt;script&gt; y los atributos de evento (onclick, onload…) se eliminan al generar la página.</p>
           </div>
         </div>
@@ -1483,6 +1474,13 @@
               <summary>Ver contenido del CSS</summary>
               <pre class="mono" id="lp-css-code"></pre>
             </details>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:14px">
+              <label class="switch"><input type="checkbox" id="lp-bootstrap" checked><span class="track"></span></label>
+              <div>
+                <div style="font-weight:600;font-size:13px">Incluir Bootstrap 5.3</div>
+                <div style="font-size:12px;color:var(--text-faint)">Se carga antes de tu hoja de estilos, como en la página actual del concurso. Desactívalo si tu CSS no lo necesita.</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1493,17 +1491,19 @@
             <span class="hint">Estructura fija</span>
           </div>
           <div class="card-body">
-            <div class="lock-note"><svg class="icon" width="15" height="15"><use href="#i-lock"/></svg><span>El orden de los elementos no se puede modificar. Puedes cambiar el logo y los textos de cada posición.</span></div>
+            <div class="lock-note"><svg class="icon" width="15" height="15"><use href="#i-lock"/></svg><span>El orden de los elementos no se puede modificar. Puedes cambiar el logo, los textos y los documentos descargables. Los enlaces a redes sociales son fijos.</span></div>
             <div class="struct-strip" aria-hidden="true">
-              <span class="struct-slot"><span class="n">1</span>Logo · Institución</span>
-              <span class="struct-slot grow"><span class="n">2</span>Dirección · Teléfono · Correo</span>
-              <span class="struct-slot"><span class="n">3</span>Texto legal</span>
+              <span class="struct-slot grow"><span class="n">1</span>Logo · Descripción · Redes sociales</span>
+              <span class="struct-slot grow"><span class="n">2</span>Contáctanos: Email · WhatsApp · Teléfono</span>
+              <span class="struct-slot grow"><span class="n">3</span>© · Descargar Bases · Términos y condiciones</span>
             </div>
+
+            <div class="section-label">1 · Columna institucional</div>
             <div class="grid cols-2">
               <div class="field">
-                <label>1 · Logo <span class="req">*</span></label>
+                <label>Logo <span class="req">*</span></label>
                 <div class="logo-field">
-                  <span class="logo-thumb" style="background:#0B2A4A"><img id="lp-f-logo-img" alt=""></span>
+                  <span class="logo-thumb"><img id="lp-f-logo-img" alt=""></span>
                   <div class="file-field">
                     <input type="file" id="lp-f-logo" accept="image/png,image/jpeg,image/svg+xml,image/webp">
                     <label for="lp-f-logo" class="btn btn-ghost btn-sm">Cambiar logo</label>
@@ -1512,24 +1512,64 @@
                 </div>
               </div>
               <div class="field">
-                <label>1 · Institución <span class="req">*</span></label>
-                <input id="lp-f-inst" type="text" data-lp>
+                <label>Descripción <span class="req">*</span></label>
+                <input id="lp-f-desc" type="text">
+              </div>
+            </div>
+
+            <div class="section-label">2 · Contacto</div>
+            <div class="grid cols-2">
+              <div class="field">
+                <label>Título <span class="req">*</span></label>
+                <input id="lp-f-ctitle" type="text">
               </div>
               <div class="field">
-                <label>2 · Dirección <span class="req">*</span></label>
-                <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-map-pin"/></svg><input id="lp-f-dir" type="text" data-lp></div>
+                <label>Email <span class="req">*</span></label>
+                <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-mail"/></svg><input id="lp-f-mail" type="email"></div>
               </div>
               <div class="field">
-                <label>2 · Teléfono <span class="opt">(opcional)</span></label>
-                <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-phone"/></svg><input id="lp-f-tel" type="text" data-lp></div>
+                <label>WhatsApp <span class="opt">(opcional)</span></label>
+                <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-phone"/></svg><input id="lp-f-wa" type="text" placeholder="+51 999 999 999"></div>
               </div>
               <div class="field">
-                <label>2 · Correo <span class="opt">(opcional)</span></label>
-                <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-mail"/></svg><input id="lp-f-mail" type="text" data-lp></div>
+                <label>Teléfono <span class="opt">(opcional)</span></label>
+                <div class="ctrl has-icon"><svg class="icon" width="14" height="14"><use href="#i-phone"/></svg><input id="lp-f-tel" type="text"></div>
               </div>
               <div class="field">
-                <label>3 · Texto legal <span class="req">*</span></label>
-                <input id="lp-f-legal" type="text" data-lp>
+                <label>Anexos <span class="opt">(opcional)</span></label>
+                <input id="lp-f-anexos" type="text" placeholder="Anexos 00000 y 00000">
+              </div>
+            </div>
+
+            <div class="section-label">3 · Barra inferior</div>
+            <div class="grid cols-2">
+              <div class="field" style="grid-column:1/-1">
+                <label>Texto de copyright <span class="req">*</span></label>
+                <input id="lp-f-copy" type="text">
+              </div>
+              <div class="field">
+                <label>Texto del enlace de bases <span class="req">*</span></label>
+                <input id="lp-f-bases-text" type="text">
+              </div>
+              <div class="field">
+                <label>Archivo de bases (PDF) <span class="req">*</span></label>
+                <div class="file-field">
+                  <input type="file" id="lp-f-bases" accept="application/pdf,.pdf">
+                  <label for="lp-f-bases" class="btn btn-ghost btn-sm">Elegir PDF</label>
+                  <span class="file-name" id="lp-f-bases-name">Ningún archivo seleccionado</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>Texto del botón de términos y condiciones <span class="req">*</span></label>
+                <input id="lp-f-tyc-text" type="text">
+              </div>
+              <div class="field">
+                <label>Archivo de términos y condiciones (PDF) <span class="req">*</span></label>
+                <div class="file-field">
+                  <input type="file" id="lp-f-tyc" accept="application/pdf,.pdf">
+                  <label for="lp-f-tyc" class="btn btn-ghost btn-sm">Elegir PDF</label>
+                  <span class="file-name" id="lp-f-tyc-name">Ningún archivo seleccionado</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1546,7 +1586,7 @@
           </div>
           <div class="card-body">
             <div class="preview-stage" id="lp-stage">
-              <iframe id="lp-preview" title="Vista previa de la landing" sandbox="allow-same-origin"></iframe>
+              <iframe id="lp-preview" title="Vista previa de la landing" sandbox="allow-same-origin allow-downloads allow-popups"></iframe>
             </div>
           </div>
         </div>
@@ -2004,7 +2044,7 @@
       <button type="button" class="modal-close" id="landingModalClose" aria-label="Cerrar"><svg class="icon" width="16" height="16"><use href="#i-x"/></svg></button>
     </div>
     <div class="modal-body" style="grid-template-columns:1fr;max-height:none;padding:14px">
-      <iframe id="landingModalFrame" title="Vista previa de la página histórica" sandbox="allow-same-origin" style="width:100%;height:68vh;border:1px solid var(--border);border-radius:var(--r-sm);background:#fff"></iframe>
+      <iframe id="landingModalFrame" title="Vista previa de la página histórica" sandbox="allow-same-origin allow-downloads allow-popups" style="width:100%;height:68vh;border:1px solid var(--border);border-radius:var(--r-sm);background:#fff"></iframe>
     </div>
     <div class="modal-foot">
       <button type="button" class="btn btn-ghost btn-sm" id="landingModalHtml"><svg class="icon" width="13" height="13"><use href="#i-download"/></svg> Descargar HTML</button>
@@ -4061,126 +4101,255 @@
 
   /* ---------- landing ---------- */
   var LP_MENU_TARGETS = [
-    { href:"https://www.bcrp.gob.pe", label:"Sitio del BCRP" },
-    { href:"#bases", label:"Sección #bases" },
+    { href:"#temas", label:"Sección #temas" },
+    { href:"#premios", label:"Sección #premios" },
+    { href:"#participar", label:"Sección #participar" },
     { href:"#cronograma", label:"Sección #cronograma" },
-    { href:"#contacto", label:"Sección #contacto" }
+    { href:"https://www.youtube.com/playlist?list=PLSf-Yg0l9VEJfnIuZzsTkvgwK3DP1X_dj", label:"Lista de videos ganadores (YouTube)" }
   ];
-  var LP_DEFAULT_LOGO = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="160" height="48" viewBox="0 0 160 48"><rect x="0" y="4" width="40" height="40" rx="8" fill="#0B2A4A"/><text x="20" y="30" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">BC</text><text x="50" y="31" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#0B2A4A">BCRP</text></svg>');
-  var LP_DEFAULT_LOGO_LIGHT = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="160" height="48" viewBox="0 0 160 48"><rect x="0" y="4" width="40" height="40" rx="8" fill="#fff"/><text x="20" y="30" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#0B2A4A" text-anchor="middle">BC</text><text x="50" y="31" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#fff">BCRP</text></svg>');
+  var LP_SOCIAL = [
+    { name:"Facebook", href:"https://www.facebook.com/bcrpoficial/", svg:'<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>' },
+    { name:"Instagram", href:"https://www.instagram.com/bcrpoficial/", svg:'<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>' },
+    { name:"YouTube", href:"https://www.youtube.com/user/bcrpoficial", svg:'<path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>' },
+    { name:"X", href:"https://x.com/bcrpoficial", svg:'<path d="M4 4l16 16M20 4L4 20"/>' }
+  ];
+  var LP_ICON = {
+    mail:'<path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22 6 12 13 2 6"/>',
+    wa:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+    phone:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>',
+    file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/>'
+  };
+  function lpSvg(paths, size){ return '<svg xmlns="http://www.w3.org/2000/svg" width="'+(size||20)+'" height="'+(size||20)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+paths+'</svg>'; }
+  var LP_BOOTSTRAP_HREF = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css";
+  var LP_DEFAULT_LOGO = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="48" viewBox="0 0 200 48"><rect x="0" y="4" width="40" height="40" rx="8" fill="#0A3D7A"/><text x="20" y="30" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">BC</text><text x="50" y="22" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#0A3D7A">CONCURSO ESCOLAR</text><text x="50" y="39" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#C8102E">BCRP</text></svg>');
 
   // Estructura fija del header/footer: se incluye siempre y no es editable.
   var LP_BASE_CSS = [
-    "*,*::before,*::after{box-sizing:border-box}",
-    "body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#1d2733;background:#fff;line-height:1.6}",
-    "img{max-width:100%}",
-    ".ce-header{background:#fff;border-bottom:4px solid #C8102E}",
-    ".ce-header__inner{max-width:1120px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}",
-    ".ce-brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;margin-right:auto}",
-    ".ce-brand img{height:44px;width:auto}",
-    ".ce-brand strong{display:block;font-size:15px;color:#0B2A4A}",
-    ".ce-brand span{display:block;font-size:12.5px;color:#5c6b7a}",
-    ".ce-nav{display:flex;gap:4px;flex-wrap:wrap}",
-    ".ce-nav a{padding:8px 12px;border-radius:6px;color:#0B2A4A;text-decoration:none;font-size:14px;font-weight:600}",
-    ".ce-nav a:hover{background:#eef2f7}",
-    ".ce-content{max-width:1120px;margin:0 auto;padding:0 20px 40px}",
-    ".ce-footer{background:#0B2A4A;color:#d6e0ea;font-size:13.5px}",
-    ".ce-footer__inner{max-width:1120px;margin:0 auto;padding:28px 20px;display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start}",
-    ".ce-footer__brand{display:flex;align-items:center;gap:12px;margin-right:auto}",
-    ".ce-footer__brand img{height:40px;width:auto}",
-    ".ce-footer__brand strong{color:#fff;font-size:14px;max-width:260px}",
-    ".ce-footer__contact p{margin:0 0 4px}",
-    ".ce-footer__contact a{color:#fff}",
-    ".ce-footer__legal{border-top:1px solid rgba(255,255,255,.15);text-align:center;padding:12px 20px;font-size:12px;color:#9fb1c4}",
-    "@media (max-width:640px){.ce-brand img{height:32px}.ce-brand strong{font-size:14px}.ce-nav{width:100%}.ce-nav a{flex:1;text-align:center;padding:8px 6px}}"
+    ":root{--ce-primary:#0A3D7A;--ce-primary-dark:#072B57;--ce-muted:#64748b;--ce-border:#e2e8f0}",
+    "html{scroll-behavior:smooth;scroll-padding-top:76px}",
+    "body{margin:0}",
+    ".ce-header{position:sticky;top:0;z-index:1030;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--ce-border)}",
+    ".ce-header__inner{max-width:1140px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}",
+    ".ce-brand{display:flex;align-items:center}",
+    ".ce-brand img{height:40px;width:auto;display:block}",
+    ".ce-nav{list-style:none;margin:0 auto;padding:0;display:flex;gap:4px;flex-wrap:wrap}",
+    ".ce-nav a{display:block;padding:8px 12px;color:#334155;text-decoration:none;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.08em;border-radius:8px}",
+    ".ce-nav a:hover{color:var(--ce-primary);background:#f1f5f9}",
+    ".ce-nav-toggle{display:none}",
+    ".ce-nav-btn{display:none;margin-left:auto;width:42px;height:38px;border-radius:8px;cursor:pointer;align-items:center;justify-content:center}",
+    ".ce-nav-btn span,.ce-nav-btn span::before,.ce-nav-btn span::after{display:block;width:22px;height:2px;background:#334155;position:relative;content:''}",
+    ".ce-nav-btn span::before{position:absolute;top:-7px}.ce-nav-btn span::after{position:absolute;top:7px}",
+    "@media (max-width:991px){.ce-nav-btn{display:flex}.ce-nav{display:none;width:100%;flex-direction:column;margin:0}.ce-nav-toggle:checked~.ce-nav{display:flex}}",
+    ".ce-footer{background:#fff;border-top:1px solid #f1f5f9;padding:64px 0 32px;color:var(--ce-muted);font-size:14px}",
+    ".ce-footer__inner{max-width:1140px;margin:0 auto;padding:0 20px}",
+    ".ce-footer__cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:40px}",
+    ".ce-footer__logo{height:40px;width:auto;display:block;margin-bottom:20px}",
+    ".ce-footer__desc{max-width:300px;font-weight:500;margin:0 0 20px}",
+    ".ce-social{display:flex;gap:12px}",
+    ".ce-social a{width:40px;height:40px;border-radius:50%;background:#f8f9fa;color:#64748b;display:flex;align-items:center;justify-content:center;opacity:.8}",
+    ".ce-social a:hover{opacity:1;color:var(--ce-primary)}",
+    ".ce-footer__title{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:var(--ce-primary-dark);margin:0 0 20px}",
+    ".ce-contact{display:flex;flex-direction:column;gap:14px}",
+    ".ce-contact__item{display:flex;align-items:center;gap:14px;color:var(--ce-muted);text-decoration:none;font-weight:700;font-size:13px}",
+    "a.ce-contact__item:hover{color:var(--ce-primary)}",
+    ".ce-contact__icon{flex:0 0 auto;width:36px;height:36px;border-radius:6px;background:var(--ce-primary);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.1)}",
+    ".ce-footer__bottom{padding-top:24px;border-top:1px solid var(--ce-border);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}",
+    ".ce-footer__copy{margin:0;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}",
+    ".ce-footer__docs{display:flex;align-items:center;gap:18px;flex-wrap:wrap}",
+    ".ce-footer__link{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:inherit;text-decoration:none}",
+    ".ce-footer__link:hover{color:var(--ce-primary)}",
+    ".ce-tyc-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:8px;background:var(--ce-primary);color:#fff;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;text-decoration:none}",
+    ".ce-tyc-btn:hover{background:var(--ce-primary-dark);color:#fff}",
+    "@media (max-width:767px){.ce-footer__cols{grid-template-columns:1fr}.ce-footer__bottom{flex-direction:column;text-align:center}.ce-footer__docs{justify-content:center}}"
   ].join("\n");
 
-  function lpStarterCss(accent, soft){
+  function lpStarterCss(accent, accentDark){
     return [
       "/* Hoja de estilos de la landing del Concurso Escolar BCRP",
-      "   El header (.ce-header) y el footer (.ce-footer) tienen estructura fija.",
-      "   Estas reglas dan estilo al contenido editable (.ce-content). */",
+      "   Se carga después de Bootstrap 5.3 (si está activado).",
+      "   El header (.ce-header) y el footer (.ce-footer) tienen estructura fija;",
+      "   puedes ajustar sus colores con las variables --ce-primary y --ce-primary-dark. */",
       "",
-      ":root{ --ce-accent:"+accent+"; --ce-soft:"+soft+"; --ce-ink:#0B2A4A; }",
+      ":root{ --ce-primary:"+accent+"; --ce-primary-dark:"+accentDark+"; --bs-primary:"+accent+"; --bs-primary-rgb:"+lpHexToRgb(accent)+"; }",
       "",
-      ".ce-hero{ margin:0 -20px 32px; padding:48px 20px; background:linear-gradient(135deg,var(--ce-ink),var(--ce-accent)); color:#fff; text-align:center; }",
-      ".ce-hero h1{ margin:0 0 10px; font-size:clamp(26px,4vw,40px); line-height:1.15; }",
-      ".ce-hero p{ margin:0 auto 20px; max-width:640px; font-size:17px; opacity:.92; }",
-      ".ce-btn{ display:inline-block; padding:12px 22px; border-radius:999px; background:#fff; color:var(--ce-ink); font-weight:700; text-decoration:none; }",
-      ".ce-btn--outline{ background:transparent; color:#fff; border:2px solid #fff; margin-left:8px; }",
+      ".fw-black{ font-weight:900 !important; }",
+      ".ls-wide{ letter-spacing:.1em; }",
+      ".btn-primary{ --bs-btn-bg:var(--ce-primary); --bs-btn-border-color:var(--ce-primary); --bs-btn-hover-bg:var(--ce-primary-dark); --bs-btn-hover-border-color:var(--ce-primary-dark); }",
+      ".text-primary{ color:var(--ce-primary) !important; }",
+      ".bg-primary{ background-color:var(--ce-primary) !important; }",
       "",
-      ".ce-section{ padding:26px 0; border-bottom:1px solid #e3e8ee; }",
-      ".ce-section:last-child{ border-bottom:0; }",
-      ".ce-section h2{ margin:0 0 12px; font-size:22px; color:var(--ce-ink); }",
-      ".ce-section h2::after{ content:\"\"; display:block; width:48px; height:3px; margin-top:8px; background:var(--ce-accent); }",
+      ".bcrp-gradient{ background:linear-gradient(135deg,var(--ce-primary-dark) 0%,var(--ce-primary) 60%,#1d6fc4 100%); }",
+      ".hero-section{ min-height:560px; }",
+      ".text-gradient-hero{ background:linear-gradient(90deg,#fff,#bfdbfe); -webkit-background-clip:text; background-clip:text; color:transparent; }",
+      ".text-blue-100{ color:#dbeafe; }",
+      ".bg-white-10{ background:rgba(255,255,255,.1); }",
+      ".border-white-20{ border-color:rgba(255,255,255,.2) !important; }",
+      ".glass{ background:rgba(255,255,255,.85); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }",
+      ".separator{ width:64px; height:4px; }",
+      ".card-hover{ transition:transform .2s ease, box-shadow .2s ease; }",
+      ".card-hover:hover{ transform:translateY(-4px); box-shadow:0 1rem 2rem rgba(0,0,0,.08) !important; }",
+      ".prize-first{ transform:scale(1.04); }",
+      ".step-num{ width:56px; height:56px; }",
       "",
-      ".ce-cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }",
-      ".ce-card{ padding:18px; border-radius:12px; background:var(--ce-soft); }",
-      ".ce-card h3{ margin:0 0 6px; font-size:16px; color:var(--ce-ink); }",
-      ".ce-card p{ margin:0; font-size:14px; }",
-      "",
-      ".ce-table{ width:100%; border-collapse:collapse; font-size:14px; }",
-      ".ce-table th, .ce-table td{ padding:10px 12px; border-bottom:1px solid #e3e8ee; text-align:left; }",
-      ".ce-table th{ background:var(--ce-soft); color:var(--ce-ink); }",
-      "",
-      ".ce-note{ padding:14px 16px; border-left:4px solid var(--ce-accent); background:var(--ce-soft); border-radius:6px; }"
+      ".ce-faq details{ border:1px solid #e2e8f0; border-radius:.75rem; margin-bottom:.75rem; overflow:hidden; }",
+      ".ce-faq summary{ cursor:pointer; padding:1rem 1.25rem; font-weight:700; color:#212529; background:#f8f9fa; list-style:none; }",
+      ".ce-faq summary::-webkit-details-marker{ display:none; }",
+      ".ce-faq summary::after{ content:\"+\"; float:right; font-weight:900; }",
+      ".ce-faq details[open] summary::after{ content:\"–\"; }",
+      ".ce-faq details p{ margin:0; padding:1rem 1.25rem; color:#6c757d; }"
     ].join("\n");
   }
+  function lpHexToRgb(hex){ var n = parseInt(hex.slice(1),16); return ((n>>16)&255)+","+((n>>8)&255)+","+(n&255); }
 
+  var LP_CRONO = { 2026:["23 de setiembre de 2026","22 de octubre de 2026","19 de noviembre de 2026"] };
   function lpStarterHtml(c){
     var year = c ? c.periodo : new Date().getFullYear();
-    var nombre = c ? c.nombre : "Concurso Escolar BCRP "+year;
-    var ini = c ? fechaLabel(c.inicio) : "[fecha de inicio]";
-    var fin = c ? fechaLabel(c.fin) : "[fecha de cierre]";
+    var nombre = c ? c.nombre : "Concurso Escolar de Videos BCRP "+year;
+    var fin = c ? c.fin.d+" de "+MESES[c.fin.m-1].toLowerCase()+" de "+c.fin.y : "[fecha límite]";
+    var crono = LP_CRONO[year] || ["Por definir","Por definir","Por definir"];
+    var card = function(icon, title, text){
+      return [
+        '      <div class="col-md-4">',
+        '        <div class="card h-100 border-0 shadow-sm p-4 rounded-5 card-hover">',
+        '          <div class="card-body text-center">',
+        '            <div class="display-4 mb-3">'+icon+'</div>',
+        '            <h3 class="h4 fw-bold text-dark mb-3">'+title+'</h3>',
+        '            <p class="text-secondary">'+text+'</p>',
+        '          </div>',
+        '        </div>',
+        '      </div>'
+      ].join("\n");
+    };
+    var step = function(n, title, text){
+      return [
+        '        <div class="d-flex gap-4 mb-4">',
+        '          <span class="step-num flex-shrink-0 d-flex align-items-center justify-content-center bg-primary text-white rounded-3 fs-4 fw-bold">'+n+'</span>',
+        '          <div><h4 class="fw-bold text-dark text-uppercase h5">'+title+'</h4><p class="text-secondary">'+text+'</p></div>',
+        '        </div>'
+      ].join("\n");
+    };
+    var hito = function(label, date){
+      return [
+        '      <div class="col-lg-3 col-md-6">',
+        '        <div class="bg-white-10 p-4 rounded-5 border border-white-20 h-100">',
+        '          <span class="d-block fw-black text-uppercase small mb-3">'+label+'</span>',
+        '          <h4 class="h3 fw-bold mb-0">'+date+'</h4>',
+        '        </div>',
+        '      </div>'
+      ].join("\n");
+    };
+    var premio = function(medal, puesto, monto, first){
+      return [
+        '      <div class="col-lg-4">',
+        '        <div class="bg-white p-5 rounded-5 '+(first ? 'shadow-lg prize-first' : 'border')+' text-center h-100">',
+        '          <div class="display-4 mb-3">'+medal+'</div>',
+        '          <span class="d-block text-secondary fw-bold text-uppercase small ls-wide mb-3">'+puesto+'</span>',
+        '          <h3 class="display-6 fw-black '+(first ? 'text-primary' : 'text-dark')+' mb-2">'+monto+'</h3>',
+        '          <p class="text-secondary small fw-bold mb-4">Para cada integrante y docente</p>',
+        '          <div class="pt-4 border-top small fw-bold text-uppercase text-dark">Laptop + Proyector<br>para el colegio</div>',
+        '        </div>',
+        '      </div>'
+      ].join("\n");
+    };
+    var faq = function(q, a){ return '      <details><summary>'+q+'</summary><p>'+a+'</p></details>'; };
     return [
-      '<section class="ce-hero">',
-      '  <h1>'+nombre+'</h1>',
-      '  <p>Participa con tu equipo elaborando un video sobre el rol del Banco Central de Reserva del Perú en la economía.</p>',
-      '  <a class="ce-btn" href="#bases">Conoce las bases</a>',
-      '  <a class="ce-btn ce-btn--outline" href="#">Inscríbete</a>',
-      '</section>',
-      '',
-      '<section class="ce-section" id="bases">',
-      '  <h2>Bases del concurso</h2>',
-      '  <p>El concurso está dirigido a estudiantes de secundaria de instituciones educativas públicas y privadas de todo el país, organizados en equipos con un docente asesor.</p>',
-      '  <div class="ce-cards">',
-      '    <div class="ce-card"><h3>¿Quiénes participan?</h3><p>Equipos de estudiantes de secundaria acompañados por un docente asesor.</p></div>',
-      '    <div class="ce-card"><h3>¿Qué se presenta?</h3><p>Un video original sobre uno de los temas propuestos por el BCRP.</p></div>',
-      '    <div class="ce-card"><h3>¿Cómo se evalúa?</h3><p>Contenido, creatividad, claridad del mensaje y calidad de la producción.</p></div>',
+      '<section class="bcrp-gradient text-white d-flex align-items-center hero-section">',
+      '  <div class="container text-center py-5">',
+      '    <span class="d-inline-block py-1 px-3 rounded-pill bg-white-10 border border-white-20 mb-4 text-uppercase small fw-bold">Inscripciones abiertas</span>',
+      '    <h1 class="display-2 fw-black mb-4"><span class="text-gradient-hero">Activa tu creatividad</span></h1>',
+      '    <p class="lead text-blue-100 mx-auto mb-5" style="max-width:700px">'+nombre+'. Representa a tu colegio: tienes 3 minutos para demostrar tus conocimientos.</p>',
+      '    <div class="d-flex flex-wrap justify-content-center gap-3">',
+      '      <a href="#" class="btn btn-danger btn-lg rounded-4 px-5 py-3 fw-bold shadow-lg">¡INSCRÍBETE!</a>',
+      '      <a href="#" class="btn btn-outline-light btn-lg rounded-4 px-4 py-3 fw-bold">BASES (PDF)</a>',
+      '    </div>',
       '  </div>',
-      '  <p><a href="#">Descargar las bases completas (PDF)</a></p>',
       '</section>',
       '',
-      '<section class="ce-section" id="temas">',
-      '  <h2>Temas</h2>',
-      '  <ul>',
-      '    <li>Metas de inflación</li>',
-      '    <li>Reservas internacionales</li>',
-      '    <li>Pagos digitales</li>',
-      '    <li>Billetes y monedas</li>',
-      '  </ul>',
+      '<div class="container" style="margin-top:-3rem;position:relative">',
+      '  <div class="row g-4">',
+      '    <div class="col-md-6"><div class="glass p-4 rounded-4 shadow"><p class="text-secondary fw-bold text-uppercase small mb-0 ls-wide">Participantes</p><h5 class="fw-bold text-dark mb-0">Estudiantes de 4° y 5° de secundaria</h5></div></div>',
+      '    <div class="col-md-6"><div class="glass p-4 rounded-4 shadow"><p class="text-secondary fw-bold text-uppercase small mb-0 ls-wide">Fecha límite</p><h5 class="fw-bold text-dark mb-0">'+fin+'</h5></div></div>',
+      '  </div>',
+      '</div>',
+      '',
+      '<section id="temas" class="py-5 my-5">',
+      '  <div class="container">',
+      '    <div class="text-center mb-5">',
+      '      <h2 class="display-5 fw-black text-dark mb-3">Temas</h2>',
+      '      <div class="separator bg-primary mx-auto rounded-pill"></div>',
+      '      <p class="text-secondary mt-4 lead mx-auto" style="max-width:600px">Tu video debe abordar con claridad y dinamismo alguno de los siguientes temas:</p>',
+      '    </div>',
+      '    <div class="row g-4">',
+      card('📈','¿Cómo controla el BCRP la inflación?','Entendiendo el esquema de metas de inflación.'),
+      card('📱','Pagos digitales en mi localidad','¿Cómo están cambiando la forma de pagar y ahorrar?'),
+      card('🏦','¿Para qué sirven las reservas internacionales netas?','¿Cómo contribuyen a la estabilidad económica y financiera del país?'),
+      '    </div>',
+      '  </div>',
       '</section>',
       '',
-      '<section class="ce-section" id="cronograma">',
-      '  <h2>Cronograma</h2>',
-      '  <table class="ce-table">',
-      '    <thead><tr><th>Etapa</th><th>Fecha</th></tr></thead>',
-      '    <tbody>',
-      '      <tr><td>Inicio de inscripciones</td><td>'+ini+'</td></tr>',
-      '      <tr><td>Cierre de inscripciones y envío de videos</td><td>'+fin+'</td></tr>',
-      '      <tr><td>Publicación de resultados</td><td>[por definir]</td></tr>',
-      '    </tbody>',
-      '  </table>',
+      '<section id="premios" class="py-5 bg-light">',
+      '  <div class="container py-5">',
+      '    <div class="text-center mb-5">',
+      '      <h2 class="display-5 fw-black text-dark mb-3">Premios</h2>',
+      '      <p class="text-secondary lead">Valoramos tu talento y el compromiso de tu institución.</p>',
+      '    </div>',
+      '    <div class="row align-items-center g-4">',
+      premio('🥈','Segundo lugar','S/ 2 000',false),
+      premio('🥇','Primer lugar','S/ 3 000',true),
+      premio('🥉','Tercer lugar','S/ 1 500',false),
+      '    </div>',
+      '  </div>',
       '</section>',
       '',
-      '<section class="ce-section" id="premios">',
-      '  <h2>Premios</h2>',
-      '  <p class="ce-note">Los premios para los equipos ganadores, sus docentes asesores y sus instituciones educativas se detallan en las bases.</p>',
+      '<section id="participar" class="py-5 my-5">',
+      '  <div class="container">',
+      '    <div class="row align-items-center g-4 g-lg-5">',
+      '      <div class="col-lg-6">',
+      '        <h2 class="display-5 fw-black text-dark mb-5">Guía de participación</h2>',
+      step(1,'Forma tu equipo','Equipos de 3 alumnos (4° o 5° grado de secundaria) y un profesor asesor. La inscripción es realizada por el director.'),
+      step(2,'Regístrate','El director registra a los equipos en el portal del concurso.'),
+      step(3,'Graba tu video','Video dinámico de máximo 3 minutos. Los alumnos son los protagonistas.'),
+      step(4,'Sube tu material','Carga tu video (máximo 80 MB) a través del portal oficial.'),
+      '      </div>',
+      '      <div class="col-lg-6">',
+      '        <div class="bg-info-subtle rounded-5 p-5 shadow-lg">',
+      '          <h4 class="fw-black text-primary h3 mb-4">A tener en cuenta</h4>',
+      '          <ul class="list-unstyled d-flex flex-column gap-3 mb-0">',
+      '            <li class="bg-white p-3 rounded-4 shadow-sm fw-bold text-secondary text-uppercase small">Formato: MP4 (máx. 3 minutos)</li>',
+      '            <li class="bg-white p-3 rounded-4 shadow-sm fw-bold text-secondary text-uppercase small">Peso máximo: 80 MB</li>',
+      '            <li class="bg-white p-3 rounded-4 shadow-sm fw-bold text-secondary text-uppercase small">Citar fuentes al final</li>',
+      '            <li class="bg-white p-3 rounded-4 shadow-sm fw-bold text-danger text-uppercase small">No permitido: mencionar colegio, marcas de agua, propaganda explícita.</li>',
+      '          </ul>',
+      '        </div>',
+      '      </div>',
+      '    </div>',
+      '  </div>',
       '</section>',
       '',
-      '<section class="ce-section" id="contacto">',
-      '  <h2>Contacto</h2>',
-      '  <p>Si tienes consultas sobre el concurso, escríbenos al correo indicado al pie de esta página.</p>',
+      '<section id="cronograma" class="py-5 bcrp-gradient text-white">',
+      '  <div class="container">',
+      '    <h2 class="display-5 fw-black text-center mb-5">Cronograma</h2>',
+      '    <div class="row g-4">',
+      hito('Registro y envío hasta el', fin),
+      hito('Semifinalistas', crono[0]),
+      hito('Finalistas', crono[1]),
+      hito('Premiación', crono[2]),
+      '    </div>',
+      '  </div>',
+      '</section>',
+      '',
+      '<section id="faq" class="py-5 bg-white">',
+      '  <div class="container">',
+      '    <div class="text-center mb-5">',
+      '      <h2 class="display-5 fw-black text-dark mb-3">Preguntas frecuentes</h2>',
+      '      <div class="separator bg-primary mx-auto rounded-pill"></div>',
+      '    </div>',
+      '    <div class="ce-faq mx-auto" style="max-width:760px">',
+      faq('¿Quiénes pueden participar?','Estudiantes de cuarto y quinto de secundaria y docentes de instituciones educativas públicas y privadas de todo el país.'),
+      faq('¿Cuántos integrantes tiene cada equipo?','Los equipos están conformados por 1 docente y 3 estudiantes de la misma institución educativa.'),
+      faq('¿Cuántos equipos pueden participar por colegio?','No hay límite de equipos participantes por institución educativa.'),
+      '    </div>',
+      '  </div>',
       '</section>'
     ].join("\n");
   }
@@ -4197,29 +4366,43 @@
   function lpConcursoById(id){ return CONCURSOS.find(function(x){ return x.id===id; }); }
 
   function lpDefaults(c){
+    var y = c ? c.periodo : new Date().getFullYear();
     return {
       concursoId: c ? c.id : null,
       slug: lpSlug(c),
-      header: { logo:LP_DEFAULT_LOGO, logoName:"", alt:"Banco Central de Reserva del Perú", inst:"Banco Central de Reserva del Perú", sub:c ? c.nombre : "Concurso Escolar", menu:["Inicio","Bases","Cronograma","Contacto"] },
-      footer: { logo:LP_DEFAULT_LOGO_LIGHT, logoName:"", inst:"Banco Central de Reserva del Perú", dir:"Jr. Santa Rosa 441-445, Lima 1, Perú", tel:"(511) 613-2000", mail:"concursoescolar@bcrp.gob.pe", legal:"© "+(c ? c.periodo : new Date().getFullYear())+" Banco Central de Reserva del Perú. Todos los derechos reservados." },
+      bootstrap: true,
+      header: { logo:LP_DEFAULT_LOGO, logoName:"", alt:"Concurso Escolar BCRP "+y, menu:["Temas","Premios","Participación","Cronograma","Ganadores anteriores"] },
+      footer: {
+        logo:LP_DEFAULT_LOGO, logoName:"",
+        desc:"Construyendo cultura económica y financiera desde las aulas.",
+        ctitle:"Contáctanos", mail:"concurso.escolar@bcrp.gob.pe", wa:"+51 972 906 965", tel:"+51 (1) 613-2000", anexos:"Anexos 25356 y 22649",
+        copy:"© "+y+" Banco Central de Reserva del Perú",
+        basesText:"Descargar Bases", bases:{ name:"bases-ce"+y+".pdf", data:null },
+        tycText:"Términos y condiciones", tyc:{ name:"", data:null }
+      },
       html: lpStarterHtml(c),
-      css: lpStarterCss("#C8102E","#FBEFF1"),
+      css: lpStarterCss("#0A3D7A","#072B57"),
       cssName: "estilos-landing.css",
       cssIsBase: true
     };
   }
 
+  // forExport: los PDF se referencian por nombre de archivo; en la vista previa se usan los datos cargados.
+  function lpDocHref(doc, forExport){ return (!forExport && doc.data) ? doc.data : (doc.name || "#"); }
+
   function lpBuildDoc(p, opts){
     opts = opts || {};
-    var h = p.header, f = p.footer;
-    var cssTag = opts.linkCss
+    var h = p.header, f = p.footer, ex = !!opts.forExport;
+    var cssTag = ex
       ? '<link rel="stylesheet" href="'+escHtml(p.cssName)+'">'
       : '<style id="ce-custom">\n'+p.css.replace(/<\/style/gi,"<\\/style")+'\n</style>';
-    var menu = h.menu.map(function(t,i){ return '      <a href="'+LP_MENU_TARGETS[i].href+'">'+escHtml(t)+'</a>'; }).join("\n");
+    var menu = h.menu.map(function(t,i){ return '      <li><a href="'+LP_MENU_TARGETS[i].href+'"'+(/^https?:/.test(LP_MENU_TARGETS[i].href) ? ' target="_blank" rel="noopener"' : '')+'>'+escHtml(t)+'</a></li>'; }).join("\n");
+    var social = LP_SOCIAL.map(function(s){ return '          <a href="'+s.href+'" target="_blank" rel="noopener" aria-label="'+s.name+'">'+lpSvg(s.svg)+'</a>'; }).join("\n");
+    var waDigits = (f.wa||"").replace(/\D/g,"");
     var contact = [
-      '        <p>'+escHtml(f.dir)+'</p>',
-      f.tel ? '        <p>Teléfono: '+escHtml(f.tel)+'</p>' : '',
-      f.mail ? '        <p>Correo: <a href="mailto:'+escHtml(f.mail)+'">'+escHtml(f.mail)+'</a></p>' : ''
+      '          <a class="ce-contact__item" href="mailto:'+escHtml(f.mail)+'"><span class="ce-contact__icon">'+lpSvg(LP_ICON.mail)+'</span><span>Email: '+escHtml(f.mail)+'</span></a>',
+      f.wa ? '          <a class="ce-contact__item" href="https://wa.me/'+waDigits+'" target="_blank" rel="noopener"><span class="ce-contact__icon">'+lpSvg(LP_ICON.wa)+'</span><span>WhatsApp: '+escHtml(f.wa)+'</span></a>' : '',
+      f.tel ? '          <div class="ce-contact__item"><span class="ce-contact__icon">'+lpSvg(LP_ICON.phone)+'</span><span>Teléfono: '+escHtml(f.tel)+(f.anexos ? '<br>'+escHtml(f.anexos) : '')+'</span></div>' : ''
     ].filter(Boolean).join("\n");
     return [
       '<!DOCTYPE html>',
@@ -4227,7 +4410,8 @@
       '<head>',
       '<meta charset="utf-8">',
       '<meta name="viewport" content="width=device-width, initial-scale=1">',
-      '<title>'+escHtml(h.sub || h.inst)+'</title>',
+      '<title>'+escHtml((lpConcursoById(p.concursoId)||{}).nombre || h.alt)+'</title>',
+      p.bootstrap ? '<link rel="stylesheet" href="'+LP_BOOTSTRAP_HREF+'">' : '',
       '<!-- Estructura fija del header y footer (no editable) -->',
       '<style id="ce-base">\n'+LP_BASE_CSS+'\n</style>',
       '<!-- Hoja de estilos de la edición -->',
@@ -4236,13 +4420,12 @@
       '<body>',
       '<header class="ce-header">',
       '  <div class="ce-header__inner">',
-      '    <a class="ce-brand" href="'+LP_MENU_TARGETS[0].href+'">',
-      '      <img src="'+h.logo+'" alt="'+escHtml(h.alt)+'">',
-      '      <span><strong>'+escHtml(h.inst)+'</strong>'+(h.sub ? '<span>'+escHtml(h.sub)+'</span>' : '')+'</span>',
-      '    </a>',
-      '    <nav class="ce-nav">',
+      '    <a class="ce-brand" href="#"><img src="'+h.logo+'" alt="'+escHtml(h.alt)+'"></a>',
+      '    <input type="checkbox" id="ce-nav-toggle" class="ce-nav-toggle">',
+      '    <label for="ce-nav-toggle" class="ce-nav-btn" aria-label="Abrir menú"><span></span></label>',
+      '    <ul class="ce-nav">',
       menu,
-      '    </nav>',
+      '    </ul>',
       '  </div>',
       '</header>',
       '',
@@ -4254,19 +4437,33 @@
       '',
       '<footer class="ce-footer">',
       '  <div class="ce-footer__inner">',
-      '    <div class="ce-footer__brand">',
-      '      <img src="'+f.logo+'" alt="'+escHtml(f.inst)+'">',
-      '      <strong>'+escHtml(f.inst)+'</strong>',
-      '    </div>',
-      '    <div class="ce-footer__contact">',
+      '    <div class="ce-footer__cols">',
+      '      <div>',
+      '        <img class="ce-footer__logo" src="'+f.logo+'" alt="'+escHtml(h.alt)+'">',
+      '        <p class="ce-footer__desc">'+escHtml(f.desc)+'</p>',
+      '        <div class="ce-social">',
+      social,
+      '        </div>',
+      '      </div>',
+      '      <div>',
+      '        <h5 class="ce-footer__title">'+escHtml(f.ctitle)+'</h5>',
+      '        <div class="ce-contact">',
       contact,
+      '        </div>',
+      '      </div>',
+      '    </div>',
+      '    <div class="ce-footer__bottom">',
+      '      <p class="ce-footer__copy">'+escHtml(f.copy)+'</p>',
+      '      <div class="ce-footer__docs">',
+      '        <a class="ce-footer__link" href="'+escHtml(lpDocHref(f.bases, ex))+'" download="'+escHtml(f.bases.name)+'">'+escHtml(f.basesText)+'</a>',
+      '        <a class="ce-tyc-btn" href="'+escHtml(lpDocHref(f.tyc, ex))+'" download="'+escHtml(f.tyc.name)+'">'+lpSvg(LP_ICON.file,16)+'<span>'+escHtml(f.tycText)+'</span></a>',
+      '      </div>',
       '    </div>',
       '  </div>',
-      '  <div class="ce-footer__legal">'+escHtml(f.legal)+'</div>',
       '</footer>',
       '</body>',
       '</html>'
-    ].join("\n");
+    ].filter(function(l){ return l!==''; }).join("\n");
   }
 
   function lpDownload(name, text, type){
@@ -4277,7 +4474,7 @@
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
   }
-  function lpDownloadHtml(p){ lpDownload(p.slug+".html", lpBuildDoc(p, { linkCss:true }), "text/html"); }
+  function lpDownloadHtml(p){ lpDownload(p.slug+".html", lpBuildDoc(p, { forExport:true }), "text/html"); }
   function lpDownloadCss(p){ lpDownload(p.cssName, p.css, "text/css"); }
   function lpOpenTab(p){
     var url = URL.createObjectURL(new Blob([lpBuildDoc(p)], { type:"text/html;charset=utf-8" }));
@@ -4290,15 +4487,16 @@
   var LANDINGS = [];
   (function seedLandings(){
     var seeds = [
-      { concursoId:6, fecha:"2023-03-27 10:15", autor:"Maria Gracia Asmat", accent:"#1B6FA8", soft:"#EAF3FA" },
-      { concursoId:7, fecha:"2024-02-26 09:40", autor:"Maria Gracia Asmat", accent:"#2E7D4F", soft:"#EAF5EE" },
-      { concursoId:8, fecha:"2025-03-17 11:05", autor:"Maria Gracia Asmat", accent:"#7A3E9D", soft:"#F3ECF8" },
-      { concursoId:9, fecha:"2026-02-20 16:30", autor:"Maria Gracia Asmat", accent:"#C8102E", soft:"#FBEFF1" }
+      { concursoId:6, fecha:"2023-03-27 10:15", autor:"Maria Gracia Asmat", accent:"#1B6FA8", dark:"#0F4C78" },
+      { concursoId:7, fecha:"2024-02-26 09:40", autor:"Maria Gracia Asmat", accent:"#2E7D4F", dark:"#1D5634" },
+      { concursoId:8, fecha:"2025-03-17 11:05", autor:"Maria Gracia Asmat", accent:"#7A3E9D", dark:"#56296F" },
+      { concursoId:9, fecha:"2026-02-20 16:30", autor:"Maria Gracia Asmat", accent:"#0A3D7A", dark:"#072B57" }
     ];
     seeds.forEach(function(s, i){
       var c = lpConcursoById(s.concursoId);
       var p = lpDefaults(c);
-      p.css = lpStarterCss(s.accent, s.soft);
+      p.css = lpStarterCss(s.accent, s.dark);
+      p.footer.tyc = { name:"terminos-condiciones-ce"+c.periodo+".pdf", data:null };
       p.cssName = "estilos-landing-"+c.periodo+".css";
       p.cssIsBase = false;
       LANDINGS.push({ id:i+1, fecha:s.fecha, autor:s.autor, page:p });
@@ -4337,8 +4535,10 @@
 
   var LP_BINDINGS = [
     ["lp-slug", null, "slug"],
-    ["lp-h-alt", "header", "alt"], ["lp-h-inst", "header", "inst"], ["lp-h-sub", "header", "sub"],
-    ["lp-f-inst", "footer", "inst"], ["lp-f-dir", "footer", "dir"], ["lp-f-tel", "footer", "tel"], ["lp-f-mail", "footer", "mail"], ["lp-f-legal", "footer", "legal"],
+    ["lp-h-alt", "header", "alt"],
+    ["lp-f-desc", "footer", "desc"], ["lp-f-ctitle", "footer", "ctitle"], ["lp-f-mail", "footer", "mail"], ["lp-f-wa", "footer", "wa"],
+    ["lp-f-tel", "footer", "tel"], ["lp-f-anexos", "footer", "anexos"], ["lp-f-copy", "footer", "copy"],
+    ["lp-f-bases-text", "footer", "basesText"], ["lp-f-tyc-text", "footer", "tycText"],
     ["lp-html", null, "html"]
   ];
   LP_BINDINGS.forEach(function(b){
@@ -4370,6 +4570,9 @@
     document.getElementById("lp-f-logo-img").src = lpState.footer.logo;
     document.getElementById("lp-h-logo-name").textContent = lpState.header.logoName || "Logo por defecto";
     document.getElementById("lp-f-logo-name").textContent = lpState.footer.logoName || "Logo por defecto";
+    document.getElementById("lp-f-bases-name").textContent = lpState.footer.bases.name || "Ningún archivo seleccionado";
+    document.getElementById("lp-f-tyc-name").textContent = lpState.footer.tyc.name || "Ningún archivo seleccionado";
+    document.getElementById("lp-bootstrap").checked = lpState.bootstrap !== false;
     lpUpdateHtmlMeta();
     lpUpdateCssCard();
     lpRenderPreview();
@@ -4399,6 +4602,21 @@
       });
     });
   });
+
+  [["lp-f-bases","bases","lp-f-bases-name"],["lp-f-tyc","tyc","lp-f-tyc-name"]].forEach(function(cfg){
+    document.getElementById(cfg[0]).addEventListener("change", function(e){
+      var file = e.target.files[0]; if(!file) return;
+      if(!/\.pdf$/i.test(file.name)){ showToast("Selecciona un archivo PDF."); e.target.value=""; return; }
+      if(file.size > 10*1024*1024){ showToast("El PDF no debe superar 10 MB."); e.target.value=""; return; }
+      lpReadFile(file, true, function(data){
+        lpState.footer[cfg[1]] = { name:file.name, data:data };
+        document.getElementById(cfg[2]).textContent = file.name;
+        e.target.value = "";
+        lpRenderPreview();
+      });
+    });
+  });
+  document.getElementById("lp-bootstrap").addEventListener("change", function(e){ lpState.bootstrap = e.target.checked; lpRenderPreview(); });
 
   document.getElementById("lp-css").addEventListener("change", function(e){
     var file = e.target.files[0]; if(!file) return;
@@ -4467,11 +4685,13 @@
     var missing = [];
     if(!lpState.slug.trim()) missing.push("nombre del archivo");
     if(!h.alt.trim()) missing.push("texto alternativo del logo");
-    if(!h.inst.trim()) missing.push("nombre institucional");
     if(h.menu.some(function(t){ return !String(t).trim(); })) missing.push("textos del menú");
-    if(!f.inst.trim()) missing.push("institución del footer");
-    if(!f.dir.trim()) missing.push("dirección");
-    if(!f.legal.trim()) missing.push("texto legal");
+    if(!f.desc.trim()) missing.push("descripción del footer");
+    if(!f.ctitle.trim()) missing.push("título de contacto");
+    if(!f.mail.trim()) missing.push("email");
+    if(!f.copy.trim()) missing.push("texto de copyright");
+    if(!f.basesText.trim() || !f.bases.name) missing.push("enlace y PDF de bases");
+    if(!f.tycText.trim() || !f.tyc.name) missing.push("botón y PDF de términos y condiciones");
     if(!lpState.html.trim()) missing.push("contenido HTML");
     return missing;
   }
@@ -4532,7 +4752,7 @@
         '<td class="cell-title">'+escHtml(c.nombre)+'</td>'+
         '<td>'+c.periodo+'</td>'+
         '<td class="cell-sub">'+escHtml(l.fecha)+'<br>'+escHtml(l.autor)+'</td>'+
-        '<td><span class="file-chip mono">'+escHtml(l.page.slug)+'.html</span><br><span class="file-chip mono">'+escHtml(l.page.cssName)+'</span></td>'+
+        '<td><span class="file-chip mono">'+escHtml(l.page.slug)+'.html</span><br><span class="file-chip mono">'+escHtml(l.page.cssName)+'</span>'+(l.page.footer.tyc.name ? '<br><span class="file-chip mono">'+escHtml(l.page.footer.tyc.name)+'</span>' : '')+'</td>'+
         '<td>'+(vigente
           ? '<span class="badge badge-green"><svg class="icon" width="11" height="11"><use href="#i-check"/></svg>Vigente</span>'
           : '<span class="badge badge-neutral"><svg class="icon" width="11" height="11"><use href="#i-clock"/></svg>Reemplazada</span>')+'</td>'+
